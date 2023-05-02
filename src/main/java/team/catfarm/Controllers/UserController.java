@@ -31,4 +31,15 @@ public class UserController {
         User user = userService.getUserByEmail(email);
         return ResponseEntity.ok(user);
     }
+
+    @PutMapping("/{email}")
+    public ResponseEntity<User> updateUser(@PathVariable String email, @RequestBody User userToUpdate) throws UserNotFoundException {
+        User updatedUser = userService.updateUser(email, userToUpdate);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @DeleteMapping("/{email}")
+    public void deleteUser(@PathVariable String email) throws UserNotFoundException {
+        userService.deleteUser(email);
+    }
 }
