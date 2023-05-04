@@ -1,5 +1,6 @@
 package team.catfarm.Services;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.catfarm.Exceptions.InvalidTaskException;
@@ -29,5 +30,22 @@ public class TaskService {
             throw new TaskNotFoundException("Task not found with ID: " + id);
         }
         return task;
+    }
+
+    public Task updateTaskById(Long id, Task taskToUpdate) {
+        Task existingTask = taskRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException("Task not found with id " + id));
+
+        BeanUtils.copyProperties(taskToUpdate, existingTask, "id");
+
+        return taskRepository.save(existingTask);
+    }
+
+    public void deleteTaskById(Long id) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+        if (optionalTask.isEmpty()) {
+            throw new TaskNotFoundException("Task not found with ID: " + id);
+        }
+        taskRepository.deleteById(id);
     }
 }
