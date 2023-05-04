@@ -3,6 +3,7 @@ package team.catfarm.Models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.Date;
 @Setter
 @Getter
 @Entity
+@Table(name = "files")
 public class File {
 
     @Id
@@ -26,5 +28,4 @@ public class File {
     private double size;
     private String location;
     private Date uploadDate;
-    private Date modifiedDate;
 }

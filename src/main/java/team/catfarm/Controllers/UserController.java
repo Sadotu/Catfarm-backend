@@ -1,14 +1,13 @@
 package team.catfarm.Controllers;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
 import team.catfarm.Exceptions.UserNotFoundException;
 import team.catfarm.Models.User;
-import team.catfarm.Models.UserPublic;
+import team.catfarm.DTO.UserDTO;
 import team.catfarm.Services.UserService;
 
 @RestController
@@ -34,11 +33,11 @@ public class UserController {
     }
 
     @GetMapping("/{email}/public")
-    public ResponseEntity<UserPublic> getUserPublicInfoByEmail(@PathVariable String email) throws UserNotFoundException {
+    public ResponseEntity<UserDTO> getUserPublicInfoByEmail(@PathVariable String email) throws UserNotFoundException {
         User user = userService.getUserByEmail(email);
-        UserPublic userPublic = new UserPublic();
-        BeanUtils.copyProperties(user, userPublic, "password", "newsletter");
-        return ResponseEntity.ok(userPublic);
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(user, userDTO, "password", "newsletter");
+        return ResponseEntity.ok(userDTO);
     }
 
     @PutMapping("/{email}")
