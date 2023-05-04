@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import team.catfarm.Exceptions.EventNotFoundException;
 import team.catfarm.Models.Event;
 import team.catfarm.Services.EventService;
 
@@ -27,11 +28,21 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Event> getEventById(@PathVariable Long id) {
+    public ResponseEntity<Event> getEventById(@PathVariable Long id) throws EventNotFoundException {
         Event event = eventService.getEventById(id);
         return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
-    // Other methods for creating, updating, and deleting events
+    @PutMapping("/{id}")
+    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event eventToUpdate) throws EventNotFoundException {
+        Event updatedEvent = eventService.updateEvent(id, eventToUpdate);
+        return ResponseEntity.ok(updatedEvent);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) throws EventNotFoundException {
+        eventService.deleteEvent(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }

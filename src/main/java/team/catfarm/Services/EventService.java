@@ -1,5 +1,6 @@
 package team.catfarm.Services;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.catfarm.Exceptions.EventNotFoundException;
@@ -21,6 +22,19 @@ public class EventService {
                 .orElseThrow(() -> new EventNotFoundException("Event not found with id " + id));
     }
 
-    // Other methods for creating, updating, and deleting events
+    public Event updateEvent(Long id, Event eventToUpdate) throws EventNotFoundException {
+        Event existingEvent = eventRepository.findById(id)
+                .orElseThrow(() -> new EventNotFoundException("Event not found with id " + id));
 
+        BeanUtils.copyProperties(eventToUpdate, existingEvent, "id");
+
+        return eventRepository.save(existingEvent);
+    }
+
+    public void deleteEvent(Long id) {
+        Event eventToDelete = eventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event not found with id " + id));
+
+        eventRepository.delete(eventToDelete);
+    }
 }
