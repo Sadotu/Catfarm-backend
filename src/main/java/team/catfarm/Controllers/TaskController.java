@@ -31,6 +31,12 @@ public class TaskController {
         return ResponseEntity.ok(task.get());
     }
 
+    // create get for tasks of individual users
+    // create get for tasks of individual colors
+    // create get for tasks of individual labels
+    // create get for completed tasks
+    // the backend only does the first filter, multiple filters are handled by the frontend
+
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable Long id, @Valid @RequestBody Task task) throws URISyntaxException {
         Task updatedTask = taskService.updateTaskById(id, task);
