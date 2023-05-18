@@ -41,9 +41,8 @@ public class EventService {
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id " + id));
 
         BeanUtils.copyProperties(eventToUpdate, existingEvent, "id");
-        Event updatedEvent = eventRepository.save(existingEvent);
 
-        return transferModelToOutputDTO(updatedEvent);
+        return transferModelToOutputDTO(eventRepository.save(existingEvent));
     }
 
     public void deleteEvent(Long id) {

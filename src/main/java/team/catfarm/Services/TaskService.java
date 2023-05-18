@@ -3,8 +3,9 @@ package team.catfarm.Services;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team.catfarm.Exceptions.InvalidTaskException;
-import team.catfarm.Exceptions.TaskNotFoundException;
+import team.catfarm.DTO.Input.TaskInputDTO;
+import team.catfarm.DTO.Output.TaskOutputDTO;
+import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Task;
 import team.catfarm.Repositories.TaskRepository;
 
@@ -16,35 +17,43 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public Task addTask(Task task) throws InvalidTaskException {
-        if (task.getNameTask() == null || task.getNameTask().isEmpty()) {
-            throw new InvalidTaskException("Task name cannot be empty.");
-        }
+    public TaskOutputDTO transferModelToOutputDTO(Task task) {
+        TaskOutputDTO taskOutputDTO = new TaskOutputDTO();
+        BeanUtils.copyProperties(task, taskOutputDTO);
+        return taskOutputDTO;
+    }
 
-        return taskRepository.save(task);
+    public Task transferInputDTOToModel(TaskInputDTO taskInputDTO) {
+        Task task = new Task();
+        BeanUtils.copyProperties(taskInputDTO, task, "id");
+        return task;
+    }
+
+    public TaskOutputDTO addTask(TaskInputDTO taskInputDTO) {
+        return transferModelToOutputDTO(taskRepository.save(transferInputDTOToModel(taskInputDTO)));
     }
 
     public Optional<Task> getTaskById(Long id) {
         Optional<Task> task = taskRepository.findById(id);
         if (!task.isPresent()) {
-            throw new TaskNotFoundException("Task not found with ID: " + id);
+            throw new ResourceNotFoundException("Task not found with ID: " + id);
         }
         return task;
     }
 
-    public Task updateTaskById(Long id, Task taskToUpdate) {
+    public TaskOutputDTO updateTaskById(Long id, TaskInputDTO taskToUpdateInputDTO) {
         Task existingTask = taskRepository.findById(id)
-                .orElseThrow(() -> new TaskNotFoundException("Task not found with id " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id " + id));
 
-        BeanUtils.copyProperties(taskToUpdate, existingTask, "id");
+        BeanUtils.copyProperties(taskToUpdateInputDTO, existingTask, "id");
 
-        return taskRepository.save(existingTask);
+        return transferModelToOutputDTO(taskRepository.save(existingTask));
     }
 
     public void deleteTaskById(Long id) {
         Optional<Task> optionalTask = taskRepository.findById(id);
         if (optionalTask.isEmpty()) {
-            throw new TaskNotFoundException("Task not found with ID: " + id);
+            throw new ResourceNotFoundException("Task not found with ID: " + id);
         }
         taskRepository.deleteById(id);
     }

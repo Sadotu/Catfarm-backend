@@ -4,7 +4,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import team.catfarm.Exceptions.InvalidTaskException;
+import team.catfarm.DTO.Input.TaskInputDTO;
+import team.catfarm.DTO.Output.TaskOutputDTO;
 import team.catfarm.Models.Task;
 import team.catfarm.Services.TaskService;
 
@@ -19,9 +20,9 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @PostMapping
-    public ResponseEntity<Task> addTask(@RequestBody Task task) throws URISyntaxException, InvalidTaskException {
-        Task savedTask = taskService.addTask(task);
+    @PostMapping("/add")
+    public ResponseEntity<TaskOutputDTO> addTask(@RequestBody TaskInputDTO taskInputDTO) throws URISyntaxException {
+        TaskOutputDTO savedTask = taskService.addTask(taskInputDTO);
         return ResponseEntity.created(new URI("/tasks/" + savedTask.getId())).body(savedTask);
     }
 
@@ -38,8 +39,8 @@ public class TaskController {
     // the backend only does the first filter, multiple filters are handled by the frontend
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @Valid @RequestBody Task task) throws URISyntaxException {
-        Task updatedTask = taskService.updateTaskById(id, task);
+    public ResponseEntity<TaskOutputDTO> updateTask(@PathVariable Long id, @Valid @RequestBody TaskInputDTO taskInputDTO) {
+        TaskOutputDTO updatedTask = taskService.updateTaskById(id, taskInputDTO);
         return ResponseEntity.ok(updatedTask);
     }
 
