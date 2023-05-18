@@ -1,13 +1,22 @@
 package team.catfarm.Services;
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import team.catfarm.DTO.Input.EventInputDTO;
+import team.catfarm.DTO.Input.FileInputDTO;
+import team.catfarm.DTO.Output.EventOutputDTO;
+import team.catfarm.DTO.Output.FileOutputDTO;
 import team.catfarm.Exceptions.FileStorageException;
 import team.catfarm.Exceptions.ResourceNotFoundException;
+import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
 import team.catfarm.Repositories.FileRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class FileService {
@@ -19,21 +28,46 @@ public class FileService {
         this.fileRepository = fileRepository;
     }
 
-    public File uploadFile(File file) throws FileStorageException {
-        String fileName = StringUtils.cleanPath(file.getFileName());
+    public FileOutputDTO transferModelToOutputDTO(File file) {
+        FileOutputDTO fileOutputDTO = new FileOutputDTO();
+        BeanUtils.copyProperties(file, fileOutputDTO);
+        return fileOutputDTO;
+    }
 
-        if (fileName.contains("..")) {
-            throw new FileStorageException("Invalid file path.");
-        }
+    public File transferInputDTOToModel(FileInputDTO fileInputDTO) {
+        File file = new File();
+        BeanUtils.copyProperties(fileInputDTO, file, "id");
+        return file;
+    }
 
-        String originalName = fileName;
-        int count = 0;
-        while (fileRepository.findByFileName(fileName).isPresent()) {
-            count++;
-            fileName = StringUtils.cleanPath(FilenameUtils.getBaseName(originalName) + "(" + count + ")" + "." + FilenameUtils.getExtension(originalName));
-        }
+    public List<FileOutputDTO> uploadFiles(List<FileInputDTO> fileInputDTOList) throws FileStorageException {
+//        String fileName = StringUtils.cleanPath(file.getFileName());
+//
+//        if (fileName.contains("..")) {
+//            throw new FileStorageException("Invalid file path.");
+//        }
+//
+//        String originalName = fileName;
+//        String location = file.getLocation();
+//        int count = 0;
+//        while (fileRepository.findByFileNameAndLocation(fileName, location).isPresent()) {
+//            count++;
+//            fileName = StringUtils.cleanPath(FilenameUtils.getBaseName(originalName) + "(" + count + ")" + "." + FilenameUtils.getExtension(originalName));
+//        }
+//
+//        file.setFileName(fileName);
 
-        return fileRepository.save(file);
+            List<File> createdFiles = new ArrayList<>();
+            for (FileInputDTO t : fileInputDTOList) {
+                File createdFile = fileRepository.save(transferInputDTOToModel(t));
+                createdFiles.add(createdFile);
+            }
+            List<FileOutputDTO> createdFilesOutputDTO = new ArrayList<>();
+            for (File t : createdFiles) {
+                FileOutputDTO filesOutputDTO = transferModelToOutputDTO(t);
+                createdFilesOutputDTO.add(filesOutputDTO);
+            }
+        return createdFilesOutputDTO;
     }
 
     public File getFileById(Long id) {
@@ -54,7 +88,7 @@ public class FileService {
 //        return searchResults;
 //    }
 
-    public void deleteFileById(Long id) throws ResourceNotFoundException {
+    public void deleteFileById(Long id) {
         if (fileRepository.existsById(id)) {
             fileRepository.deleteById(id);
         } else {

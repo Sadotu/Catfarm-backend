@@ -3,11 +3,10 @@ package team.catfarm.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.EventInputDTO;
 import team.catfarm.DTO.Output.EventOutputDTO;
-import team.catfarm.Exceptions.EventNotFoundException;
+import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Event;
 import team.catfarm.Services.EventService;
 
@@ -30,19 +29,19 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Event> getEventById(@PathVariable Long id) throws EventNotFoundException {
+    public ResponseEntity<Event> getEventById(@PathVariable Long id) throws ResourceNotFoundException {
         Event event = eventService.getEventById(id);
         return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EventOutputDTO> updateEvent(@PathVariable Long id, @RequestBody EventInputDTO eventToUpdateInputDTO) throws EventNotFoundException {
+    public ResponseEntity<EventOutputDTO> updateEvent(@PathVariable Long id, @RequestBody EventInputDTO eventToUpdateInputDTO) throws ResourceNotFoundException {
         EventOutputDTO updatedEvent = eventService.updateEvent(id, eventToUpdateInputDTO);
         return ResponseEntity.ok(updatedEvent);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) throws EventNotFoundException {
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) throws ResourceNotFoundException {
         eventService.deleteEvent(id);
         return ResponseEntity.noContent().build();
     }

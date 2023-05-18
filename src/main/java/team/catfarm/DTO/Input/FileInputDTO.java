@@ -1,4 +1,4 @@
-package team.catfarm.DTO.Output;
+package team.catfarm.DTO.Input;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Setter
 @Getter
-public class FileOutputDTO {
+public class FileInputDTO {
     private Long id;
     private String fileName;
     private String type;

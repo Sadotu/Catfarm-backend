@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.catfarm.DTO.Input.EventInputDTO;
 import team.catfarm.DTO.Output.EventOutputDTO;
-import team.catfarm.Exceptions.EventNotFoundException;
+import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Event;
 import team.catfarm.Repositories.EventRepository;
 
@@ -31,14 +31,14 @@ public class EventService {
         return transferModelToOutputDTO(eventRepository.save(transferInputDTOToModel(eventInputDTO)));
     }
 
-    public Event getEventById(Long id) throws EventNotFoundException {
+    public Event getEventById(Long id) {
         return eventRepository.findById(id)
-                .orElseThrow(() -> new EventNotFoundException("Event not found with id " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id " + id));
     }
 
     public EventOutputDTO updateEvent(Long id, EventInputDTO eventToUpdate) {
         Event existingEvent = eventRepository.findById(id)
-                .orElseThrow(() -> new EventNotFoundException("Event not found with id " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id " + id));
 
         BeanUtils.copyProperties(eventToUpdate, existingEvent, "id");
         Event updatedEvent = eventRepository.save(existingEvent);
@@ -48,7 +48,7 @@ public class EventService {
 
     public void deleteEvent(Long id) {
         Event eventToDelete = eventRepository.findById(id)
-                .orElseThrow(() -> new EventNotFoundException("Event not found with id " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id " + id));
 
         eventRepository.delete(eventToDelete);
     }
