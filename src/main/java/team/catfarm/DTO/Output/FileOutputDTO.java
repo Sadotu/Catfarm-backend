@@ -1,4 +1,4 @@
-package team.catfarm.DTO;
+package team.catfarm.DTO.Output;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class FileDTO {
+public class FileOutputDTO {
     private String fileName;
     private String location;
 }

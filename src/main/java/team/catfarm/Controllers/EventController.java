@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import team.catfarm.DTO.Input.EventInputDTO;
+import team.catfarm.DTO.Output.EventOutputDTO;
 import team.catfarm.Exceptions.EventNotFoundException;
 import team.catfarm.Models.Event;
 import team.catfarm.Services.EventService;
@@ -20,10 +22,10 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    @PostMapping
-    public ResponseEntity<Event> addEvent(@RequestBody Event event) throws URISyntaxException {
+    @PostMapping("/add")
+    public ResponseEntity<EventOutputDTO> createEvent(@RequestBody EventInputDTO event) throws URISyntaxException {
         event.setDate(new Date());
-        Event savedEvent = eventService.addEvent(event);
+        EventOutputDTO savedEvent = eventService.createEvent(event);
         return ResponseEntity.created(new URI("/events/" + savedEvent.getId())).body(savedEvent);
     }
 
@@ -34,8 +36,8 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event eventToUpdate) throws EventNotFoundException {
-        Event updatedEvent = eventService.updateEvent(id, eventToUpdate);
+    public ResponseEntity<EventOutputDTO> updateEvent(@PathVariable Long id, @RequestBody EventInputDTO eventToUpdateInputDTO) throws EventNotFoundException {
+        EventOutputDTO updatedEvent = eventService.updateEvent(id, eventToUpdateInputDTO);
         return ResponseEntity.ok(updatedEvent);
     }
 

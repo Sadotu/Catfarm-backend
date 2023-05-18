@@ -4,10 +4,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import team.catfarm.DTO.Output.UserOutputDTO;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
 import team.catfarm.Exceptions.UserNotFoundException;
 import team.catfarm.Models.User;
-import team.catfarm.DTO.UserDTO;
 import team.catfarm.Services.UserService;
 
 @RestController
@@ -28,17 +28,16 @@ public class UserController {
 
     @GetMapping("/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) throws UserNotFoundException {
-        User user = userService.getUserByEmail(email);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
-    @GetMapping("/{email}/public")
-    public ResponseEntity<UserDTO> getUserPublicInfoByEmail(@PathVariable String email) throws UserNotFoundException {
-        User user = userService.getUserByEmail(email);
-        UserDTO userDTO = new UserDTO();
-        BeanUtils.copyProperties(user, userDTO, "password", "newsletter");
-        return ResponseEntity.ok(userDTO);
-    }
+//    @GetMapping("/{email}/public")
+//    public ResponseEntity<UserOutputDTO> getUserPublicInfoByEmail(@PathVariable String email) throws UserNotFoundException {
+//        User user = userService.getUserByEmail(email);
+//        UserOutputDTO userOutputDTO = new UserOutputDTO();
+//        BeanUtils.copyProperties(user, userOutputDTO, "password", "newsletter");
+//        return ResponseEntity.ok(userOutputDTO);
+//    }
 
     @PutMapping("/{email}")
     public ResponseEntity<User> updateUser(@PathVariable String email, @RequestBody User userToUpdate) throws UserNotFoundException {
