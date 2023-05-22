@@ -1,5 +1,10 @@
 package team.catfarm.DTO.Input;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class UserInputDTO {
     public String email;
     public String fullName;

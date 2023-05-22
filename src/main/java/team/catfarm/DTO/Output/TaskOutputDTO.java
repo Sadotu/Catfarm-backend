@@ -2,6 +2,7 @@ package team.catfarm.DTO.Output;
 
 import lombok.Getter;
 import lombok.Setter;
+import team.catfarm.Models.Event;
 
 import java.util.Date;
 
@@ -14,4 +15,5 @@ public class TaskOutputDTO {
     private String description;
     private boolean accepted;
     private boolean completed;
+    private Event event;
 }

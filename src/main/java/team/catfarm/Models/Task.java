@@ -1,9 +1,7 @@
 package team.catfarm.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,4 +25,9 @@ public class Task {
     private String description;
     private boolean accepted;
     private boolean completed;
+
+    @ManyToOne
+    @JoinColumn(name = "event_id")
+    @JsonIgnore
+    private Event event;
 }

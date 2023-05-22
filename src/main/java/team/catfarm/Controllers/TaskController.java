@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.TaskInputDTO;
+import team.catfarm.DTO.Output.EventOutputDTO;
 import team.catfarm.DTO.Output.TaskOutputDTO;
 import team.catfarm.Models.Task;
 import team.catfarm.Services.TaskService;
@@ -42,6 +43,11 @@ public class TaskController {
     public ResponseEntity<TaskOutputDTO> updateTask(@PathVariable Long id, @Valid @RequestBody TaskInputDTO taskInputDTO) {
         TaskOutputDTO updatedTask = taskService.updateTaskById(id, taskInputDTO);
         return ResponseEntity.ok(updatedTask);
+    }
+
+    @PutMapping("/{id}/event/{event_id}")
+    public ResponseEntity<TaskOutputDTO> assignEventToTask(@PathVariable Long id, @PathVariable Long event_id) {
+        return ResponseEntity.ok(taskService.assignEventToTask(id, event_id));
     }
 
     @DeleteMapping("/{id}")

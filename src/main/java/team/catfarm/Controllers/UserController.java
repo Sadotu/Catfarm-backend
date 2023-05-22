@@ -1,12 +1,11 @@
 package team.catfarm.Controllers;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
-import team.catfarm.Exceptions.UserNotFoundException;
 import team.catfarm.Models.User;
 import team.catfarm.Services.UserService;
 
@@ -21,18 +20,17 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) throws UserAlreadyExistsException {
-        User createdUser = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    public ResponseEntity<UserOutputDTO> createUser(@RequestBody UserInputDTO userInputDTO) throws UserAlreadyExistsException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userInputDTO));
     }
 
     @GetMapping("/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) throws UserNotFoundException {
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
         return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
 //    @GetMapping("/{email}/public")
-//    public ResponseEntity<UserOutputDTO> getUserPublicInfoByEmail(@PathVariable String email) throws UserNotFoundException {
+//    public ResponseEntity<UserOutputDTO> getUserPublicInfoByEmail(@PathVariable String email) {
 //        User user = userService.getUserByEmail(email);
 //        UserOutputDTO userOutputDTO = new UserOutputDTO();
 //        BeanUtils.copyProperties(user, userOutputDTO, "password", "newsletter");
@@ -40,13 +38,12 @@ public class UserController {
 //    }
 
     @PutMapping("/{email}")
-    public ResponseEntity<User> updateUser(@PathVariable String email, @RequestBody User userToUpdate) throws UserNotFoundException {
-        User updatedUser = userService.updateUser(email, userToUpdate);
-        return ResponseEntity.ok(updatedUser);
+    public ResponseEntity<UserOutputDTO> updateUser(@PathVariable String email, @RequestBody UserInputDTO userToUpdateInputDTO) {
+        return ResponseEntity.ok(userService.updateUser(email, userToUpdateInputDTO));
     }
 
     @DeleteMapping("/{email}")
-    public void deleteUser(@PathVariable String email) throws UserNotFoundException {
+    public void deleteUser(@PathVariable String email) {
         userService.deleteUser(email);
     }
 }

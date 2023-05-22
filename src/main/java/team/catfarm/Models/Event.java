@@ -1,9 +1,7 @@
 package team.catfarm.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,4 +28,8 @@ public class Event {
     private LocalDateTime endTime;
     private String description;
     private String color;
+
+    @OneToMany(mappedBy = "event")
+    @JsonIgnore
+    private List<Task> tasks;
 }
