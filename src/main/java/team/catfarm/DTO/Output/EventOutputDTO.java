@@ -11,7 +11,6 @@ import java.util.Date;
 public class EventOutputDTO {
     private Long id;
     private String name;
-    private Date date;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String description;

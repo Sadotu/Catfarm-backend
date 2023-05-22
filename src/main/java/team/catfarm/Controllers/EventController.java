@@ -12,7 +12,9 @@ import team.catfarm.Services.EventService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/events")
@@ -22,9 +24,8 @@ public class EventController {
     private EventService eventService;
 
     @PostMapping("/add")
-    public ResponseEntity<EventOutputDTO> createEvent(@RequestBody EventInputDTO event) throws URISyntaxException {
-        event.setDate(new Date());
-        EventOutputDTO savedEvent = eventService.createEvent(event);
+    public ResponseEntity<EventOutputDTO> createEvent(@RequestBody EventInputDTO eventInputDTO) throws URISyntaxException {
+        EventOutputDTO savedEvent = eventService.createEvent(eventInputDTO);
         return ResponseEntity.created(new URI("/events/" + savedEvent.getId())).body(savedEvent);
     }
 
@@ -32,6 +33,11 @@ public class EventController {
     public ResponseEntity<Event> getEventById(@PathVariable Long id) throws ResourceNotFoundException {
         Event event = eventService.getEventById(id);
         return new ResponseEntity<>(event, HttpStatus.OK);
+    }
+
+    @GetMapping("/{start}/{end}")
+    public ResponseEntity<List<Event>> getEventsByTimePeriod(@PathVariable LocalDateTime start, @PathVariable LocalDateTime end) {
+        return ResponseEntity.ok(eventService.getEventsByTimePeriod(start, end));
     }
 
     @PutMapping("/{id}")

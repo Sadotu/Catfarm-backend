@@ -2,16 +2,20 @@ package team.catfarm.Controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.TaskInputDTO;
 import team.catfarm.DTO.Output.EventOutputDTO;
 import team.catfarm.DTO.Output.TaskOutputDTO;
+import team.catfarm.Exceptions.ResourceNotFoundException;
+import team.catfarm.Models.Event;
 import team.catfarm.Models.Task;
 import team.catfarm.Services.TaskService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -28,9 +32,14 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-        Optional<Task> task = taskService.getTaskById(id);
-        return ResponseEntity.ok(task.get());
+    public ResponseEntity<Task> getTaskById(@PathVariable Long id) throws ResourceNotFoundException {
+        Task task = taskService.getTaskById(id);
+        return new ResponseEntity<>(task, HttpStatus.OK);
+    }
+
+    @GetMapping("/{filter}")
+    public ResponseEntity<List<Task>> getTasksByFilter(@PathVariable String filter) {
+        return ResponseEntity.ok(taskService.getTasksByFilter(filter));
     }
 
     // create get for tasks of individual users

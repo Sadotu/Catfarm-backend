@@ -1,7 +1,6 @@
 package team.catfarm.Services;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.catfarm.DTO.Input.EventInputDTO;
 import team.catfarm.DTO.Output.EventOutputDTO;
@@ -9,11 +8,18 @@ import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Event;
 import team.catfarm.Repositories.EventRepository;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class EventService {
 
-    @Autowired
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
+
+    public EventService(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
 
     public EventOutputDTO transferModelToOutputDTO(Event event) {
         EventOutputDTO eventOutputDTO = new EventOutputDTO();
@@ -34,6 +40,10 @@ public class EventService {
     public Event getEventById(Long id) {
         return eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id " + id));
+    }
+
+    public List<Event> getEventsByTimePeriod(LocalDateTime start, LocalDateTime end) {
+        return eventRepository.findByStartTimeBetween(start, end);
     }
 
     public EventOutputDTO updateEvent(Long id, EventInputDTO eventToUpdate) {

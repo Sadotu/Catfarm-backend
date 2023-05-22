@@ -15,4 +15,5 @@ public class FileInputDTO {
     private double size;
     private String location;
     private Date uploadDate;
+    private Long event_id;
 }

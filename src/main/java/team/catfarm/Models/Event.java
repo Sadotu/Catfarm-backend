@@ -23,13 +23,23 @@ public class Event {
     @GeneratedValue
     private Long id;
     private String name;
-    private Date date;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String description;
     private String color;
 
+    //for repeated events:
+//    private int repeatInterval;
+//    private String repeatPattern; //day, week, month, year
+//    private String repetitionEndType; //indefinite, repetitionEndDate, repetitionEndOccurrences
+//    private Date repetitionEndDate;
+//    private int repetitionEndOccurrences;
+
     @OneToMany(mappedBy = "event")
     @JsonIgnore
     private List<Task> tasks;
+
+    @OneToMany(mappedBy = "event")
+    @JsonIgnore
+    private List<File> files;
 }

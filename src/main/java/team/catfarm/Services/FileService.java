@@ -1,31 +1,31 @@
 package team.catfarm.Services;
 
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import team.catfarm.DTO.Input.EventInputDTO;
 import team.catfarm.DTO.Input.FileInputDTO;
-import team.catfarm.DTO.Output.EventOutputDTO;
 import team.catfarm.DTO.Output.FileOutputDTO;
 import team.catfarm.Exceptions.FileStorageException;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
+import team.catfarm.Repositories.EventRepository;
 import team.catfarm.Repositories.FileRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FileService {
 
     private final FileRepository fileRepository;
+    private final EventRepository eventRepository;
 
-    @Autowired
-    public FileService(FileRepository fileRepository) {
+    public FileService(FileRepository fileRepository, EventRepository eventRepository) {
         this.fileRepository = fileRepository;
+        this.eventRepository = eventRepository;
     }
 
     public FileOutputDTO transferModelToOutputDTO(File file) {
@@ -58,10 +58,20 @@ public class FileService {
 //        file.setFileName(fileName);
 
             List<File> createdFiles = new ArrayList<>();
+
             for (FileInputDTO t : fileInputDTOList) {
-                File createdFile = fileRepository.save(transferInputDTOToModel(t));
-                createdFiles.add(createdFile);
+
+                if (t.getEvent_id() != null) {
+                    Optional<Event> eventOptional = eventRepository.findById(t.getEvent_id());
+                    if (eventOptional.isPresent()) {
+                        File file = transferInputDTOToModel(t);
+                        file.setEvent(eventOptional.get());
+                        fileRepository.save(file);
+                        createdFiles.add(file);
+                    } // add else ifs for users and tasks here
+                } else { createdFiles.add(fileRepository.save(transferInputDTOToModel(t))); }
             }
+
             List<FileOutputDTO> createdFilesOutputDTO = new ArrayList<>();
             for (File t : createdFiles) {
                 FileOutputDTO filesOutputDTO = transferModelToOutputDTO(t);
@@ -73,6 +83,12 @@ public class FileService {
     public File getFileById(Long id) {
         return fileRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("File not found with id: " + id));
+    }
+
+    public List<File> getFilesByLocation(String location) {
+        return fileRepository.findAll().stream()
+                .filter(file -> file.getLocation().equalsIgnoreCase(location))
+                .collect(Collectors.toList());
     }
 
 //    public List<File> searchFiles(String term, String currentDirectory) {

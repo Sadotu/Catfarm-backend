@@ -9,6 +9,7 @@ import team.catfarm.DTO.Output.FileOutputDTO;
 import team.catfarm.Models.File;
 import team.catfarm.Services.FileService;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -28,6 +29,16 @@ public class FileController {
     @GetMapping("/{id}")
     public ResponseEntity<File> getFileById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(fileService.getFileById(id));
+    }
+
+    @GetMapping("/{location}")
+    public ResponseEntity<List<File>> getFilesByLocation(@PathVariable String location) {
+        return ResponseEntity.ok(fileService.getFilesByLocation(location));
+    }
+
+    @GetMapping("/{Entity}")
+    public ResponseEntity<List<File>> getFilesByEntity(@PathVariable String entity) {
+        return ResponseEntity.ok(fileService.getFilesByEntity(entity));
     }
 
 //    @GetMapping("/search")

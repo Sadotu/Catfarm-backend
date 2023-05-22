@@ -10,6 +10,7 @@ import team.catfarm.Models.Task;
 import team.catfarm.Repositories.EventRepository;
 import team.catfarm.Repositories.TaskRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,12 +53,13 @@ public class TaskService {
     }
 
 
-    public Optional<Task> getTaskById(Long id) {
-        Optional<Task> task = taskRepository.findById(id);
-        if (task.isEmpty()) {
-            throw new ResourceNotFoundException("Task not found with ID: " + id);
-        }
-        return task;
+    public Task getTaskById(Long id) {
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id " + id));
+    }
+
+    public List<Task> getTasksByFilter(String filter) {
+        return null;
     }
 
     public TaskOutputDTO updateTaskById(Long id, TaskInputDTO taskToUpdateInputDTO) {

@@ -2,6 +2,7 @@ package team.catfarm.DTO.Output;
 
 import lombok.Getter;
 import lombok.Setter;
+import team.catfarm.Models.Event;
 
 import java.util.Date;
 
@@ -15,4 +16,5 @@ public class FileOutputDTO {
     private double size;
     private String location;
     private Date uploadDate;
+    private Event event;
 }
