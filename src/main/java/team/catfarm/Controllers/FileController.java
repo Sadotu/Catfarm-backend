@@ -1,11 +1,14 @@
 package team.catfarm.Controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.FileInputDTO;
+import team.catfarm.DTO.Input.TaskInputDTO;
 import team.catfarm.DTO.Output.FileOutputDTO;
+import team.catfarm.DTO.Output.TaskOutputDTO;
 import team.catfarm.Models.File;
 import team.catfarm.Services.FileService;
 
@@ -31,15 +34,30 @@ public class FileController {
         return ResponseEntity.ok(fileService.getFileById(id));
     }
 
-    @GetMapping("/{location}")
+    @GetMapping("/path/{location}")
     public ResponseEntity<List<File>> getFilesByLocation(@PathVariable String location) {
         return ResponseEntity.ok(fileService.getFilesByLocation(location));
     }
 
-    @GetMapping("/{Entity}")
-    public ResponseEntity<List<File>> getFilesByEntity(@PathVariable String entity) {
-        return ResponseEntity.ok(fileService.getFilesByEntity(entity));
+    @GetMapping("/events/{event_id}")
+    public ResponseEntity<List<File>> getFilesByEventId(@PathVariable("event_id") Long eventId) {
+        return ResponseEntity.ok(fileService.getFilesByEventId(eventId));
     }
+
+    @GetMapping("/users/{user_email}")
+    public ResponseEntity<List<File>> getFilesByUserId(@PathVariable("user_email") String userEmail) {
+        return ResponseEntity.ok(fileService.getFilesByUserEmail(userEmail));
+    }
+
+    @GetMapping("/tasks/{task_id}")
+    public ResponseEntity<List<File>> getFilesByTaskId(@PathVariable("task_id") Long taskId) {
+        return ResponseEntity.ok(fileService.getFilesByTaskId(taskId));
+    }
+
+//    @GetMapping("/{Entity}")
+//    public ResponseEntity<List<File>> getFilesByEntity(@PathVariable String entity) {
+//        return ResponseEntity.ok(fileService.getFilesByEntity(entity));
+//    }
 
 //    @GetMapping("/search")
 //    public ResponseEntity<List<File>> searchFiles(@RequestParam String term, @RequestParam String currentDirectory) {
@@ -49,6 +67,11 @@ public class FileController {
 
     //putmapping: need DTO for location change
     //putmapping: need DTO for a name change
+
+    @PutMapping("/updatefiles")
+    public ResponseEntity<List<FileOutputDTO>> updateFiles(@RequestBody List<FileInputDTO> fileInputDTOList) {
+        return ResponseEntity.ok(fileService.updateFilesById(fileInputDTOList));
+    }
 
     @DeleteMapping("/delete/{id}")
     public void deleteFileById(@PathVariable long id) {

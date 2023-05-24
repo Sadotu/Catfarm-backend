@@ -91,6 +91,18 @@ public class FileService {
                 .collect(Collectors.toList());
     }
 
+    public List<File> getFilesByEventId(Long eventId) {
+        return fileRepository.findByEventId(eventId);
+    }
+
+    public List<File> getFilesByUserEmail(String userEmail) {
+        return fileRepository.findByUserEmail(userEmail);
+    }
+
+    public List<File> getFilesByTaskId(Long taskId) {
+        return fileRepository.findByTaskId(taskId);
+    }
+
 //    public List<File> searchFiles(String term, String currentDirectory) {
 //        if (term == null || term.trim().isEmpty()) {
 //            throw new IllegalArgumentException("Search term cannot be blank.");
@@ -104,11 +116,29 @@ public class FileService {
 //        return searchResults;
 //    }
 
-    public void deleteFileById(Long id) {
-        if (fileRepository.existsById(id)) {
-            fileRepository.deleteById(id);
-        } else {
-            throw new ResourceNotFoundException("File not found with id: " + id);
+    public List<FileOutputDTO> updateFilesById(List<FileInputDTO> fileInputDTOList) {
+        List<File> updatedFiles = new ArrayList<>();
+
+        for (FileInputDTO f : fileInputDTOList) {
+            Optional<File> optionalFileToUpdate = fileRepository.findById(f.getId());
+            if (optionalFileToUpdate.isPresent()) {
+                BeanUtils.copyProperties(f, optionalFileToUpdate.get());
+                updatedFiles.add(optionalFileToUpdate.get());
+            } else {
+                throw new ResourceNotFoundException("File not found with id: " + f.getId());
+            }
         }
+
+        List<FileOutputDTO> updatedFilesOutputDTO = new ArrayList<>();
+        for (File t : updatedFiles) {
+            FileOutputDTO filesOutputDTO = transferModelToOutputDTO(t);
+            updatedFilesOutputDTO.add(filesOutputDTO);
+        }
+
+        return updatedFilesOutputDTO;
+    }
+
+    public void deleteFileById(Long id) {
+        fileRepository.deleteById(id);
     }
 }

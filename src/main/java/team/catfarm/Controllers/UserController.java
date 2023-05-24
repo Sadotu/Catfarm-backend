@@ -9,6 +9,8 @@ import team.catfarm.Exceptions.UserAlreadyExistsException;
 import team.catfarm.Models.User;
 import team.catfarm.Services.UserService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -30,12 +32,16 @@ public class UserController {
     }
 
 //    @GetMapping("/{email}/public")
-//    public ResponseEntity<UserOutputDTO> getUserPublicInfoByEmail(@PathVariable String email) {
+//    public ResponseEntity<User> getUserPublicInfoByEmail(@PathVariable String email) {
 //        User user = userService.getUserByEmail(email);
-//        UserOutputDTO userOutputDTO = new UserOutputDTO();
 //        BeanUtils.copyProperties(user, userOutputDTO, "password", "newsletter");
-//        return ResponseEntity.ok(userOutputDTO);
+//        return ResponseEntity.ok(user);
 //    }
+
+    @GetMapping("/active")
+    public List<User> getActiveUsers() {
+        return userService.getActiveUsers();
+    }
 
     @PutMapping("/{email}")
     public ResponseEntity<UserOutputDTO> updateUser(@PathVariable String email, @RequestBody UserInputDTO userToUpdateInputDTO) {

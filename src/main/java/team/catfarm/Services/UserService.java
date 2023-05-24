@@ -9,6 +9,8 @@ import team.catfarm.Exceptions.UserAlreadyExistsException;
 import team.catfarm.Models.User;
 import team.catfarm.Repositories.UserRepository;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -38,6 +40,10 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));
+    }
+
+    public List<User> getActiveUsers() {
+        return userRepository.findByActive(true);
     }
 
     public UserOutputDTO updateUser(String email, UserInputDTO userToUpdateInputDTO) {

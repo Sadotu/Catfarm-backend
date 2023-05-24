@@ -29,4 +29,10 @@ public class File {
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;
+    @ManyToOne
+    @JoinColumn(name = "task_id")
+    private Task task;
+    @ManyToOne
+    @JoinColumn(name = "user_email")
+    private User user;
 }
