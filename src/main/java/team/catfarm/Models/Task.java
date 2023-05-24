@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,4 +31,7 @@ public class Task {
     @JoinColumn(name = "event_id")
     @JsonIgnore
     private Event event;
+
+    @ManyToMany(mappedBy = "tasks")
+    private List<User> users;
 }

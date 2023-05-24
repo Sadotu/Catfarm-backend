@@ -21,7 +21,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<UserOutputDTO> createUser(@RequestBody UserInputDTO userInputDTO) throws UserAlreadyExistsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userInputDTO));
     }
@@ -46,6 +46,11 @@ public class UserController {
     @PutMapping("/{email}")
     public ResponseEntity<UserOutputDTO> updateUser(@PathVariable String email, @RequestBody UserInputDTO userToUpdateInputDTO) {
         return ResponseEntity.ok(userService.updateUser(email, userToUpdateInputDTO));
+    }
+
+    @PutMapping("/{email}/task/{task_id}")
+    public void assignTaskToUser(@PathVariable String email, @PathVariable Long task_id) {
+        userService.assignTaskToUser(email, task_id);
     }
 
     @DeleteMapping("/{email}")
