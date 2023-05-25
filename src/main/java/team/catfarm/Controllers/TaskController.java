@@ -2,21 +2,15 @@ package team.catfarm.Controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.TaskInputDTO;
-import team.catfarm.DTO.Output.EventOutputDTO;
 import team.catfarm.DTO.Output.TaskOutputDTO;
-import team.catfarm.Exceptions.ResourceNotFoundException;
-import team.catfarm.Models.Event;
-import team.catfarm.Models.Task;
 import team.catfarm.Services.TaskService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/tasks")
@@ -32,13 +26,12 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Task> getTaskById(@PathVariable Long id) throws ResourceNotFoundException {
-        Task task = taskService.getTaskById(id);
-        return new ResponseEntity<>(task, HttpStatus.OK);
+    public ResponseEntity<TaskOutputDTO> getTaskById(@PathVariable Long id) {
+        return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
     @GetMapping("/{filter}")
-    public ResponseEntity<List<Task>> getTasksByFilter(@PathVariable String filter) {
+    public ResponseEntity<List<TaskOutputDTO>> getTasksByFilter(@PathVariable String filter) {
         return ResponseEntity.ok(taskService.getTasksByFilter(filter));
     }
 
@@ -55,7 +48,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}/event/{event_id}")
-    public ResponseEntity<TaskOutputDTO> assignEventToTask(@PathVariable Long id, @PathVariable Long event_id) {
+    public ResponseEntity<Long> assignEventToTask(@PathVariable Long id, @PathVariable Long event_id) {
         return ResponseEntity.ok(taskService.assignEventToTask(id, event_id));
     }
 

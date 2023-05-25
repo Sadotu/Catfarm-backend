@@ -36,7 +36,6 @@ public class Event {
 //    private int repetitionEndOccurrences;
 
     @OneToMany(mappedBy = "event")
-    @JsonIgnore
     private List<Task> tasks;
 
     @OneToMany(mappedBy = "event")

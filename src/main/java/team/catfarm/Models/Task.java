@@ -29,9 +29,11 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "event_id")
-    @JsonIgnore
     private Event event;
 
     @ManyToMany(mappedBy = "tasks")
     private List<User> users;
+
+    @OneToMany(mappedBy = "task")
+    private List<File> files;
 }

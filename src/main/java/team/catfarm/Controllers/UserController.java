@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
-import team.catfarm.Models.User;
 import team.catfarm.Services.UserService;
 
 import java.util.List;
@@ -27,19 +26,12 @@ public class UserController {
     }
 
     @GetMapping("/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+    public ResponseEntity<UserOutputDTO> getUserByEmail(@PathVariable String email) {
         return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
-//    @GetMapping("/{email}/public")
-//    public ResponseEntity<User> getUserPublicInfoByEmail(@PathVariable String email) {
-//        User user = userService.getUserByEmail(email);
-//        BeanUtils.copyProperties(user, userOutputDTO, "password", "newsletter");
-//        return ResponseEntity.ok(user);
-//    }
-
     @GetMapping("/active")
-    public List<User> getActiveUsers() {
+    public List<UserOutputDTO> getActiveUsers() {
         return userService.getActiveUsers();
     }
 
@@ -49,8 +41,8 @@ public class UserController {
     }
 
     @PutMapping("/{email}/task/{task_id}")
-    public void assignTaskToUser(@PathVariable String email, @PathVariable Long task_id) {
-        userService.assignTaskToUser(email, task_id);
+    public ResponseEntity<Long> assignTaskToUser(@PathVariable String email, @PathVariable Long task_id) {
+        return ResponseEntity.ok(userService.assignTaskToUser(email, task_id));
     }
 
     @DeleteMapping("/{email}")

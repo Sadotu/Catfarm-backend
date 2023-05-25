@@ -26,6 +26,7 @@ public class File {
     private double size;
     private String location;
     private Date uploadDate;
+
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;

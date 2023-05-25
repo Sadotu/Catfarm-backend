@@ -1,19 +1,16 @@
 package team.catfarm.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.EventInputDTO;
 import team.catfarm.DTO.Output.EventOutputDTO;
 import team.catfarm.Exceptions.ResourceNotFoundException;
-import team.catfarm.Models.Event;
 import team.catfarm.Services.EventService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -30,13 +27,12 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Event> getEventById(@PathVariable Long id) throws ResourceNotFoundException {
-        Event event = eventService.getEventById(id);
-        return new ResponseEntity<>(event, HttpStatus.OK);
+    public ResponseEntity<EventOutputDTO> getEventById(@PathVariable Long id) throws ResourceNotFoundException {
+        return ResponseEntity.ok(eventService.getEventById(id));
     }
 
     @GetMapping("/{start}/{end}")
-    public ResponseEntity<List<Event>> getEventsByTimePeriod(@PathVariable LocalDateTime start, @PathVariable LocalDateTime end) {
+    public ResponseEntity<List<EventOutputDTO>> getEventsByTimePeriod(@PathVariable LocalDateTime start, @PathVariable LocalDateTime end) {
         return ResponseEntity.ok(eventService.getEventsByTimePeriod(start, end));
     }
 

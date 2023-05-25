@@ -11,8 +11,8 @@ import team.catfarm.Models.User;
 import team.catfarm.Repositories.TaskRepository;
 import team.catfarm.Repositories.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -43,12 +43,20 @@ public class UserService {
         return transferModelToOutputDTO(userRepository.save(transferInputDTOToModel(userInputDTO)));
     }
 
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));
+    public UserOutputDTO getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));;
+
+        return transferModelToOutputDTO(user);
     }
 
-    public List<User> getActiveUsers() {
-        return userRepository.findByActive(true);
+    public List<UserOutputDTO> getActiveUsers() {
+        List<User> activeUserList = userRepository.findByActive(true);
+        List<UserOutputDTO> activeUserOutputDTOList = new ArrayList<>();
+
+        for (User u : activeUserList)  { activeUserOutputDTOList.add(transferModelToOutputDTO(u)); }
+
+        return activeUserOutputDTOList;
     }
 
     public UserOutputDTO updateUser(String email, UserInputDTO userToUpdateInputDTO) {
@@ -60,7 +68,7 @@ public class UserService {
         return transferModelToOutputDTO(userRepository.save(existingUser));
     }
 
-    public void assignTaskToUser(String email, Long taskId) {
+    public Long assignTaskToUser(String email, Long taskId) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " does not exist"));
 
@@ -69,6 +77,7 @@ public class UserService {
 
         user.getTasks().add(task);
         userRepository.save(user);
+        return taskId;
     }
 
     public void deleteUser(String email) {

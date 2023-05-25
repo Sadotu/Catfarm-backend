@@ -53,12 +53,14 @@ public class TaskService {
     }
 
 
-    public Task getTaskById(Long id) {
-        return taskRepository.findById(id)
+    public TaskOutputDTO getTaskById(Long id) {
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id " + id));
+
+        return transferModelToOutputDTO(task);
     }
 
-    public List<Task> getTasksByFilter(String filter) {
+    public List<TaskOutputDTO> getTasksByFilter(String filter) {
         return null;
     }
 
@@ -71,7 +73,7 @@ public class TaskService {
         return transferModelToOutputDTO(taskRepository.save(existingTask));
     }
 
-    public TaskOutputDTO assignEventToTask(Long id, Long event_id) throws ResourceNotFoundException {
+    public Long assignEventToTask(Long id, Long event_id) throws ResourceNotFoundException {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
 
@@ -80,7 +82,7 @@ public class TaskService {
 
         task.setEvent(event);
         taskRepository.save(task);
-        return transferModelToOutputDTO(task);
+        return task.getId();
     }
 
     public void deleteTaskById(Long id) {

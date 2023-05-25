@@ -1,7 +1,6 @@
 package team.catfarm.Services;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.catfarm.DTO.Input.FileInputDTO;
 import team.catfarm.DTO.Output.FileOutputDTO;
@@ -9,8 +8,10 @@ import team.catfarm.Exceptions.FileStorageException;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
+import team.catfarm.Models.Task;
 import team.catfarm.Repositories.EventRepository;
 import team.catfarm.Repositories.FileRepository;
+import team.catfarm.Repositories.TaskRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,12 @@ public class FileService {
 
     private final FileRepository fileRepository;
     private final EventRepository eventRepository;
+    private final TaskRepository taskRepository;
 
-    public FileService(FileRepository fileRepository, EventRepository eventRepository) {
+    public FileService(FileRepository fileRepository, EventRepository eventRepository, TaskRepository taskRepository) {
         this.fileRepository = fileRepository;
         this.eventRepository = eventRepository;
+        this.taskRepository = taskRepository;
     }
 
     public FileOutputDTO transferModelToOutputDTO(File file) {
@@ -80,27 +83,61 @@ public class FileService {
         return createdFilesOutputDTO;
     }
 
-    public File getFileById(Long id) {
-        return fileRepository.findById(id)
+    public FileOutputDTO getFileById(Long id) {
+        File file = fileRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("File not found with id: " + id));
+
+        return transferModelToOutputDTO(file);
     }
 
-    public List<File> getFilesByLocation(String location) {
-        return fileRepository.findAll().stream()
+    public List<FileOutputDTO> getFilesByLocation(String location) {
+        List<File> fileList = fileRepository.findAll().stream()
                 .filter(file -> file.getLocation().equalsIgnoreCase(location))
                 .collect(Collectors.toList());
+        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
+
+        for (File f : fileList) {
+            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
+            fileOutputDTOList.add(fileOutputDTO);
+        }
+
+        return fileOutputDTOList;
     }
 
-    public List<File> getFilesByEventId(Long eventId) {
-        return fileRepository.findByEventId(eventId);
+    public List<FileOutputDTO> getFilesByEventId(Long eventId) {
+        List<File> fileList = fileRepository.findByEventId(eventId);
+        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
+
+        for (File f : fileList) {
+            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
+            fileOutputDTOList.add(fileOutputDTO);
+        }
+
+        return fileOutputDTOList;
     }
 
-    public List<File> getFilesByUserEmail(String userEmail) {
-        return fileRepository.findByUserEmail(userEmail);
+    public List<FileOutputDTO> getFilesByUserEmail(String userEmail) {
+        List<File> fileList = fileRepository.findByUserEmail(userEmail);
+        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
+
+        for (File f : fileList) {
+            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
+            fileOutputDTOList.add(fileOutputDTO);
+        }
+
+        return fileOutputDTOList;
     }
 
-    public List<File> getFilesByTaskId(Long taskId) {
-        return fileRepository.findByTaskId(taskId);
+    public List<FileOutputDTO> getFilesByTaskId(Long taskId) {
+        List<File> fileList = fileRepository.findByTaskId(taskId);
+        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
+
+        for (File f : fileList) {
+            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
+            fileOutputDTOList.add(fileOutputDTO);
+        }
+
+        return fileOutputDTOList;
     }
 
 //    public List<File> searchFiles(String term, String currentDirectory) {
@@ -136,6 +173,17 @@ public class FileService {
         }
 
         return updatedFilesOutputDTO;
+    }
+
+    public void assignTaskToFile(Long id, Long task_id) {
+        File file = fileRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("File with id " + id + " does not exist"));
+
+        Task task = taskRepository.findById(task_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + task_id + " does not exist"));
+
+        file.setTask(task);
+        fileRepository.save(file);
     }
 
     public void deleteFileById(Long id) {
