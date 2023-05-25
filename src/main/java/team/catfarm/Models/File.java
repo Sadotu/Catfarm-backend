@@ -29,7 +29,9 @@ public class File {
 
     @ManyToOne
     @JoinColumn(name = "event_id")
+    @JsonIgnore
     private Event event;
+
     @ManyToOne
     @JoinColumn(name = "task_id")
     private Task task;

@@ -29,6 +29,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "event_id")
+    @JsonIgnore
     private Event event;
 
     @ManyToMany(mappedBy = "tasks")

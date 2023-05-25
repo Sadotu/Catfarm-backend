@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -35,10 +34,9 @@ public class Event {
 //    private Date repetitionEndDate;
 //    private int repetitionEndOccurrences;
 
-    @OneToMany(mappedBy = "event")
-    private List<Task> tasks;
-
-    @OneToMany(mappedBy = "event")
-    @JsonIgnore
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<File> files;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<Task> tasks;
 }
