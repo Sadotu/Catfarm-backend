@@ -1,5 +1,6 @@
 package team.catfarm.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,6 @@ public class User {
     @Column(nullable = false, length = 60, unique = true)
     @Email
     private String email;
-
     private String fullName;
     private String pronouns;
     private int age;
@@ -30,6 +30,14 @@ public class User {
     private boolean newsletter;
     private String role;
     private boolean active;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "event_user",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<Event> rsvp;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(

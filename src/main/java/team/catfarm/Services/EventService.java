@@ -9,6 +9,7 @@ import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
 import team.catfarm.Models.Task;
+import team.catfarm.Models.User;
 import team.catfarm.Repositories.EventRepository;
 import team.catfarm.Repositories.FileRepository;
 import team.catfarm.Repositories.TaskRepository;
@@ -82,18 +83,13 @@ public class EventService {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + id));
 
-        System.out.println(event.getId());
-
         List<File> fileList = new ArrayList<>();
         for (Long f_id : file_id_lst) {
-            System.out.println(f_id);
             File file = fileRepository.findById(f_id)
                     .orElseThrow(() -> new ResourceNotFoundException("File not found with id: " + f_id));
 
             file.setEvent(event);
-            System.out.println(file.getEvent().getId());
             fileRepository.save(file);
-            System.out.println(file.getEvent().getId());
             fileList.add(file);
         }
 
@@ -102,24 +98,19 @@ public class EventService {
         return transferModelToOutputDTO(event);
     }
 
-    public EventOutputDTO assignTasksToEvent(Long id, List<Long> task_id_lst) {
+    @Transactional
+    public EventOutputDTO assignTaskToEvent(Long id, Long task_id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + id));
 
-        System.out.println(event.getId());
+        Task task = taskRepository.findById(task_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + task_id));
+
+        task.setEvent(event);
+        taskRepository.save(task);
 
         List<Task> taskList = new ArrayList<>();
-        for (Long f_id : task_id_lst) {
-            System.out.println(f_id);
-            Task task = taskRepository.findById(f_id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + f_id));
-
-            task.setEvent(event);
-            System.out.println(task.getEvent().getId());
-            taskRepository.save(task);
-            System.out.println(task.getEvent().getId());
-            taskList.add(task);
-        }
+        taskList.add(task);
 
         event.setTasks(taskList);
         eventRepository.save(event);

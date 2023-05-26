@@ -1,13 +1,16 @@
 package team.catfarm.Services;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
+import team.catfarm.Models.Event;
 import team.catfarm.Models.Task;
 import team.catfarm.Models.User;
+import team.catfarm.Repositories.EventRepository;
 import team.catfarm.Repositories.TaskRepository;
 import team.catfarm.Repositories.UserRepository;
 
@@ -18,10 +21,12 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
+    private final EventRepository eventRepository;
 
-    public UserService(UserRepository userRepository, TaskRepository taskRepository) {
+    public UserService(UserRepository userRepository, TaskRepository taskRepository, EventRepository eventRepository) {
         this.userRepository = userRepository;
         this.taskRepository = taskRepository;
+        this.eventRepository = eventRepository;
     }
 
     public UserOutputDTO transferModelToOutputDTO(User user) {
@@ -68,6 +73,7 @@ public class UserService {
         return transferModelToOutputDTO(userRepository.save(existingUser));
     }
 
+    @Transactional
     public Long assignTaskToUser(String email, Long taskId) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " does not exist"));
@@ -78,6 +84,19 @@ public class UserService {
         user.getTasks().add(task);
         userRepository.save(user);
         return taskId;
+    }
+
+    @Transactional
+    public UserOutputDTO assignEventToUser(String email, Long event_id) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " does not exist"));
+
+        Event event = eventRepository.findById(event_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Event with id " + event_id + " does not exist"));
+
+        user.getRsvp().add(event);
+        userRepository.save(user);
+        return transferModelToOutputDTO(user);
     }
 
     public void deleteUser(String email) {

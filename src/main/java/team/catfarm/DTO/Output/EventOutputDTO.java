@@ -1,12 +1,14 @@
 package team.catfarm.DTO.Output;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import team.catfarm.Models.File;
 import team.catfarm.Models.Task;
+import team.catfarm.Models.User;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -20,4 +22,6 @@ public class EventOutputDTO {
     private String color;
     private List<File> files;
     private List<Task> tasks;
+    @JsonIgnoreProperties("rsvp")
+    private List<User> rsvp;
 }

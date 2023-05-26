@@ -1,7 +1,10 @@
 package team.catfarm.DTO.Input;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import team.catfarm.Models.Event;
 import team.catfarm.Models.Task;
 
 import java.util.List;
@@ -9,16 +12,18 @@ import java.util.List;
 @Getter
 @Setter
 public class UserInputDTO {
-    public String email;
-    public String fullName;
-    public String pronouns;
-    public int age;
-    public String phoneNumber;
-    public String bio;
-    public String password;
-    public boolean newsletter;
-    public String role;
-    public boolean active;
+    private String email;
+    private String fullName;
+    private String pronouns;
+    private int age;
+    private String phoneNumber;
+    private String bio;
+    private String password;
+    private boolean newsletter;
+    private String role;
+    private boolean active;
 
-    public List<Task> tasks;
+    private List<Task> tasks;
+    @JsonIgnoreProperties("rsvp")
+    private List<Event> rsvp;
 }

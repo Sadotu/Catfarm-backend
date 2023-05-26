@@ -20,7 +20,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/add")
+    @PostMapping("/create")
     public ResponseEntity<UserOutputDTO> createUser(@RequestBody UserInputDTO userInputDTO) throws UserAlreadyExistsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userInputDTO));
     }
@@ -35,7 +35,7 @@ public class UserController {
         return userService.getActiveUsers();
     }
 
-    @PutMapping("/{email}")
+    @PutMapping("/update/{email}")
     public ResponseEntity<UserOutputDTO> updateUser(@PathVariable String email, @RequestBody UserInputDTO userToUpdateInputDTO) {
         return ResponseEntity.ok(userService.updateUser(email, userToUpdateInputDTO));
     }
@@ -43,6 +43,11 @@ public class UserController {
     @PutMapping("/{email}/task/{task_id}")
     public ResponseEntity<Long> assignTaskToUser(@PathVariable String email, @PathVariable Long task_id) {
         return ResponseEntity.ok(userService.assignTaskToUser(email, task_id));
+    }
+
+    @PutMapping("/{email}/rsvp/{event_id}")
+    public ResponseEntity<UserOutputDTO> assignEventToUser(@PathVariable String email, @PathVariable Long event_id) {
+        return ResponseEntity.ok(userService.assignEventToUser(email, event_id));
     }
 
     @DeleteMapping("/{email}")
