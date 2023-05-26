@@ -99,6 +99,22 @@ public class UserService {
         return transferModelToOutputDTO(user);
     }
 
+    @Transactional
+    public UserOutputDTO userCreatesEvent(String email, Long event_id) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " does not exist"));
+
+        Event event = eventRepository.findById(event_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Event with id " + event_id + " does not exist"));
+
+        user.getCreatedEvents().add(event);
+        userRepository.save(user);
+
+        event.setCreatedBy(user);
+        eventRepository.save(event);
+        return transferModelToOutputDTO(user);
+    }
+
     public void deleteUser(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));

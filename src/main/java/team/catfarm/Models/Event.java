@@ -41,7 +41,11 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Task> tasks;
 
-    @ManyToMany(mappedBy = "rsvp")
+    @ManyToMany(mappedBy = "rsvp", cascade = CascadeType.ALL)
     private List<User> rsvp;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User createdBy;
 }

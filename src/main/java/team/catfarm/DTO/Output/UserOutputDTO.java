@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team.catfarm.Models.Event;
 import team.catfarm.Models.Task;
+import team.catfarm.Models.User;
 
 import java.util.List;
 
@@ -14,7 +15,6 @@ import java.util.List;
 @Setter
 public class UserOutputDTO {
     private String email;
-    private String name;
     private String fullName;
     private String pronouns;
     private int age;
@@ -25,4 +25,5 @@ public class UserOutputDTO {
     private List<Task> tasks;
     @JsonIgnoreProperties("rsvp")
     private List<Event> rsvp;
+    private List<Event> createdEvents;
 }

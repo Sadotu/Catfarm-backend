@@ -39,6 +39,9 @@ public class User {
     )
     private List<Event> rsvp;
 
+    @OneToMany(mappedBy = "createdBy")
+    private List<Event> createdEvents;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_task",

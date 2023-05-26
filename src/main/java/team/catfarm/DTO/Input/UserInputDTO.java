@@ -26,4 +26,5 @@ public class UserInputDTO {
     private List<Task> tasks;
     @JsonIgnoreProperties("rsvp")
     private List<Event> rsvp;
+    private List<Event> createdEvents;
 }

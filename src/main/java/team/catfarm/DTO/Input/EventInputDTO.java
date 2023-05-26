@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
 import team.catfarm.Models.Task;
 import team.catfarm.Models.User;
@@ -24,4 +25,5 @@ public class EventInputDTO {
     private List<Task> tasks;
     @JsonIgnoreProperties("rsvp")
     private List<User> rsvp;
+    private User createdBy;
 }

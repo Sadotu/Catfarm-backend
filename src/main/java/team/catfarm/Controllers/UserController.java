@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.UserInputDTO;
+import team.catfarm.DTO.Output.EventOutputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
 import team.catfarm.Services.UserService;
@@ -48,6 +49,11 @@ public class UserController {
     @PutMapping("/{email}/rsvp/{event_id}")
     public ResponseEntity<UserOutputDTO> assignEventToUser(@PathVariable String email, @PathVariable Long event_id) {
         return ResponseEntity.ok(userService.assignEventToUser(email, event_id));
+    }
+
+    @PutMapping("/{email}/usercreatesevent/{event_id}")
+    public ResponseEntity<UserOutputDTO> userCreatesEvent(@PathVariable String email, @PathVariable Long event_id) {
+        return ResponseEntity.ok(userService.userCreatesEvent(email, event_id));
     }
 
     @DeleteMapping("/{email}")
