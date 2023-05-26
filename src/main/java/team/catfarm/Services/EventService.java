@@ -117,21 +117,6 @@ public class EventService {
         return transferModelToOutputDTO(event);
     }
 
-    public EventOutputDTO assignUserToEvent(Long id, String email_id) {
-        Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + id));
-
-        User user = userRepository.findByEmail(email_id)
-                .orElseThrow(() -> new ResourceNotFoundException("Email not found with id: " + email_id));
-
-        user.getCreatedEvents().add(event);
-        userRepository.save(user);
-
-        event.setCreatedBy(user);
-        eventRepository.save(event);
-        return transferModelToOutputDTO(event);
-    }
-
     public void deleteEvent(Long id) {
         Event eventToDelete = eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id " + id));

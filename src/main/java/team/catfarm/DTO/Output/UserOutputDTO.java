@@ -26,4 +26,5 @@ public class UserOutputDTO {
     @JsonIgnoreProperties("rsvp")
     private List<Event> rsvp;
     private List<Event> createdEvents;
+    private List<Task> createdTasks;
 }

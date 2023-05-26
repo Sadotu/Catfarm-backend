@@ -37,4 +37,9 @@ public class Task {
 
     @OneToMany(mappedBy = "task")
     private List<File> files;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User createdBy;
 }

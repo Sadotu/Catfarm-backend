@@ -34,6 +34,7 @@ public class File {
 
     @ManyToOne
     @JoinColumn(name = "task_id")
+    @JsonIgnore
     private Task task;
     @ManyToOne
     @JoinColumn(name = "user_email")

@@ -62,8 +62,8 @@ public class FileController {
     }
 
     @PutMapping("/{id}/task/{task_id}")
-    public void assignTaskToFile(@PathVariable Long id, @PathVariable Long task_id) {
-        fileService.assignTaskToFile(id, task_id);
+    public ResponseEntity<FileOutputDTO> assignTaskToFile(@PathVariable Long id, @PathVariable Long task_id) {
+        return ResponseEntity.ok(fileService.assignTaskToFile(id, task_id));
     }
 
     @DeleteMapping("/delete/{id}")

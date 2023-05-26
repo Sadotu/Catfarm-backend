@@ -42,6 +42,9 @@ public class User {
     @OneToMany(mappedBy = "createdBy")
     private List<Event> createdEvents;
 
+    @OneToMany(mappedBy = "createdBy")
+    private List<Task> createdTasks;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_task",

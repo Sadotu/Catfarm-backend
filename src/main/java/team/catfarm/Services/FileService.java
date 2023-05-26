@@ -175,7 +175,7 @@ public class FileService {
         return updatedFilesOutputDTO;
     }
 
-    public void assignTaskToFile(Long id, Long task_id) {
+    public FileOutputDTO assignTaskToFile(Long id, Long task_id) {
         File file = fileRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("File with id " + id + " does not exist"));
 
@@ -184,6 +184,10 @@ public class FileService {
 
         file.setTask(task);
         fileRepository.save(file);
+
+        task.getFiles().add(file);
+        taskRepository.save(task);
+        return transferModelToOutputDTO(file);
     }
 
     public void deleteFileById(Long id) {

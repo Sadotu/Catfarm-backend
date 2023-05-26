@@ -60,9 +60,9 @@ public class TaskService {
         return transferModelToOutputDTO(task);
     }
 
-    public List<TaskOutputDTO> getTasksByFilter(String filter) {
-        return null;
-    }
+//    public List<TaskOutputDTO> getTasksByFilter(String filter) {
+//        return null;
+//    }
 
     public TaskOutputDTO updateTaskById(Long id, TaskInputDTO taskToUpdateInputDTO) {
         Task existingTask = taskRepository.findById(id)

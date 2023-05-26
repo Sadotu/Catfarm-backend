@@ -7,6 +7,7 @@ import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.EventOutputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
+import team.catfarm.Models.User;
 import team.catfarm.Services.UserService;
 
 import java.util.List;
@@ -54,6 +55,11 @@ public class UserController {
     @PutMapping("/{email}/usercreatesevent/{event_id}")
     public ResponseEntity<UserOutputDTO> userCreatesEvent(@PathVariable String email, @PathVariable Long event_id) {
         return ResponseEntity.ok(userService.userCreatesEvent(email, event_id));
+    }
+
+    @PutMapping("/{email}/usercreatestask/{task_id}")
+    public ResponseEntity<UserOutputDTO> userCreatesTask(@PathVariable String email, @PathVariable Long task_id) {
+        return ResponseEntity.ok(userService.userCreatesTask(email, task_id));
     }
 
     @DeleteMapping("/{email}")

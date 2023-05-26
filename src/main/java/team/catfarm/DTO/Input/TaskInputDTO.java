@@ -3,8 +3,11 @@ package team.catfarm.DTO.Input;
 import lombok.Getter;
 import lombok.Setter;
 import team.catfarm.Models.Event;
+import team.catfarm.Models.File;
+import team.catfarm.Models.User;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,4 +18,6 @@ public class TaskInputDTO {
     private boolean accepted;
     private boolean completed;
     private Long event_id;
+    private User createdBy;
+    private List<File> files;
 }

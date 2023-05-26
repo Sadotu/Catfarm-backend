@@ -115,6 +115,22 @@ public class UserService {
         return transferModelToOutputDTO(user);
     }
 
+    @Transactional
+    public UserOutputDTO userCreatesTask(String email, Long task_id) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " does not exist"));
+
+        Task task = taskRepository.findById(task_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + task_id + " does not exist"));
+
+        user.getCreatedTasks().add(task);
+        userRepository.save(user);
+
+        task.setCreatedBy(user);
+        taskRepository.save(task);
+        return transferModelToOutputDTO(user);
+    }
+
     public void deleteUser(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));

@@ -2,6 +2,7 @@ package team.catfarm.DTO.Input;
 
 import lombok.Getter;
 import lombok.Setter;
+import team.catfarm.Models.Task;
 
 import java.util.Date;
 
@@ -16,4 +17,5 @@ public class FileInputDTO {
     private String location;
     private Date uploadDate;
     private Long event_id;
+    private Task task;
 }
