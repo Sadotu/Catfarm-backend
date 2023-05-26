@@ -22,10 +22,8 @@ public class UserInputDTO {
     private boolean newsletter;
     private String role;
     private boolean active;
-
-    private List<Task> tasks;
-    @JsonIgnoreProperties("rsvp")
     private List<Event> rsvp;
+    private List<Task> tasks;
     private List<Event> createdEvents;
     private List<Task> createdTasks;
 }

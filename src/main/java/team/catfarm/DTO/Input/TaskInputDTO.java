@@ -1,8 +1,8 @@
 package team.catfarm.DTO.Input;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
-import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
 import team.catfarm.Models.User;
 
@@ -18,6 +18,7 @@ public class TaskInputDTO {
     private boolean accepted;
     private boolean completed;
     private Long event_id;
-    private User createdBy;
+    private List<User> assignedTo;
     private List<File> files;
+    private User createdBy;
 }

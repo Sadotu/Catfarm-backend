@@ -32,10 +32,10 @@ public class Task {
     @JsonIgnore
     private Event event;
 
-    @ManyToMany(mappedBy = "tasks")
-    private List<User> users;
+    @ManyToMany(mappedBy = "tasks", cascade = CascadeType.ALL)
+    private List<User> assignedTo;
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<File> files;
 
     @ManyToOne

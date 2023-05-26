@@ -1,5 +1,6 @@
 package team.catfarm.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -37,19 +38,21 @@ public class User {
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+    @JsonIgnore
     private List<Event> rsvp;
-
-    @OneToMany(mappedBy = "createdBy")
-    private List<Event> createdEvents;
-
-    @OneToMany(mappedBy = "createdBy")
-    private List<Task> createdTasks;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "user_task",
-            joinColumns = @JoinColumn(name = "user_email"),
-            inverseJoinColumns = @JoinColumn(name = "task_id")
+            name = "task_user",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_email")
     )
+    @JsonIgnore
     private List<Task> tasks;
+
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
+    private List<Event> createdEvents;
+
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
+    private List<Task> createdTasks;
 }

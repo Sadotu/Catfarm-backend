@@ -22,7 +22,6 @@ public class EventOutputDTO {
     private String color;
     private List<File> files;
     private List<Task> tasks;
-    @JsonIgnoreProperties("rsvp")
     private List<User> rsvp;
     private User createdBy;
 }

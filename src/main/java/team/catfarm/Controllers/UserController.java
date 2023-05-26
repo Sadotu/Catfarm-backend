@@ -42,14 +42,14 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUser(email, userToUpdateInputDTO));
     }
 
-    @PutMapping("/{email}/task/{task_id}")
-    public ResponseEntity<Long> assignTaskToUser(@PathVariable String email, @PathVariable Long task_id) {
-        return ResponseEntity.ok(userService.assignTaskToUser(email, task_id));
-    }
-
     @PutMapping("/{email}/rsvp/{event_id}")
     public ResponseEntity<UserOutputDTO> assignEventToUser(@PathVariable String email, @PathVariable Long event_id) {
         return ResponseEntity.ok(userService.assignEventToUser(email, event_id));
+    }
+
+    @PutMapping("/{email}/task/{task_id}")
+    public ResponseEntity<UserOutputDTO> assignTaskToUser(@PathVariable String email, @PathVariable Long task_id) {
+        return ResponseEntity.ok(userService.assignTaskToUser(email, task_id));
     }
 
     @PutMapping("/{email}/usercreatesevent/{event_id}")

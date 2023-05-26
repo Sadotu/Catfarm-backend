@@ -74,19 +74,6 @@ public class UserService {
     }
 
     @Transactional
-    public Long assignTaskToUser(String email, Long taskId) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " does not exist"));
-
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + taskId + " does not exist"));
-
-        user.getTasks().add(task);
-        userRepository.save(user);
-        return taskId;
-    }
-
-    @Transactional
     public UserOutputDTO assignEventToUser(String email, Long event_id) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " does not exist"));
@@ -96,6 +83,25 @@ public class UserService {
 
         user.getRsvp().add(event);
         userRepository.save(user);
+
+        event.getRsvp().add(user);
+        eventRepository.save(event);
+        return transferModelToOutputDTO(user);
+    }
+
+    @Transactional
+    public UserOutputDTO assignTaskToUser(String email, Long taskId) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " does not exist"));
+
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + taskId + " does not exist"));
+
+        user.getTasks().add(task);
+        userRepository.save(user);
+
+        task.getAssignedTo().add(user);
+        taskRepository.save(task);
         return transferModelToOutputDTO(user);
     }
 
