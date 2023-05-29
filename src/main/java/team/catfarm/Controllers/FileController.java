@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.FileInputDTO;
 import team.catfarm.DTO.Output.FileOutputDTO;
+import team.catfarm.Models.File;
 import team.catfarm.Services.FileService;
 
 import java.util.List;
@@ -35,20 +36,20 @@ public class FileController {
         return ResponseEntity.ok(fileService.getFilesByLocation(location));
     }
 
-    @GetMapping("/events/{event_id}")
-    public ResponseEntity<List<FileOutputDTO>> getFilesByEventId(@PathVariable("event_id") Long eventId) {
-        return ResponseEntity.ok(fileService.getFilesByEventId(eventId));
-    }
-
-    @GetMapping("/users/{user_email}")
-    public ResponseEntity<List<FileOutputDTO>> getFilesByUserId(@PathVariable("user_email") String userEmail) {
-        return ResponseEntity.ok(fileService.getFilesByUserEmail(userEmail));
-    }
-
-    @GetMapping("/tasks/{task_id}")
-    public ResponseEntity<List<FileOutputDTO>> getFilesByTaskId(@PathVariable("task_id") Long taskId) {
-        return ResponseEntity.ok(fileService.getFilesByTaskId(taskId));
-    }
+//    @GetMapping("/events/{event_id}")
+//    public ResponseEntity<List<FileOutputDTO>> getFilesByEventId(@PathVariable("event_id") Long eventId) {
+//        return ResponseEntity.ok(fileService.getFilesByEventId(eventId));
+//    }
+//
+//    @GetMapping("/users/{user_email}")
+//    public ResponseEntity<List<FileOutputDTO>> getFilesByUserEmail(@PathVariable String user_email) {
+//        return ResponseEntity.ok(fileService.getFilesByUserEmail(user_email));
+//    }
+//
+//    @GetMapping("/tasks/{task_id}")
+//    public ResponseEntity<List<FileOutputDTO>> getFilesByTaskId(@PathVariable("task_id") Long taskId) {
+//        return ResponseEntity.ok(fileService.getFilesByTaskId(taskId));
+//    }
 
 //    @GetMapping("/search")
 //    public ResponseEntity<List<File>> searchFiles(@RequestParam String term, @RequestParam String currentDirectory) {
@@ -56,14 +57,14 @@ public class FileController {
 //        return ResponseEntity.ok(searchResults);
 //    }
 
-    @PutMapping("/updatefiles")
+    @PutMapping("/update-files")
     public ResponseEntity<List<FileOutputDTO>> updateFiles(@RequestBody List<FileInputDTO> fileInputDTOList) {
         return ResponseEntity.ok(fileService.updateFilesById(fileInputDTOList));
     }
 
-    @PutMapping("/{id}/task/{task_id}")
-    public ResponseEntity<FileOutputDTO> assignTaskToFile(@PathVariable Long id, @PathVariable Long task_id) {
-        return ResponseEntity.ok(fileService.assignTaskToFile(id, task_id));
+    @PutMapping("/{file_id}/profile_picture/{user_id}")
+    public ResponseEntity<FileOutputDTO> assignUserToProfilePicture(@PathVariable Long file_id, @PathVariable String user_id) {
+        return ResponseEntity.ok(fileService.assignUserToProfilePicture(file_id, user_id));
     }
 
     @DeleteMapping("/delete/{id}")

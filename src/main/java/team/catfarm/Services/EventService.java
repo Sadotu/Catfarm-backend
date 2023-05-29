@@ -9,7 +9,6 @@ import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
 import team.catfarm.Models.Task;
-import team.catfarm.Models.User;
 import team.catfarm.Repositories.EventRepository;
 import team.catfarm.Repositories.FileRepository;
 import team.catfarm.Repositories.TaskRepository;
@@ -25,13 +24,11 @@ public class EventService {
     private final EventRepository eventRepository;
     private final FileRepository fileRepository;
     private final TaskRepository taskRepository;
-    private final UserRepository userRepository;
 
-    public EventService(EventRepository eventRepository, FileRepository fileRepository, TaskRepository taskRepository, UserRepository userRepository) {
+    public EventService(EventRepository eventRepository, FileRepository fileRepository, TaskRepository taskRepository) {
         this.eventRepository = eventRepository;
         this.fileRepository = fileRepository;
         this.taskRepository = taskRepository;
-        this.userRepository = userRepository;
     }
 
     public EventOutputDTO transferModelToOutputDTO(Event event) {

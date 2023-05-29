@@ -1,7 +1,6 @@
 package team.catfarm.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -55,4 +54,12 @@ public class User {
 
     @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
     private List<Task> createdTasks;
+
+    @OneToMany(mappedBy = "uploadedBy")
+    private List<File> uploadedFiles;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_picture")
+    @JsonIgnore
+    private File profilePicture;
 }

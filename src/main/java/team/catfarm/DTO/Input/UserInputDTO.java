@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import team.catfarm.Models.Event;
+import team.catfarm.Models.File;
 import team.catfarm.Models.Task;
 
 import java.util.List;
@@ -26,4 +27,5 @@ public class UserInputDTO {
     private List<Task> tasks;
     private List<Event> createdEvents;
     private List<Task> createdTasks;
+    private File profilePicture;
 }

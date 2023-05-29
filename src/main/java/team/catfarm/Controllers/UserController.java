@@ -4,10 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.UserInputDTO;
-import team.catfarm.DTO.Output.EventOutputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
-import team.catfarm.Models.User;
 import team.catfarm.Services.UserService;
 
 import java.util.List;

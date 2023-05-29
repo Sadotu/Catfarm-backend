@@ -31,12 +31,15 @@ public class File {
     @JoinColumn(name = "event_id")
     @JsonIgnore
     private Event event;
-
     @ManyToOne
     @JoinColumn(name = "task_id")
     @JsonIgnore
     private Task task;
     @ManyToOne
-    @JoinColumn(name = "user_email")
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User uploadedBy;
+
+    @OneToOne(mappedBy = "profilePicture")
     private User user;
 }

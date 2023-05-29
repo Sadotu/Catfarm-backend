@@ -8,10 +8,11 @@ import team.catfarm.Exceptions.FileStorageException;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
-import team.catfarm.Models.Task;
+import team.catfarm.Models.User;
 import team.catfarm.Repositories.EventRepository;
 import team.catfarm.Repositories.FileRepository;
 import team.catfarm.Repositories.TaskRepository;
+import team.catfarm.Repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +25,13 @@ public class FileService {
     private final FileRepository fileRepository;
     private final EventRepository eventRepository;
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
-    public FileService(FileRepository fileRepository, EventRepository eventRepository, TaskRepository taskRepository) {
+    public FileService(FileRepository fileRepository, EventRepository eventRepository, TaskRepository taskRepository, UserRepository userRepository) {
         this.fileRepository = fileRepository;
         this.eventRepository = eventRepository;
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
     }
 
     public FileOutputDTO transferModelToOutputDTO(File file) {
@@ -104,41 +107,41 @@ public class FileService {
         return fileOutputDTOList;
     }
 
-    public List<FileOutputDTO> getFilesByEventId(Long eventId) {
-        List<File> fileList = fileRepository.findByEventId(eventId);
-        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
-
-        for (File f : fileList) {
-            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
-            fileOutputDTOList.add(fileOutputDTO);
-        }
-
-        return fileOutputDTOList;
-    }
-
-    public List<FileOutputDTO> getFilesByUserEmail(String userEmail) {
-        List<File> fileList = fileRepository.findByUserEmail(userEmail);
-        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
-
-        for (File f : fileList) {
-            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
-            fileOutputDTOList.add(fileOutputDTO);
-        }
-
-        return fileOutputDTOList;
-    }
-
-    public List<FileOutputDTO> getFilesByTaskId(Long taskId) {
-        List<File> fileList = fileRepository.findByTaskId(taskId);
-        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
-
-        for (File f : fileList) {
-            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
-            fileOutputDTOList.add(fileOutputDTO);
-        }
-
-        return fileOutputDTOList;
-    }
+//    public List<FileOutputDTO> getFilesByEventId(Long eventId) {
+//        List<File> fileList = fileRepository.findByEventId(eventId);
+//        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
+//
+//        for (File f : fileList) {
+//            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
+//            fileOutputDTOList.add(fileOutputDTO);
+//        }
+//
+//        return fileOutputDTOList;
+//    }
+//
+//    public List<FileOutputDTO> getFilesByUserEmail(String email) {
+//        List<File> fileList = fileRepository.findByEmail(email);
+//        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
+//
+//        for (File f : fileList) {
+//            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
+//            fileOutputDTOList.add(fileOutputDTO);
+//        }
+//
+//        return fileOutputDTOList;
+//    }
+//
+//    public List<FileOutputDTO> getFilesByTaskId(Long taskId) {
+//        List<File> fileList = fileRepository.findByTaskId(taskId);
+//        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
+//
+//        for (File f : fileList) {
+//            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
+//            fileOutputDTOList.add(fileOutputDTO);
+//        }
+//
+//        return fileOutputDTOList;
+//    }
 
 //    public List<File> searchFiles(String term, String currentDirectory) {
 //        if (term == null || term.trim().isEmpty()) {
@@ -175,18 +178,18 @@ public class FileService {
         return updatedFilesOutputDTO;
     }
 
-    public FileOutputDTO assignTaskToFile(Long id, Long task_id) {
-        File file = fileRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("File with id " + id + " does not exist"));
+    public FileOutputDTO assignUserToProfilePicture(Long file_id, String user_id) {
+        File file = fileRepository.findById(file_id)
+                .orElseThrow(() -> new ResourceNotFoundException("File with id " + file_id + " not found"));
 
-        Task task = taskRepository.findById(task_id)
-                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + task_id + " does not exist"));
+        User user = userRepository.findByEmail(user_id)
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + user_id + " not found"));
 
-        file.setTask(task);
+        file.setUser(user);
         fileRepository.save(file);
 
-        task.getFiles().add(file);
-        taskRepository.save(task);
+        user.setProfilePicture(file);
+        userRepository.save(user);
         return transferModelToOutputDTO(file);
     }
 

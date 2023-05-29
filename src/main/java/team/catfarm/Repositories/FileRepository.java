@@ -6,7 +6,7 @@ import team.catfarm.Models.File;
 import java.util.List;
 
 public interface FileRepository extends JpaRepository<File, Long> {
-    List<File> findByEventId(Long eventId);
-    List<File> findByUserEmail(String userEmail);
-    List<File> findByTaskId(Long taskId);
+//    List<File> findByEventId(Long eventId);
+//    List<File> findByEmail(String email);
+//    List<File> findByTaskId(Long taskId);
 }

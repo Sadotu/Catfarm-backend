@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.TaskInputDTO;
+import team.catfarm.DTO.Output.FileOutputDTO;
 import team.catfarm.DTO.Output.TaskOutputDTO;
 import team.catfarm.Services.TaskService;
 
@@ -50,6 +51,11 @@ public class TaskController {
     @PutMapping("/{id}/event/{event_id}")
     public ResponseEntity<Long> assignEventToTask(@PathVariable Long id, @PathVariable Long event_id) {
         return ResponseEntity.ok(taskService.assignEventToTask(id, event_id));
+    }
+
+    @PutMapping("/{id}/files/")
+    public ResponseEntity<TaskOutputDTO> assignFilesToTask(@PathVariable Long id, @RequestBody List<Long> task_id) {
+        return ResponseEntity.ok(taskService.assignFilesToTask(id, task_id));
     }
 
     @DeleteMapping("/{id}")

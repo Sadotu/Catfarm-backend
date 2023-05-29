@@ -6,10 +6,13 @@ import team.catfarm.DTO.Input.TaskInputDTO;
 import team.catfarm.DTO.Output.TaskOutputDTO;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Event;
+import team.catfarm.Models.File;
 import team.catfarm.Models.Task;
 import team.catfarm.Repositories.EventRepository;
+import team.catfarm.Repositories.FileRepository;
 import team.catfarm.Repositories.TaskRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,9 +22,12 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final EventRepository eventRepository;
 
-    public TaskService(TaskRepository taskRepository, EventRepository eventRepository) {
+    private final FileRepository fileRepository;
+
+    public TaskService(TaskRepository taskRepository, EventRepository eventRepository, FileRepository fileRepository) {
         this.taskRepository = taskRepository;
         this.eventRepository = eventRepository;
+        this.fileRepository = fileRepository;
     }
 
     public TaskOutputDTO transferModelToOutputDTO(Task task) {
@@ -82,7 +88,27 @@ public class TaskService {
 
         task.setEvent(event);
         taskRepository.save(task);
+
         return task.getId();
+    }
+
+    public TaskOutputDTO assignFilesToTask(Long id, List<Long> file_id_lst) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+
+        List<File> fileList = new ArrayList<>();
+        for (Long f_id : file_id_lst) {
+            File file = fileRepository.findById(f_id)
+                    .orElseThrow(() -> new ResourceNotFoundException("File not found with id: " + f_id));
+
+            file.setTask(task);
+            fileRepository.save(file);
+            fileList.add(file);
+        }
+
+        task.setFiles(fileList);
+        taskRepository.save(task);
+        return transferModelToOutputDTO(task);
     }
 
     public void deleteTaskById(Long id) {
