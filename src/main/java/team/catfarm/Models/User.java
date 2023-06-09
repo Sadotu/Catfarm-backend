@@ -1,6 +1,7 @@
 package team.catfarm.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,10 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties(value = {
+        "rsvp",
+        "tasks"
+})
 public class User {
     @Id
     @Column(nullable = false, length = 60, unique = true)
@@ -50,16 +55,18 @@ public class User {
     private List<Task> tasks;
 
     @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Event> createdEvents;
 
     @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Task> createdTasks;
 
     @OneToMany(mappedBy = "uploadedBy")
+    @JsonIgnore
     private List<File> uploadedFiles;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_picture")
-    @JsonIgnore
     private File profilePicture;
 }

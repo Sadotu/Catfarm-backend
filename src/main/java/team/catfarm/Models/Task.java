@@ -36,6 +36,7 @@ public class Task {
     private List<User> assignedTo;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<File> files;
 
     @ManyToOne

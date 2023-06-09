@@ -1,6 +1,6 @@
 package team.catfarm.DTO.Output;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import team.catfarm.Models.Event;
@@ -19,6 +19,7 @@ public class TaskOutputDTO {
     private String description;
     private boolean accepted;
     private boolean completed;
+    @JsonIgnore
     private Event event;
     private List<User> assignedTo;
     private List<File> files;

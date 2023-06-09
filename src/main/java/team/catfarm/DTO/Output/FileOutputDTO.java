@@ -18,7 +18,7 @@ public class FileOutputDTO {
     private double size;
     private String location;
     private Date uploadDate;
-    private Event event;
+//    private Event event;
     private Task task;
     private User user;
 }

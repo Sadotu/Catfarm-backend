@@ -42,10 +42,10 @@ public class EventController {
         return ResponseEntity.ok(updatedEvent);
     }
 
-    @PutMapping("/{id}/files")
-    public ResponseEntity<EventOutputDTO> assignFilesToEvent(@PathVariable Long id, @RequestBody List<Long> file_id_lst) {
-        return ResponseEntity.ok(eventService.assignFilesToEvent(id, file_id_lst));
-    }
+//    @PutMapping("/{id}/files")
+//    public ResponseEntity<EventOutputDTO> assignFilesToEvent(@PathVariable Long id, @RequestBody List<Long> file_id_lst) {
+//        return ResponseEntity.ok(eventService.assignFilesToEvent(id, file_id_lst));
+//    }
 
     @PutMapping("/{id}/tasks/{task_id}")
     public ResponseEntity<EventOutputDTO> assignTaskToEvent(@PathVariable Long id, @PathVariable Long task_id) {

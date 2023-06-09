@@ -20,7 +20,7 @@ public class EventOutputDTO {
     private LocalDateTime endTime;
     private String description;
     private String color;
-    private List<File> files;
+//    private List<File> files;
     private List<Task> tasks;
     private List<User> rsvp;
     private User createdBy;
