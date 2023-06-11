@@ -41,6 +41,5 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User createdBy;
 }

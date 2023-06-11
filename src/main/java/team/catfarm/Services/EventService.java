@@ -76,25 +76,6 @@ public class EventService {
         return transferModelToOutputDTO(eventRepository.save(existingEvent));
     }
 
-//    public EventOutputDTO assignFilesToEvent(Long id, List<Long> file_id_lst) {
-//        Event event = eventRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id: " + id));
-//
-//        List<File> fileList = new ArrayList<>();
-//        for (Long f_id : file_id_lst) {
-//            File file = fileRepository.findById(f_id)
-//                    .orElseThrow(() -> new ResourceNotFoundException("File not found with id: " + f_id));
-//
-//            file.setEvent(event);
-//            fileRepository.save(file);
-//            fileList.add(file);
-//        }
-//
-//        event.setFiles(fileList);
-//        eventRepository.save(event);
-//        return transferModelToOutputDTO(event);
-//    }
-
     @Transactional
     public EventOutputDTO assignTaskToEvent(Long id, Long task_id) {
         Event event = eventRepository.findById(id)

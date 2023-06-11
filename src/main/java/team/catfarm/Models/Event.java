@@ -34,9 +34,6 @@ public class Event {
 //    private Date repetitionEndDate;
 //    private int repetitionEndOccurrences;
 
-//    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-//    private List<File> files;
-
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Task> tasks;
 

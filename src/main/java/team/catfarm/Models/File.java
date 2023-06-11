@@ -27,10 +27,6 @@ public class File {
     private String location;
     private Date uploadDate;
 
-//    @ManyToOne
-//    @JoinColumn(name = "event_id")
-//    @JsonIgnore
-//    private Event event;
     @ManyToOne
     @JoinColumn(name = "task_id")
     @JsonIgnore
