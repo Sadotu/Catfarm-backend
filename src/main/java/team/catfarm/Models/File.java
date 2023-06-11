@@ -1,9 +1,7 @@
 package team.catfarm.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,4 +26,16 @@ public class File {
     private double size;
     private String location;
     private Date uploadDate;
+
+    @ManyToOne
+    @JoinColumn(name = "task_id")
+    @JsonIgnore
+    private Task task;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User uploadedBy;
+
+    @OneToOne(mappedBy = "profilePicture")
+    private User user;
 }

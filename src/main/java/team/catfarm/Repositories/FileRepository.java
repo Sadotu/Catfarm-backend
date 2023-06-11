@@ -1,16 +1,12 @@
 package team.catfarm.Repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import team.catfarm.DTO.FileDTO;
 import team.catfarm.Models.File;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface FileRepository extends JpaRepository<File, Long> {
-    Optional<File> findByFileName(String fileName);
-//    @Query("SELECT f FROM File f WHERE f.location LIKE CONCAT(:currentDirectory, '%') AND f.fileName LIKE CONCAT('%', :term, '%')")
-//    List<File> searchFiles(String currentDirectory, String term);
-    void deleteById(Long id);
+//    List<File> findByEventId(Long eventId);
+//    List<File> findByEmail(String email);
+//    List<File> findByTaskId(Long taskId);
 }

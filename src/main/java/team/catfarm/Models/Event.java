@@ -1,16 +1,14 @@
 package team.catfarm.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,9 +22,26 @@ public class Event {
     @GeneratedValue
     private Long id;
     private String name;
-    private Date date;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String description;
     private String color;
+
+    //for repeated events:
+//    private int repeatInterval;
+//    private String repeatPattern; //day, week, month, year
+//    private String repetitionEndType; //indefinite, repetitionEndDate, repetitionEndOccurrences
+//    private Date repetitionEndDate;
+//    private int repetitionEndOccurrences;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<Task> tasks;
+
+    @ManyToMany(mappedBy = "rsvp", cascade = CascadeType.ALL)
+    private List<User> rsvp;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User createdBy;
 }

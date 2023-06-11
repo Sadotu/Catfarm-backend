@@ -1,46 +1,54 @@
 package team.catfarm.Controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import team.catfarm.Exceptions.EventNotFoundException;
-import team.catfarm.Models.Event;
+import team.catfarm.DTO.Input.EventInputDTO;
+import team.catfarm.DTO.Output.EventOutputDTO;
+import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Services.EventService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/events")
 public class EventController {
 
-    @Autowired
-    private EventService eventService;
+    private final EventService eventService;
 
-    @PostMapping
-    public ResponseEntity<Event> addEvent(@RequestBody Event event) throws URISyntaxException {
-        event.setDate(new Date());
-        Event savedEvent = eventService.addEvent(event);
+    public EventController(EventService eventService) { this.eventService = eventService; }
+
+    @PostMapping("/add")
+    public ResponseEntity<EventOutputDTO> createEvent(@RequestBody EventInputDTO eventInputDTO) throws URISyntaxException {
+        EventOutputDTO savedEvent = eventService.createEvent(eventInputDTO);
         return ResponseEntity.created(new URI("/events/" + savedEvent.getId())).body(savedEvent);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Event> getEventById(@PathVariable Long id) throws EventNotFoundException {
-        Event event = eventService.getEventById(id);
-        return new ResponseEntity<>(event, HttpStatus.OK);
+    public ResponseEntity<EventOutputDTO> getEventById(@PathVariable Long id) throws ResourceNotFoundException {
+        return ResponseEntity.ok(eventService.getEventById(id));
+    }
+
+    @GetMapping("/{start}/{end}")
+    public ResponseEntity<List<EventOutputDTO>> getEventsByTimePeriod(@PathVariable LocalDateTime start, @PathVariable LocalDateTime end) {
+        return ResponseEntity.ok(eventService.getEventsByTimePeriod(start, end));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event eventToUpdate) throws EventNotFoundException {
-        Event updatedEvent = eventService.updateEvent(id, eventToUpdate);
+    public ResponseEntity<EventOutputDTO> updateEvent(@PathVariable Long id, @RequestBody EventInputDTO eventToUpdateInputDTO) throws ResourceNotFoundException {
+        EventOutputDTO updatedEvent = eventService.updateEvent(id, eventToUpdateInputDTO);
         return ResponseEntity.ok(updatedEvent);
     }
 
+    @PutMapping("/{id}/tasks/{task_id}")
+    public ResponseEntity<EventOutputDTO> assignTaskToEvent(@PathVariable Long id, @PathVariable Long task_id) {
+        return ResponseEntity.ok(eventService.assignTaskToEvent(id, task_id));
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) throws EventNotFoundException {
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) throws ResourceNotFoundException {
         eventService.deleteEvent(id);
         return ResponseEntity.noContent().build();
     }
