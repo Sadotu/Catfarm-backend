@@ -1,5 +1,6 @@
 package team.catfarm.Controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.EventInputDTO;
@@ -21,7 +22,7 @@ public class EventController {
     public EventController(EventService eventService) { this.eventService = eventService; }
 
     @PostMapping("/add")
-    public ResponseEntity<EventOutputDTO> createEvent(@RequestBody EventInputDTO eventInputDTO) throws URISyntaxException {
+    public ResponseEntity<EventOutputDTO> createEvent(@Valid @RequestBody EventInputDTO eventInputDTO) throws URISyntaxException {
         EventOutputDTO savedEvent = eventService.createEvent(eventInputDTO);
         return ResponseEntity.created(new URI("/events/" + savedEvent.getId())).body(savedEvent);
     }

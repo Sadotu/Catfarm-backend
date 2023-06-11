@@ -8,6 +8,7 @@ import team.catfarm.Exceptions.FileStorageException;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
+import team.catfarm.Models.Task;
 import team.catfarm.Models.User;
 import team.catfarm.Repositories.EventRepository;
 import team.catfarm.Repositories.FileRepository;
@@ -67,14 +68,14 @@ public class FileService {
 
             for (FileInputDTO t : fileInputDTOList) {
 
-                if (t.getEvent_id() != null) {
-                    Optional<Event> eventOptional = eventRepository.findById(t.getEvent_id());
-                    if (eventOptional.isPresent()) {
+                if (t.getTask().getId() != null) {
+                    Optional<Task> taskOptional = taskRepository.findById(t.getTask().getId());
+                    if (taskOptional.isPresent()) {
                         File file = transferInputDTOToModel(t);
-                        file.setEvent(eventOptional.get());
+                        file.setTask(taskOptional.get());
                         fileRepository.save(file);
                         createdFiles.add(file);
-                    } // add else ifs for users and tasks here
+                    } // add else ifs for users
                 } else { createdFiles.add(fileRepository.save(transferInputDTOToModel(t))); }
             }
 
