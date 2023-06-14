@@ -5,6 +5,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import team.catfarm.DTO.Input.EventInputDTO;
 import team.catfarm.DTO.Output.EventOutputDTO;
+import team.catfarm.Exceptions.InvalidEventException;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
@@ -22,12 +23,10 @@ import java.util.List;
 public class EventService {
 
     private final EventRepository eventRepository;
-    private final FileRepository fileRepository;
     private final TaskRepository taskRepository;
 
-    public EventService(EventRepository eventRepository, FileRepository fileRepository, TaskRepository taskRepository) {
+    public EventService(EventRepository eventRepository, TaskRepository taskRepository) {
         this.eventRepository = eventRepository;
-        this.fileRepository = fileRepository;
         this.taskRepository = taskRepository;
     }
 
@@ -37,14 +36,22 @@ public class EventService {
         return eventOutputDTO;
     }
 
+    public boolean isEndTimeLaterThanStartTime(Event event) {
+        return event.getEndTime().isAfter(event.getStartTime());
+    }
+
     public Event transferInputDTOToModel(EventInputDTO eventInputDTO) {
         Event event = new Event();
         BeanUtils.copyProperties(eventInputDTO, event, "id");
         return event;
     }
 
-    public EventOutputDTO createEvent(EventInputDTO eventInputDTO) {
-        return transferModelToOutputDTO(eventRepository.save(transferInputDTOToModel(eventInputDTO)));
+    public EventOutputDTO createEvent(EventInputDTO eventInputDTO) throws InvalidEventException {
+        if (isEndTimeLaterThanStartTime(transferInputDTOToModel(eventInputDTO))) {
+            return transferModelToOutputDTO(eventRepository.save(transferInputDTOToModel(eventInputDTO)));
+        } else {
+            throw new InvalidEventException("End time should be later than start time");
+        }
     }
 
     public EventOutputDTO getEventById(Long id) {
@@ -67,13 +74,17 @@ public class EventService {
 
     }
 
-    public EventOutputDTO updateEvent(Long id, EventInputDTO eventToUpdate) {
+    public EventOutputDTO updateEvent(Long id, EventInputDTO eventToUpdate) throws InvalidEventException {
         Event existingEvent = eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id " + id));
 
         BeanUtils.copyProperties(eventToUpdate, existingEvent, "id");
 
-        return transferModelToOutputDTO(eventRepository.save(existingEvent));
+        if (isEndTimeLaterThanStartTime(existingEvent)) {
+            return transferModelToOutputDTO(eventRepository.save(existingEvent));
+        } else {
+            throw new InvalidEventException("End time should be later than start time");
+        }
     }
 
     @Transactional

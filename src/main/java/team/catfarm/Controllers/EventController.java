@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.EventInputDTO;
 import team.catfarm.DTO.Output.EventOutputDTO;
+import team.catfarm.Exceptions.InvalidEventException;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Services.EventService;
 
@@ -22,7 +23,7 @@ public class EventController {
     public EventController(EventService eventService) { this.eventService = eventService; }
 
     @PostMapping("/add")
-    public ResponseEntity<EventOutputDTO> createEvent(@Valid @RequestBody EventInputDTO eventInputDTO) throws URISyntaxException {
+    public ResponseEntity<EventOutputDTO> createEvent(@Valid @RequestBody EventInputDTO eventInputDTO) throws URISyntaxException, InvalidEventException {
         EventOutputDTO savedEvent = eventService.createEvent(eventInputDTO);
         return ResponseEntity.created(new URI("/events/" + savedEvent.getId())).body(savedEvent);
     }
@@ -38,7 +39,7 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EventOutputDTO> updateEvent(@PathVariable Long id, @RequestBody EventInputDTO eventToUpdateInputDTO) throws ResourceNotFoundException {
+    public ResponseEntity<EventOutputDTO> updateEvent(@PathVariable Long id, @RequestBody EventInputDTO eventToUpdateInputDTO) throws ResourceNotFoundException, InvalidEventException {
         EventOutputDTO updatedEvent = eventService.updateEvent(id, eventToUpdateInputDTO);
         return ResponseEntity.ok(updatedEvent);
     }
