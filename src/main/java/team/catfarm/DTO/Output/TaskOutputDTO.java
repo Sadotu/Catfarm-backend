@@ -1,6 +1,9 @@
 package team.catfarm.DTO.Output;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import team.catfarm.Models.Event;
@@ -14,8 +17,11 @@ import java.util.List;
 @Setter
 public class TaskOutputDTO {
     private Long id;
+    @NotBlank
     private String nameTask;
+    @Future
     private Date deadline;
+    @Size(min=0, max=500)
     private String description;
     private boolean accepted;
     private boolean completed;

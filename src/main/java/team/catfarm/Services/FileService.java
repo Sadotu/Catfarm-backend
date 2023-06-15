@@ -6,15 +6,15 @@ import team.catfarm.DTO.Input.FileInputDTO;
 import team.catfarm.DTO.Output.FileOutputDTO;
 import team.catfarm.Exceptions.FileStorageException;
 import team.catfarm.Exceptions.ResourceNotFoundException;
-import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
+import team.catfarm.Models.Task;
 import team.catfarm.Models.User;
-import team.catfarm.Repositories.EventRepository;
 import team.catfarm.Repositories.FileRepository;
 import team.catfarm.Repositories.TaskRepository;
 import team.catfarm.Repositories.UserRepository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,13 +23,12 @@ import java.util.stream.Collectors;
 public class FileService {
 
     private final FileRepository fileRepository;
-    private final EventRepository eventRepository;
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+//    private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList("txt", "pdf", "docx");
 
-    public FileService(FileRepository fileRepository, EventRepository eventRepository, TaskRepository taskRepository, UserRepository userRepository) {
+    public FileService(FileRepository fileRepository, TaskRepository taskRepository, UserRepository userRepository) {
         this.fileRepository = fileRepository;
-        this.eventRepository = eventRepository;
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
     }
@@ -45,6 +44,19 @@ public class FileService {
         BeanUtils.copyProperties(fileInputDTO, file, "id");
         return file;
     }
+
+//    public boolean isFileExtensionValid(String fileName) {
+//        String extension = getFileExtension(fileName);
+//        return ALLOWED_EXTENSIONS.contains(extension.toLowerCase());
+//    }
+//
+//    private String getFileExtension(String fileName) {
+//        int dotIndex = fileName.lastIndexOf(".");
+//        if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
+//            return fileName.substring(dotIndex + 1);
+//        }
+//        return "";
+//    }
 
     public List<FileOutputDTO> uploadFiles(List<FileInputDTO> fileInputDTOList) throws FileStorageException {
 //        String fileName = StringUtils.cleanPath(file.getFileName());
@@ -67,15 +79,42 @@ public class FileService {
 
             for (FileInputDTO t : fileInputDTOList) {
 
-                if (t.getEvent_id() != null) {
-                    Optional<Event> eventOptional = eventRepository.findById(t.getEvent_id());
-                    if (eventOptional.isPresent()) {
+                if (t.getTask().getId() != null) {
+                    Optional<Task> taskOptional = taskRepository.findById(t.getTask().getId());
+                    if (taskOptional.isPresent()) {
                         File file = transferInputDTOToModel(t);
-                        file.setEvent(eventOptional.get());
+                        file.setTask(taskOptional.get());
+
+//                        String fileName = StringUtils.cleanPath(file.getFileName());
+//                        System.out.println(fileName);
+//
+//                        if (fileName.contains("..")) {
+//                            throw new FileStorageException("Invalid file path.");
+//                        }
+//
+//                        if (!isFileExtensionValid(fileName)) {
+//                            throw new FileStorageException("Invalid file extension.");
+//                        }
+
                         fileRepository.save(file);
                         createdFiles.add(file);
-                    } // add else ifs for users and tasks here
-                } else { createdFiles.add(fileRepository.save(transferInputDTOToModel(t))); }
+                    } // add else ifs for users
+                } else {
+//                    File file = transferInputDTOToModel(t);
+//
+//                    String fileName = StringUtils.cleanPath(file.getFileName());
+//                    System.out.println(fileName);
+//
+//                    if (fileName.contains("..")) {
+//                        throw new FileStorageException("Invalid file path.");
+//                    }
+//
+//                    if (!isFileExtensionValid(fileName)) {
+//                        throw new FileStorageException("Invalid file extension.");
+//                    }
+
+                    createdFiles.add(fileRepository.save(transferInputDTOToModel(t)));
+                }
             }
 
             List<FileOutputDTO> createdFilesOutputDTO = new ArrayList<>();
