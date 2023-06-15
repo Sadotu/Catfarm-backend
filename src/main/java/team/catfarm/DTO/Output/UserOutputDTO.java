@@ -20,6 +20,7 @@ public class UserOutputDTO {
     @NotBlank
     private String email;
     @NotBlank
+    @Size(min=2, max=75)
     private String fullName;
     @NotBlank
     private String pronouns;

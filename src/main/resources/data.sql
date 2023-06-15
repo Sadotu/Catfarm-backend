@@ -103,3 +103,13 @@ VALUES ('emily.davis@example.com', 'Emily Davis', 'she/her', 28, '1111111111', '
 INSERT INTO users (email, full_name, pronouns, age, phone_number, bio, password, newsletter, role, active)
 VALUES ('david.wilson@example.com', 'David Wilson', 'he/him', 32, '9999999999', 'I am an accountant', 'password5', true, 'user', true);
 
+UPDATE files SET task_id = 101 WHERE id = 101;
+UPDATE files SET task_id = 102 WHERE id = 102;
+UPDATE files SET task_id = 103 WHERE id = 103;
+UPDATE files SET task_id = 104 WHERE id = 104;
+UPDATE files SET task_id = 105 WHERE id = 105;
+UPDATE files SET task_id = 106 WHERE id = 106;
+UPDATE files SET task_id = 107 WHERE id = 107;
+UPDATE files SET task_id = 108 WHERE id = 108;
+UPDATE files SET task_id = 109 WHERE id = 109;
+UPDATE files SET task_id = 110 WHERE id = 110;

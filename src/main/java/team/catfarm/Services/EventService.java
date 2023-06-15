@@ -8,12 +8,9 @@ import team.catfarm.DTO.Output.EventOutputDTO;
 import team.catfarm.Exceptions.InvalidEventException;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Event;
-import team.catfarm.Models.File;
 import team.catfarm.Models.Task;
 import team.catfarm.Repositories.EventRepository;
-import team.catfarm.Repositories.FileRepository;
 import team.catfarm.Repositories.TaskRepository;
-import team.catfarm.Repositories.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
