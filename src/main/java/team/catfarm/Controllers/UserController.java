@@ -5,12 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
-import team.catfarm.Exceptions.BadRequestException;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
 import team.catfarm.Services.UserService;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
