@@ -1,9 +1,12 @@
 package team.catfarm.Services;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import team.catfarm.DTO.Input.TaskInputDTO;
 import team.catfarm.DTO.Output.TaskOutputDTO;
+import team.catfarm.Exceptions.AccessDeniedException;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
@@ -116,6 +119,19 @@ public class TaskService {
         if (optionalTask.isEmpty()) {
             throw new ResourceNotFoundException("Task not found with ID: " + id);
         }
+
+        Task task = optionalTask.get();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+
+        boolean isCurrentUserAssigned = task.getAssignedTo().contains(currentUsername);
+        boolean isCurrentUserLion = authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_lion"));
+
+        if (!isCurrentUserAssigned && !isCurrentUserLion) {
+            throw new AccessDeniedException("You are not authorized to delete this task.");
+        }
+
         taskRepository.deleteById(id);
     }
 }

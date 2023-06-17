@@ -217,7 +217,7 @@ public class FileService {
         return updatedFilesOutputDTO;
     }
 
-    public FileOutputDTO assignUserToProfilePicture(Long file_id, String user_id) {
+    public FileOutputDTO assignUserToProfilePicture(Long file_id, String user_id) { // TO  DO: implement logic to make sure user can only do this for own account
         File file = fileRepository.findById(file_id)
                 .orElseThrow(() -> new ResourceNotFoundException("File with id " + file_id + " not found"));
 

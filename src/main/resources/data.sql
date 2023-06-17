@@ -93,15 +93,15 @@ VALUES (true, 'john.doe@example.com', 'John Doe', 'he/him', 25, '1234567890', 'I
 
 INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter, active)
 VALUES (true, 'super@user.com', 'Super User', 'she/her', 30, '9876543210', 'I am a Super User', '$2a$12$wcB7NxVVN8MMumSgoKUCq.Q.zt9Hfm9mLs1mAnFFrUP4PLas8MrMC', true, true);
---
--- INSERT INTO users (email, full_name, pronouns, age, phone_number, bio, password, newsletter, role, active)
--- VALUES ('michael.johnson@example.com', 'Michael Johnson', 'he/him', 35, '5555555555', 'I am a teacher', 'password3', true, 'user', true);
---
--- INSERT INTO users (email, full_name, pronouns, age, phone_number, bio, password, newsletter, role, active)
--- VALUES ('emily.davis@example.com', 'Emily Davis', 'she/her', 28, '1111111111', 'I am a writer', 'password4', true, 'user', true);
---
--- INSERT INTO users (email, full_name, pronouns, age, phone_number, bio, password, newsletter, role, active)
--- VALUES ('david.wilson@example.com', 'David Wilson', 'he/him', 32, '9999999999', 'I am an accountant', 'password5', true, 'user', true);
+
+INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter, active)
+VALUES (true, 'michael.johnson@example.com', 'Michael Johnson', 'he/him', 35, '5555555555', 'I am a teacher', '$2a$12$bCo4rM70ylmXuDk9awMmFexWAf1ntxQ/5THBmJA21rfU7UvANldCK', true, true);
+
+INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter, active)
+VALUES (true, 'emily.davis@example.com', 'Emily Davis', 'she/her', 28, '1111111111', 'I am a writer', '$2a$12$O7gq/tqhjQf2LPtL.FJCmedh8GWv12D0AerTLDttgBFyCglhV6zk.', true, true);
+
+INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter, active)
+VALUES (true, 'david.wilson@example.com', 'David Wilson', 'he/him', 32, '9999999999', 'I am an accountant', '$2a$12$i.mCOyyQwYFmNf.8WZ91T.gQ8SntiSrPep3PREXEO/dvoFZvNHe46', true, true);
 
 UPDATE files SET task_id = 101 WHERE id = 101;
 UPDATE files SET task_id = 102 WHERE id = 102;
@@ -117,3 +117,6 @@ UPDATE files SET task_id = 110 WHERE id = 110;
 INSERT INTO authorities (username, authority) VALUES ('super@user.com', 'ROLE_LION');
 INSERT INTO authorities (username, authority) VALUES ('super@user.com', 'ROLE_CAT');
 INSERT INTO authorities (username, authority) VALUES ('super@user.com', 'ROLE_KITTEN');
+INSERT INTO authorities (username, authority) VALUES ('michael.johnson@example.com', 'ROLE_KITTEN');
+INSERT INTO authorities (username, authority) VALUES ('emily.davis@example.com', 'ROLE_CAT');
+INSERT INTO authorities (username, authority) VALUES ('david.wilson@example.com', 'ROLE_LION');

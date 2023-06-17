@@ -38,7 +38,7 @@ public class EventController {
         return ResponseEntity.ok(eventService.getEventsByTimePeriod(start, end));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<EventOutputDTO> updateEvent(@PathVariable Long id, @RequestBody EventInputDTO eventToUpdateInputDTO) throws ResourceNotFoundException, InvalidEventException {
         EventOutputDTO updatedEvent = eventService.updateEvent(id, eventToUpdateInputDTO);
         return ResponseEntity.ok(updatedEvent);
@@ -49,7 +49,7 @@ public class EventController {
         return ResponseEntity.ok(eventService.assignTaskToEvent(id, task_id));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) throws ResourceNotFoundException {
         eventService.deleteEvent(id);
         return ResponseEntity.noContent().build();
