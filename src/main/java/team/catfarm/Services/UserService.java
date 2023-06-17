@@ -2,6 +2,9 @@ package team.catfarm.Services;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
@@ -16,12 +19,17 @@ import team.catfarm.Repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
     private final EventRepository eventRepository;
+    @Autowired
+    @Lazy
+    private PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository, TaskRepository taskRepository, EventRepository eventRepository) {
         this.userRepository = userRepository;
@@ -53,6 +61,15 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));;
 
         return transferModelToOutputDTO(user);
+    }
+
+    public User getUser(String username) {
+        Optional<User> optionaluser = userRepository.findByEmail(username);
+        if (optionaluser.isPresent()){
+            return optionaluser.get();
+        }else {
+            throw new ResourceNotFoundException(username);
+        }
     }
 
     public List<UserOutputDTO> getActiveUsers() {
@@ -142,5 +159,55 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));
 
         userRepository.delete(user);
+    }
+
+    // Security
+
+//    public Set<Authority> getAuthorities(String username) {
+//        if (!userRepository.existsById(username)) throw new ResourceNotFoundException(username);
+//        User user = userRepository.findById(username).get();
+//        UserOutputDTO userOutputDTO = fromUser(user);
+//        return userOutputDTO.getAuthorities();
+//    }
+
+//    public void addAuthority(String username, String authority) {
+//
+//        if (!userRepository.existsById(username)) throw new ResourceNotFoundException(username);
+//        User user = userRepository.findById(username).get();
+//        user.addAuthority(new Authority(username, authority));
+//        userRepository.save(user);
+//    }
+
+//    public void removeAuthority(String username, String authority) {
+//        if (!userRepository.existsById(username)) throw new ResourceNotFoundException(username);
+//        User user = userRepository.findById(username).get();
+//        Authority authorityToRemove = user.getAuthorities().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
+//        user.removeAuthority(authorityToRemove);
+//        userRepository.save(user);
+//    }
+
+    public static UserOutputDTO fromUser(User user){
+
+        var dto = new UserOutputDTO();
+
+        dto.setEmail(user.getEmail());
+        dto.enabled = user.isEnabled();
+        dto.apikey = user.getApiKey();
+        dto.authorities = user.getAuthorities();
+
+        return dto;
+    }
+
+    public User toUser(UserInputDTO userInputDTO) {
+
+        var user = new User();
+
+        user.setEmail(userInputDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(userInputDTO.getPassword()));
+        user.setEnabled(userInputDTO.getEnabled());
+        user.setApiKey(userInputDTO.getApiKey());
+        user.setEmail(userInputDTO.getEmail());
+
+        return user;
     }
 }

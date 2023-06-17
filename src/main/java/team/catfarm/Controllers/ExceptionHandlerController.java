@@ -4,10 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import team.catfarm.Exceptions.FileStorageException;
-import team.catfarm.Exceptions.InvalidEventException;
-import team.catfarm.Exceptions.ResourceNotFoundException;
-import team.catfarm.Exceptions.UserAlreadyExistsException;
+import team.catfarm.Exceptions.*;
 
 @RestControllerAdvice(basePackages = "team.catfarm.Controllers")
 public class ExceptionHandlerController {
@@ -30,5 +27,10 @@ public class ExceptionHandlerController {
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<String> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = BadRequestException.class)
+    public ResponseEntity<String> exception(BadRequestException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

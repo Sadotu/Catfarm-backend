@@ -88,20 +88,20 @@ VALUES (109, 'Task I', '2023-06-09', 'Task I description', true, false);
 INSERT INTO tasks (id, name_task, deadline, description, accepted, completed)
 VALUES (110, 'Task J', '2023-06-10', 'Task J description', false, true);
 
-INSERT INTO users (email, full_name, pronouns, age, phone_number, bio, password, newsletter, role, active)
-VALUES ('john.doe@example.com', 'John Doe', 'he/him', 25, '1234567890', 'I am a software engineer', 'password1', true, 'user', true);
+INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter, active)
+VALUES (true, 'john.doe@example.com', 'John Doe', 'he/him', 25, '1234567890', 'I am a software engineer', '$2a$12$DQsOkCGWcxRxN6uVvI3ztupqDYtXvAHbGYXfj7hoWxfhTj1XvzEwy', true, true);
 
-INSERT INTO users (email, full_name, pronouns, age, phone_number, bio, password, newsletter, role, active)
-VALUES ('jane.smith@example.com', 'Jane Smith', 'she/her', 30, '9876543210', 'I am a designer', 'password2', true, 'user', true);
-
-INSERT INTO users (email, full_name, pronouns, age, phone_number, bio, password, newsletter, role, active)
-VALUES ('michael.johnson@example.com', 'Michael Johnson', 'he/him', 35, '5555555555', 'I am a teacher', 'password3', true, 'user', true);
-
-INSERT INTO users (email, full_name, pronouns, age, phone_number, bio, password, newsletter, role, active)
-VALUES ('emily.davis@example.com', 'Emily Davis', 'she/her', 28, '1111111111', 'I am a writer', 'password4', true, 'user', true);
-
-INSERT INTO users (email, full_name, pronouns, age, phone_number, bio, password, newsletter, role, active)
-VALUES ('david.wilson@example.com', 'David Wilson', 'he/him', 32, '9999999999', 'I am an accountant', 'password5', true, 'user', true);
+INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter, active)
+VALUES (true, 'super@user.com', 'Super User', 'she/her', 30, '9876543210', 'I am a Super User', '$2a$12$wcB7NxVVN8MMumSgoKUCq.Q.zt9Hfm9mLs1mAnFFrUP4PLas8MrMC', true, true);
+--
+-- INSERT INTO users (email, full_name, pronouns, age, phone_number, bio, password, newsletter, role, active)
+-- VALUES ('michael.johnson@example.com', 'Michael Johnson', 'he/him', 35, '5555555555', 'I am a teacher', 'password3', true, 'user', true);
+--
+-- INSERT INTO users (email, full_name, pronouns, age, phone_number, bio, password, newsletter, role, active)
+-- VALUES ('emily.davis@example.com', 'Emily Davis', 'she/her', 28, '1111111111', 'I am a writer', 'password4', true, 'user', true);
+--
+-- INSERT INTO users (email, full_name, pronouns, age, phone_number, bio, password, newsletter, role, active)
+-- VALUES ('david.wilson@example.com', 'David Wilson', 'he/him', 32, '9999999999', 'I am an accountant', 'password5', true, 'user', true);
 
 UPDATE files SET task_id = 101 WHERE id = 101;
 UPDATE files SET task_id = 102 WHERE id = 102;
@@ -113,3 +113,7 @@ UPDATE files SET task_id = 107 WHERE id = 107;
 UPDATE files SET task_id = 108 WHERE id = 108;
 UPDATE files SET task_id = 109 WHERE id = 109;
 UPDATE files SET task_id = 110 WHERE id = 110;
+
+INSERT INTO authorities (username, authority) VALUES ('super@user.com', 'ROLE_LION');
+INSERT INTO authorities (username, authority) VALUES ('super@user.com', 'ROLE_CAT');
+INSERT INTO authorities (username, authority) VALUES ('super@user.com', 'ROLE_KITTEN');

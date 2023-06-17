@@ -5,10 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
+import team.catfarm.Exceptions.BadRequestException;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
 import team.catfarm.Services.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -64,4 +66,26 @@ public class UserController {
     public void deleteUser(@PathVariable String email) {
         userService.deleteUser(email);
     }
+
+//    @GetMapping(value = "/{username}/authorities")
+//    public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
+//        return ResponseEntity.ok().body(userService.getAuthorities(username));
+//    }
+//
+//    @PostMapping(value = "/{username}/authorities")
+//    public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
+//        try {
+//            String authorityName = (String) fields.get("authority");
+//            userService.addAuthority(username, authorityName);
+//            return ResponseEntity.noContent().build();
+//        } catch (Exception ex) {
+//            throw new BadRequestException();
+//        }
+//    }
+//
+//    @DeleteMapping(value = "/{username}/authorities/{authority}")
+//    public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
+//        userService.removeAuthority(username, authority);
+//
+//    }
 }
