@@ -6,10 +6,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
+import team.catfarm.Exceptions.BadRequestException;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
 import team.catfarm.Services.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -72,21 +74,20 @@ public class UserController {
     public ResponseEntity<Object> getUserAuthorities(@PathVariable("email") String email) {
         return ResponseEntity.ok().body(userService.getAuthorities(email));
     }
-//
-//    @PostMapping(value = "/{username}/authorities")
-//    public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
-//        try {
-//            String authorityName = (String) fields.get("authority");
-//            userService.addAuthority(username, authorityName);
-//            return ResponseEntity.noContent().build();
-//        } catch (Exception ex) {
-//            throw new BadRequestException();
-//        }
-//    }
-//
-//    @DeleteMapping(value = "/{username}/authorities/{authority}")
-//    public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
-//        userService.removeAuthority(username, authority);
-//
-//    }
+
+    @PostMapping(value = "/add_authorities/{email}")
+    public ResponseEntity<Object> addUserAuthority(@PathVariable("email") String email, @RequestBody Map<String, Object> fields) {
+        try {
+            String authorityName = (String) fields.get("authority");
+            userService.addAuthority(email, authorityName);
+            return ResponseEntity.noContent().build();
+        } catch (Exception ex) {
+            throw new BadRequestException("An unexpected error occurred");
+        }
+    }
+
+    @DeleteMapping(value = "/remove_authorities/{email}/{authority}")
+    public void deleteUserAuthority(@PathVariable("email") String email, @PathVariable("authority") String authority) {
+        userService.removeAuthority(email, authority);
+    }
 }

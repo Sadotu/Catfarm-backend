@@ -165,30 +165,34 @@ public class UserService {
     // Security
 
     public Set<Authority> getAuthorities(String email) {
-        if (userRepository.findByEmail(email).isPresent()) {
-            User user = userRepository.findByEmail(email).get();
-            UserOutputDTO userOutputDTO = fromUser(user);
-            return userOutputDTO.getAuthorities();
-        } else {
-            throw new ResourceNotFoundException("User does not exist, unable to retrieve authorities");
-        }
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(email));
+
+        UserOutputDTO userOutputDTO = fromUser(user);
+        return userOutputDTO.getAuthorities();
     }
 
-//    public void addAuthority(String username, String authority) {
-//
-//        if (!userRepository.existsById(username)) throw new ResourceNotFoundException(username);
-//        User user = userRepository.findById(username).get();
-//        user.addAuthority(new Authority(username, authority));
-//        userRepository.save(user);
-//    }
 
-//    public void removeAuthority(String username, String authority) {
-//        if (!userRepository.existsById(username)) throw new ResourceNotFoundException(username);
-//        User user = userRepository.findById(username).get();
-//        Authority authorityToRemove = user.getAuthorities().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
-//        user.removeAuthority(authorityToRemove);
-//        userRepository.save(user);
-//    }
+    public void addAuthority(String email, String authority) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(email));
+
+        user.addAuthority(new Authority(email, authority));
+        userRepository.save(user);
+    }
+
+
+    public void removeAuthority(String email, String authority) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(email));
+        Authority authorityToRemove = user.getAuthorities().stream()
+                .filter(a -> a.getAuthority().equalsIgnoreCase(authority))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Authority not found"));
+        user.removeAuthority(authorityToRemove);
+        userRepository.save(user);
+    }
+
 
     public static UserOutputDTO fromUser(User user){
 

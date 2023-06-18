@@ -71,10 +71,12 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/users/update/{email}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/users/{email}/rsvp/{event_id}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/users/{email}/task/{task_id}").hasAnyRole("KITTEN", "CAT", "LION")
-                .requestMatchers(HttpMethod.PUT, "/users/{email}/usercreatesevent/{event_id}").hasAnyRole("KITTEN", "CAT", "LION")
+                .requestMatchers(HttpMethod.PUT, "/users/{email}/usercreatesevent/{event_id}").hasAnyRole("CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/users/{email}/usercreatestask/{task_id}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.DELETE, "/users/delete/{email}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.GET, "/users/authorities/{email}").hasAnyRole("KITTEN", "CAT", "LION")
+                .requestMatchers(HttpMethod.POST, "/users/add_authorities/{email}").hasAnyRole("LION")
+                .requestMatchers(HttpMethod.DELETE, "/users/remove_authorities/{email}/{authority}").hasRole("LION")
                 //files
                 .requestMatchers(HttpMethod.POST, "/files/upload").hasAnyRole("CAT", "LION")
                 .requestMatchers(HttpMethod.GET, "/files/{id}").hasAnyRole("CAT", "LION")
