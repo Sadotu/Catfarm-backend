@@ -24,7 +24,8 @@ public class UserInputDTO {
     private String bio;
     private String password;
     private boolean newsletter;
-    private boolean active;
+
+    //relations
     private List<Event> rsvp;
     private List<Task> tasks;
     private List<Event> createdEvents;

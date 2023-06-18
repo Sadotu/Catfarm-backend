@@ -5,9 +5,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import team.catfarm.DTO.Output.UserOutputDTO;
 import team.catfarm.Models.Authority;
 import team.catfarm.Models.User;
+import team.catfarm.Security.CustomUserDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +26,16 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        User user = userService.getUser(username);
+    public UserDetails loadUserByUsername(String email) {
+        User user = userService.getUser(email);
 
         Set<Authority> authorities = user.getAuthorities();
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        for (Authority authority: authorities) {
+        for (Authority authority : authorities) {
             grantedAuthorities.add(new SimpleGrantedAuthority(authority.getAuthority()));
         }
-        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), grantedAuthorities);
+        // Use CustomUserDetails here instead of the default User
+        return new CustomUserDetails(email, user.getPassword(), grantedAuthorities);
     }
 
 }

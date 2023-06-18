@@ -36,7 +36,6 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password;
     private boolean newsletter;
-    private boolean active;
     private boolean enabled;
     private String apiKey;
 

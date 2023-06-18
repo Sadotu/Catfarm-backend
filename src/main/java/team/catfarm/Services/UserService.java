@@ -63,16 +63,16 @@ public class UserService {
     }
 
     public User getUser(String username) {
-        Optional<User> optionaluser = userRepository.findByEmail(username);
-        if (optionaluser.isPresent()){
-            return optionaluser.get();
+        Optional<User> optionalUser = userRepository.findByEmail(username);
+        if (optionalUser.isPresent()){
+            return optionalUser.get();
         }else {
             throw new ResourceNotFoundException(username);
         }
     }
 
     public List<UserOutputDTO> getActiveUsers() {
-        List<User> activeUserList = userRepository.findByActive(true);
+        List<User> activeUserList = userRepository.findByEnabled(true);
         List<UserOutputDTO> activeUserOutputDTOList = new ArrayList<>();
 
         for (User u : activeUserList)  { activeUserOutputDTOList.add(transferModelToOutputDTO(u)); }

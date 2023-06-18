@@ -2,6 +2,7 @@ package team.catfarm.Controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
@@ -16,9 +17,7 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    public UserController(UserService userService) { this.userService = userService; }
 
     @PostMapping("/create")
     public ResponseEntity<UserOutputDTO> createUser(@RequestBody UserInputDTO userInputDTO) throws UserAlreadyExistsException {
@@ -30,22 +29,25 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
-    @GetMapping("/active")
+    @GetMapping("/enabled")
     public List<UserOutputDTO> getActiveUsers() {
         return userService.getActiveUsers();
     }
 
     @PutMapping("/update/{email}")
+    @PreAuthorize("#email == authentication.principal.email")
     public ResponseEntity<UserOutputDTO> updateUser(@PathVariable String email, @RequestBody UserInputDTO userToUpdateInputDTO) {
         return ResponseEntity.ok(userService.updateUser(email, userToUpdateInputDTO));
     }
 
     @PutMapping("/{email}/rsvp/{event_id}")
+    @PreAuthorize("#email == authentication.principal.email")
     public ResponseEntity<UserOutputDTO> assignEventToUser(@PathVariable String email, @PathVariable Long event_id) {
         return ResponseEntity.ok(userService.assignEventToUser(email, event_id));
     }
 
     @PutMapping("/{email}/task/{task_id}")
+    @PreAuthorize("#email == authentication.principal.email or hasAnyRole('CAT', 'LION')")
     public ResponseEntity<UserOutputDTO> assignTaskToUser(@PathVariable String email, @PathVariable Long task_id) {
         return ResponseEntity.ok(userService.assignTaskToUser(email, task_id));
     }
@@ -61,6 +63,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{email}")
+    @PreAuthorize("#email == authentication.principal.email or hasRole('LION')")
     public void deleteUser(@PathVariable String email) {
         userService.deleteUser(email);
     }

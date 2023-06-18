@@ -35,7 +35,6 @@ public class UserOutputDTO {
     private String phoneNumber;
     @Size(min=0, max=500)
     private String bio;
-    private boolean active;
     private List<Event> rsvp;
     private List<Task> tasks;
     private List<Event> createdEvents;
