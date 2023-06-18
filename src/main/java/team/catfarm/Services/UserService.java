@@ -54,8 +54,14 @@ public class UserService {
         if (userRepository.findByEmail(userInputDTO.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("User with email " + userInputDTO.getEmail() + " already exists");
         }
+
+        // Encode the password before saving
+        String encodedPassword = passwordEncoder.encode(userInputDTO.getPassword());
+        userInputDTO.setPassword(encodedPassword);
+
         return transferModelToOutputDTO(userRepository.save(transferInputDTOToModel(userInputDTO)));
     }
+
 
     public UserOutputDTO getUserByEmail(String email) {
         User user = userRepository.findByEmail(email)
@@ -86,7 +92,11 @@ public class UserService {
         User existingUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));
 
-        BeanUtils.copyProperties(userToUpdateInputDTO, existingUser);
+        // Encode the password before saving
+        String encodedPassword = passwordEncoder.encode(userToUpdateInputDTO.getPassword());
+        existingUser.setPassword(encodedPassword);
+
+        BeanUtils.copyProperties(userToUpdateInputDTO, existingUser, "password");
 
         return transferModelToOutputDTO(userRepository.save(existingUser));
     }
