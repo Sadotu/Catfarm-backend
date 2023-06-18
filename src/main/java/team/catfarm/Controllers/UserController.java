@@ -68,10 +68,10 @@ public class UserController {
         userService.deleteUser(email);
     }
 
-//    @GetMapping(value = "/{username}/authorities")
-//    public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
-//        return ResponseEntity.ok().body(userService.getAuthorities(username));
-//    }
+    @GetMapping(value = "/authorities/{email}")
+    public ResponseEntity<Object> getUserAuthorities(@PathVariable("email") String email) {
+        return ResponseEntity.ok().body(userService.getAuthorities(email));
+    }
 //
 //    @PostMapping(value = "/{username}/authorities")
 //    public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {

@@ -10,6 +10,7 @@ import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
+import team.catfarm.Models.Authority;
 import team.catfarm.Models.Event;
 import team.catfarm.Models.Task;
 import team.catfarm.Models.User;
@@ -20,6 +21,7 @@ import team.catfarm.Repositories.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -162,12 +164,15 @@ public class UserService {
 
     // Security
 
-//    public Set<Authority> getAuthorities(String username) {
-//        if (!userRepository.existsById(username)) throw new ResourceNotFoundException(username);
-//        User user = userRepository.findById(username).get();
-//        UserOutputDTO userOutputDTO = fromUser(user);
-//        return userOutputDTO.getAuthorities();
-//    }
+    public Set<Authority> getAuthorities(String email) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            User user = userRepository.findByEmail(email).get();
+            UserOutputDTO userOutputDTO = fromUser(user);
+            return userOutputDTO.getAuthorities();
+        } else {
+            throw new ResourceNotFoundException("User does not exist, unable to retrieve authorities");
+        }
+    }
 
 //    public void addAuthority(String username, String authority) {
 //

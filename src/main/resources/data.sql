@@ -98,7 +98,7 @@ INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, 
 VALUES (true, 'michael.johnson@example.com', 'Michael Johnson', 'he/him', 35, '5555555555', 'I am a teacher', '$2a$12$bCo4rM70ylmXuDk9awMmFexWAf1ntxQ/5THBmJA21rfU7UvANldCK', true);
 --password4
 INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter)
-VALUES (true, 'emily.davis@example.com', 'Emily Davis', 'she/her', 28, '1111111111', 'I am a writer', '$2a$12$O7gq/tqhjQf2LPtL.FJCmedh8GWv12D0AerTLDttgBFyCglhV6zk.', true);
+    VALUES (true, 'emily.davis@example.com', 'Emily Davis', 'she/her', 28, '1111111111', 'I am a writer', '$2a$12$O7gq/tqhjQf2LPtL.FJCmedh8GWv12D0AerTLDttgBFyCglhV6zk.', true);
 --password5
 INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter)
 VALUES (true, 'david.wilson@example.com', 'David Wilson', 'he/him', 32, '9999999999', 'I am an accountant', '$2a$12$i.mCOyyQwYFmNf.8WZ91T.gQ8SntiSrPep3PREXEO/dvoFZvNHe46', true);

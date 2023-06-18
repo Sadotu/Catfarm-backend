@@ -74,6 +74,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/users/{email}/usercreatesevent/{event_id}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/users/{email}/usercreatestask/{task_id}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.DELETE, "/users/delete/{email}").hasAnyRole("KITTEN", "CAT", "LION")
+                .requestMatchers(HttpMethod.GET, "/users/authorities/{email}").hasAnyRole("KITTEN", "CAT", "LION")
                 //files
                 .requestMatchers(HttpMethod.POST, "/files/upload").hasAnyRole("CAT", "LION")
                 .requestMatchers(HttpMethod.GET, "/files/{id}").hasAnyRole("CAT", "LION")
