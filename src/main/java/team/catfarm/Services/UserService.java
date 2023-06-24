@@ -2,11 +2,15 @@ package team.catfarm.Services;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
+import team.catfarm.Models.Authority;
 import team.catfarm.Models.Event;
 import team.catfarm.Models.Task;
 import team.catfarm.Models.User;
@@ -16,12 +20,17 @@ import team.catfarm.Repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
     private final EventRepository eventRepository;
+    @Autowired
+    @Lazy
+    private PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository, TaskRepository taskRepository, EventRepository eventRepository) {
         this.userRepository = userRepository;
@@ -45,8 +54,14 @@ public class UserService {
         if (userRepository.findByEmail(userInputDTO.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("User with email " + userInputDTO.getEmail() + " already exists");
         }
+
+        // Encode the password before saving
+        String encodedPassword = passwordEncoder.encode(userInputDTO.getPassword());
+        userInputDTO.setPassword(encodedPassword);
+
         return transferModelToOutputDTO(userRepository.save(transferInputDTOToModel(userInputDTO)));
     }
+
 
     public UserOutputDTO getUserByEmail(String email) {
         User user = userRepository.findByEmail(email)
@@ -55,8 +70,17 @@ public class UserService {
         return transferModelToOutputDTO(user);
     }
 
+    public User getUser(String username) {
+        Optional<User> optionalUser = userRepository.findByEmail(username);
+        if (optionalUser.isPresent()){
+            return optionalUser.get();
+        }else {
+            throw new ResourceNotFoundException(username);
+        }
+    }
+
     public List<UserOutputDTO> getActiveUsers() {
-        List<User> activeUserList = userRepository.findByActive(true);
+        List<User> activeUserList = userRepository.findByEnabled(true);
         List<UserOutputDTO> activeUserOutputDTOList = new ArrayList<>();
 
         for (User u : activeUserList)  { activeUserOutputDTOList.add(transferModelToOutputDTO(u)); }
@@ -68,7 +92,11 @@ public class UserService {
         User existingUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));
 
-        BeanUtils.copyProperties(userToUpdateInputDTO, existingUser);
+        // Encode the password before saving
+        String encodedPassword = passwordEncoder.encode(userToUpdateInputDTO.getPassword());
+        existingUser.setPassword(encodedPassword);
+
+        BeanUtils.copyProperties(userToUpdateInputDTO, existingUser, "password");
 
         return transferModelToOutputDTO(userRepository.save(existingUser));
     }
@@ -142,5 +170,36 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));
 
         userRepository.delete(user);
+    }
+
+    // Security
+
+    public Set<Authority> getAuthorities(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(email));
+
+        UserOutputDTO userOutputDTO = transferModelToOutputDTO(user);
+        return userOutputDTO.getAuthorities();
+    }
+
+
+    public void addAuthority(String email, String authority) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(email));
+
+        user.addAuthority(new Authority(email, authority));
+        userRepository.save(user);
+    }
+
+
+    public void removeAuthority(String email, String authority) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(email));
+        Authority authorityToRemove = user.getAuthorities().stream()
+                .filter(a -> a.getAuthority().equalsIgnoreCase(authority))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Authority not found"));
+        user.removeAuthority(authorityToRemove);
+        userRepository.save(user);
     }
 }

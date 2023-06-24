@@ -2,20 +2,23 @@ package team.catfarm.DTO.Output;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import team.catfarm.Models.Event;
-import team.catfarm.Models.File;
-import team.catfarm.Models.Task;
-import team.catfarm.Models.User;
+import team.catfarm.Models.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 public class UserOutputDTO {
+    public Boolean enabled;
+    public String apikey;
+    @JsonSerialize
+    public Set<Authority> authorities;
     @Email
     @NotBlank
     private String email;
@@ -32,8 +35,6 @@ public class UserOutputDTO {
     private String phoneNumber;
     @Size(min=0, max=500)
     private String bio;
-    private String role;
-    private boolean active;
     private List<Event> rsvp;
     private List<Task> tasks;
     private List<Event> createdEvents;

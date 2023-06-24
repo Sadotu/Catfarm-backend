@@ -13,6 +13,9 @@ import java.util.List;
 @Getter
 @Setter
 public class UserInputDTO {
+
+    public Boolean enabled;
+    public String apiKey;
     private String email;
     private String fullName;
     private String pronouns;
@@ -21,8 +24,8 @@ public class UserInputDTO {
     private String bio;
     private String password;
     private boolean newsletter;
-    private String role;
-    private boolean active;
+
+    //relations
     private List<Event> rsvp;
     private List<Task> tasks;
     private List<Event> createdEvents;

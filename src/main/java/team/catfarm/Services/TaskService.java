@@ -1,13 +1,17 @@
 package team.catfarm.Services;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import team.catfarm.DTO.Input.TaskInputDTO;
 import team.catfarm.DTO.Output.TaskOutputDTO;
+import team.catfarm.Exceptions.AccessDeniedException;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
 import team.catfarm.Models.Task;
+import team.catfarm.Models.User;
 import team.catfarm.Repositories.EventRepository;
 import team.catfarm.Repositories.FileRepository;
 import team.catfarm.Repositories.TaskRepository;
@@ -21,12 +25,13 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final EventRepository eventRepository;
-
+    private final UserService userService;
     private final FileRepository fileRepository;
 
-    public TaskService(TaskRepository taskRepository, EventRepository eventRepository, FileRepository fileRepository) {
+    public TaskService(TaskRepository taskRepository, EventRepository eventRepository, UserService userService, FileRepository fileRepository) {
         this.taskRepository = taskRepository;
         this.eventRepository = eventRepository;
+        this.userService = userService;
         this.fileRepository = fileRepository;
     }
 
@@ -64,6 +69,18 @@ public class TaskService {
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id " + id));
 
         return transferModelToOutputDTO(task);
+    }
+
+    public List<TaskOutputDTO> getTasksByUser(String user_email) {
+        System.out.println(user_email);
+        User user = userService.getUser(user_email);
+        List<Task> tasks = taskRepository.findByAssignedTo(user);
+        List<TaskOutputDTO> taskOutputDTOS = new ArrayList<>();
+
+        for (Task t : tasks) {
+            taskOutputDTOS.add(transferModelToOutputDTO(t));
+        }
+        return taskOutputDTOS;
     }
 
 //    public List<TaskOutputDTO> getTasksByFilter(String filter) {
@@ -116,6 +133,19 @@ public class TaskService {
         if (optionalTask.isEmpty()) {
             throw new ResourceNotFoundException("Task not found with ID: " + id);
         }
+
+        Task task = optionalTask.get();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+
+        boolean isCurrentUserAssigned = task.getAssignedTo().contains(currentUsername);
+        boolean isCurrentUserLion = authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_lion"));
+
+        if (!isCurrentUserAssigned && !isCurrentUserLion) {
+            throw new AccessDeniedException("You are not authorized to delete this task.");
+        }
+
         taskRepository.deleteById(id);
     }
 }

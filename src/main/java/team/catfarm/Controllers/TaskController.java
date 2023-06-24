@@ -1,11 +1,9 @@
 package team.catfarm.Controllers;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.TaskInputDTO;
-import team.catfarm.DTO.Output.FileOutputDTO;
 import team.catfarm.DTO.Output.TaskOutputDTO;
 import team.catfarm.Services.TaskService;
 
@@ -17,8 +15,11 @@ import java.util.List;
 @RequestMapping("/tasks")
 public class TaskController {
 
-    @Autowired
-    private TaskService taskService;
+    private final TaskService taskService;
+
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
 
     @PostMapping("/add")
     public ResponseEntity<TaskOutputDTO> addTask(@RequestBody TaskInputDTO taskInputDTO) throws URISyntaxException {
@@ -31,13 +32,17 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
+    @GetMapping("/user_tasks/{user_email}")
+    public ResponseEntity<List<TaskOutputDTO>> getTasksByUser(@PathVariable String user_email) {
+        return ResponseEntity.ok(taskService.getTasksByUser(user_email));
+    }
+
 //    @GetMapping("/{filter}")
 //    public ResponseEntity<List<TaskOutputDTO>> getTasksByFilter(@PathVariable String filter) {
 //        return ResponseEntity.ok(taskService.getTasksByFilter(filter));
 //    }
 
     // create get for tasks of individual users
-    // create get for tasks of individual colors
     // create get for tasks of individual labels
     // create get for completed tasks
     // the backend only does the first filter, multiple filters are handled by the frontend
@@ -58,7 +63,7 @@ public class TaskController {
         return ResponseEntity.ok(taskService.assignFilesToTask(id, task_id));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteTaskById(@PathVariable Long id) {
         taskService.deleteTaskById(id);
         return ResponseEntity.noContent().build();

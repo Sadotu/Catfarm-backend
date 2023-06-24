@@ -9,7 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,10 +33,11 @@ public class User {
     private int age;
     private String phoneNumber;
     private String bio;
+    @Column(nullable = false, length = 255)
     private String password;
     private boolean newsletter;
-    private String role;
-    private boolean active;
+    private boolean enabled;
+    private String apiKey;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -69,4 +72,20 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_picture")
     private File profilePicture;
+
+    @OneToMany(
+            targetEntity = Authority.class,
+            mappedBy = "username",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    private Set<Authority> authorities = new HashSet<>();
+
+    public Set<Authority> getAuthorities() { return authorities; }
+    public void addAuthority(Authority authority) {
+        this.authorities.add(authority);
+    }
+    public void removeAuthority(Authority authority) {
+        this.authorities.remove(authority);
+    }
 }
