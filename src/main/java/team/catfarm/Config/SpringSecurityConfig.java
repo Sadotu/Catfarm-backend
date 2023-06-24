@@ -94,7 +94,7 @@ public class SpringSecurityConfig {
                 //tasks
                 .requestMatchers(HttpMethod.POST, "/tasks/add").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.GET, "/tasks/{id}").hasAnyRole("KITTEN", "CAT", "LION")
-                .requestMatchers(HttpMethod.GET, "/tasks/user_tasks/{user_email}/").hasAnyRole("KITTEN", "CAT", "LION")
+                .requestMatchers(HttpMethod.GET, "/tasks/user_tasks/{user_email}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/tasks/update/{id}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/tasks/{id}/event/{event_id}").hasAnyRole("CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/tasks/{id}/files/").hasAnyRole("CAT", "LION")

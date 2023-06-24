@@ -178,7 +178,7 @@ public class UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException(email));
 
-        UserOutputDTO userOutputDTO = fromUser(user);
+        UserOutputDTO userOutputDTO = transferModelToOutputDTO(user);
         return userOutputDTO.getAuthorities();
     }
 
@@ -201,31 +201,5 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("Authority not found"));
         user.removeAuthority(authorityToRemove);
         userRepository.save(user);
-    }
-
-
-    public static UserOutputDTO fromUser(User user){
-
-        var dto = new UserOutputDTO();
-
-        dto.setEmail(user.getEmail());
-        dto.enabled = user.isEnabled();
-        dto.apikey = user.getApiKey();
-        dto.authorities = user.getAuthorities();
-
-        return dto;
-    }
-
-    public User toUser(UserInputDTO userInputDTO) {
-
-        var user = new User();
-
-        user.setEmail(userInputDTO.getEmail());
-        user.setPassword(passwordEncoder.encode(userInputDTO.getPassword()));
-        user.setEnabled(userInputDTO.getEnabled());
-        user.setApiKey(userInputDTO.getApiKey());
-        user.setEmail(userInputDTO.getEmail());
-
-        return user;
     }
 }

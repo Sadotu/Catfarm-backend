@@ -72,6 +72,7 @@ public class TaskService {
     }
 
     public List<TaskOutputDTO> getTasksByUser(String user_email) {
+        System.out.println(user_email);
         User user = userService.getUser(user_email);
         List<Task> tasks = taskRepository.findByAssignedTo(user);
         List<TaskOutputDTO> taskOutputDTOS = new ArrayList<>();
