@@ -1,7 +1,9 @@
 package team.catfarm.Services;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import team.catfarm.DTO.Input.FileInputDTO;
 import team.catfarm.DTO.Output.FileOutputDTO;
 import team.catfarm.Exceptions.FileStorageException;
@@ -13,10 +15,8 @@ import team.catfarm.Repositories.FileRepository;
 import team.catfarm.Repositories.TaskRepository;
 import team.catfarm.Repositories.UserRepository;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +25,6 @@ public class FileService {
     private final FileRepository fileRepository;
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
-//    private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList("txt", "pdf", "docx");
 
     public FileService(FileRepository fileRepository, TaskRepository taskRepository, UserRepository userRepository) {
         this.fileRepository = fileRepository;
@@ -45,84 +44,56 @@ public class FileService {
         return file;
     }
 
-//    public boolean isFileExtensionValid(String fileName) {
-//        String extension = getFileExtension(fileName);
-//        return ALLOWED_EXTENSIONS.contains(extension.toLowerCase());
-//    }
-//
-//    private String getFileExtension(String fileName) {
-//        int dotIndex = fileName.lastIndexOf(".");
-//        if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
-//            return fileName.substring(dotIndex + 1);
-//        }
-//        return "";
-//    }
+    public List<FileOutputDTO> uploadFilesAndMetadata(List<MultipartFile> files) throws FileStorageException {
+        List<File> createdFiles = new ArrayList<>();
 
-    public List<FileOutputDTO> uploadFiles(List<FileInputDTO> fileInputDTOList) throws FileStorageException {
-//        String fileName = StringUtils.cleanPath(file.getFileName());
-//
-//        if (fileName.contains("..")) {
-//            throw new FileStorageException("Invalid file path.");
-//        }
-//
-//        String originalName = fileName;
-//        String location = file.getLocation();
-//        int count = 0;
-//        while (fileRepository.findByFileNameAndLocation(fileName, location).isPresent()) {
-//            count++;
-//            fileName = StringUtils.cleanPath(FilenameUtils.getBaseName(originalName) + "(" + count + ")" + "." + FilenameUtils.getExtension(originalName));
-//        }
-//
-//        file.setFileName(fileName);
+        for (MultipartFile multipartFile : files) {
 
-            List<File> createdFiles = new ArrayList<>();
+            File fileEntity = new File();
 
-            for (FileInputDTO t : fileInputDTOList) {
-
-                if (t.getTask().getId() != null) {
-                    Optional<Task> taskOptional = taskRepository.findById(t.getTask().getId());
-                    if (taskOptional.isPresent()) {
-                        File file = transferInputDTOToModel(t);
-                        file.setTask(taskOptional.get());
-
-//                        String fileName = StringUtils.cleanPath(file.getFileName());
-//                        System.out.println(fileName);
-//
-//                        if (fileName.contains("..")) {
-//                            throw new FileStorageException("Invalid file path.");
-//                        }
-//
-//                        if (!isFileExtensionValid(fileName)) {
-//                            throw new FileStorageException("Invalid file extension.");
-//                        }
-
-                        fileRepository.save(file);
-                        createdFiles.add(file);
-                    } // add else ifs for users
-                } else {
-//                    File file = transferInputDTOToModel(t);
-//
-//                    String fileName = StringUtils.cleanPath(file.getFileName());
-//                    System.out.println(fileName);
-//
-//                    if (fileName.contains("..")) {
-//                        throw new FileStorageException("Invalid file path.");
-//                    }
-//
-//                    if (!isFileExtensionValid(fileName)) {
-//                        throw new FileStorageException("Invalid file extension.");
-//                    }
-
-                    createdFiles.add(fileRepository.save(transferInputDTOToModel(t)));
-                }
+            // Set the docFile
+            try {
+                fileEntity.setDocFile(multipartFile.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new FileStorageException("Failed to store file " + multipartFile.getOriginalFilename());
             }
 
-            List<FileOutputDTO> createdFilesOutputDTO = new ArrayList<>();
-            for (File t : createdFiles) {
-                FileOutputDTO filesOutputDTO = transferModelToOutputDTO(t);
-                createdFilesOutputDTO.add(filesOutputDTO);
-            }
+            // Set the fileName
+            String originalFileName = multipartFile.getOriginalFilename();
+            fileEntity.setFileName(originalFileName);
+
+            // Set the extension
+            String extension = originalFileName != null && originalFileName.lastIndexOf(".") > 0
+                    ? originalFileName.substring(originalFileName.lastIndexOf(".") + 1)
+                    : null;
+            fileEntity.setExtension(extension);
+
+            // Set the size
+            fileEntity.setSize(multipartFile.getSize());
+
+            // Set the uploadDate
+            fileEntity.setUploadDate(new Date());
+
+            // ... your existing code for saving to the repository ...
+
+            fileRepository.save(fileEntity);
+            createdFiles.add(fileEntity);
+        }
+
+        // Convert the created File entities to FileOutputDTO
+        List<FileOutputDTO> createdFilesOutputDTO = new ArrayList<>();
+        for (File createdFile : createdFiles) {
+            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(createdFile);
+            createdFilesOutputDTO.add(fileOutputDTO);
+        }
+
         return createdFilesOutputDTO;
+    }
+
+    @Transactional
+    public File findFileById(Long id) {
+        return fileRepository.findById(id).orElse(null);
     }
 
     public FileOutputDTO getFileById(Long id) {
@@ -146,18 +117,6 @@ public class FileService {
         return fileOutputDTOList;
     }
 
-//    public List<FileOutputDTO> getFilesByEventId(Long eventId) {
-//        List<File> fileList = fileRepository.findByEventId(eventId);
-//        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
-//
-//        for (File f : fileList) {
-//            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
-//            fileOutputDTOList.add(fileOutputDTO);
-//        }
-//
-//        return fileOutputDTOList;
-//    }
-//
 //    public List<FileOutputDTO> getFilesByUserEmail(String email) {
 //        List<File> fileList = fileRepository.findByEmail(email);
 //        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
@@ -180,19 +139,6 @@ public class FileService {
 //        }
 //
 //        return fileOutputDTOList;
-//    }
-
-//    public List<File> searchFiles(String term, String currentDirectory) {
-//        if (term == null || term.trim().isEmpty()) {
-//            throw new IllegalArgumentException("Search term cannot be blank.");
-//        }
-//        if (currentDirectory == null || currentDirectory.trim().isEmpty()) {
-//            throw new IllegalArgumentException("Current directory cannot be blank.");
-//        }
-//
-//        List<File> searchResults = fileRepository.searchFiles(term, currentDirectory);
-//
-//        return searchResults;
 //    }
 
     public List<FileOutputDTO> updateFilesById(List<FileInputDTO> fileInputDTOList) {

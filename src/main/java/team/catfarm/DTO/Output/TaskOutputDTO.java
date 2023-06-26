@@ -10,6 +10,7 @@ import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
 import team.catfarm.Models.User;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class TaskOutputDTO {
     private Date deadline;
     @Size(min=0, max=500)
     private String description;
-    private boolean accepted;
+    private List<String> toDos = new ArrayList<>();
     private boolean completed;
     @JsonIgnore
     private Event event;

@@ -67,18 +67,6 @@ public class TaskTest {
     }
 
     @Test
-    public void testAccepted() {
-        // Arrange
-        boolean accepted = true;
-
-        // Act
-        task.setAccepted(accepted);
-
-        // Assert
-        assertEquals(accepted, task.isAccepted());
-    }
-
-    @Test
     public void testCompleted() {
         // Arrange
         boolean completed = true;

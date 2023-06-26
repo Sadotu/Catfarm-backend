@@ -1,32 +1,32 @@
-INSERT INTO files (id, file_name, type, extension, size, location, upload_date)
-VALUES (101, 'document', 'document', 'docx', 1024.5, 'documents/', '2023-05-18');
+INSERT INTO files (id, file_name, extension, size, location, upload_date)
+VALUES (101, 'document', 'docx', 1024.5, 'documents/', '2023-05-18');
 
-INSERT INTO files (id, file_name, type, extension, size, location, upload_date)
-VALUES (102, 'image', 'image', 'png', 2048.0, 'images/', '2023-05-18');
+INSERT INTO files (id, file_name, extension, size, location, upload_date)
+VALUES (102, 'image', 'png', 2048.0, 'images/', '2023-05-18');
 
-INSERT INTO files (id, file_name, type, extension, size, location, upload_date)
-VALUES (103, 'presentation', 'document', 'pptx', 5120.75, 'presentations/', '2023-05-18');
+INSERT INTO files (id, file_name, extension, size, location, upload_date)
+VALUES (103, 'presentation', 'pptx', 5120.75, 'presentations/', '2023-05-18');
 
-INSERT INTO files (id, file_name, type, extension, size, location, upload_date)
-VALUES (104, 'video', 'video', 'mp4', 8192.0, 'videos/', '2023-05-18');
+INSERT INTO files (id, file_name, extension, size, location, upload_date)
+VALUES (104, 'video', 'mp4', 8192.0, 'videos/', '2023-05-18');
 
-INSERT INTO files (id, file_name, type, extension, size, location, upload_date)
-VALUES (105, 'spreadsheet', 'document', 'xlsx', 3072.25, 'spreadsheets/', '2023-05-18');
+INSERT INTO files (id, file_name, extension, size, location, upload_date)
+VALUES (105, 'spreadsheet', 'xlsx', 3072.25, 'spreadsheets/', '2023-05-18');
 
-INSERT INTO files (id, file_name, type, extension, size, location, upload_date)
-VALUES (106, 'audio', 'audio', 'mp3', 512.75, 'audio/', '2023-05-18');
+INSERT INTO files (id, file_name, extension, size, location, upload_date)
+VALUES (106, 'audio', 'mp3', 512.75, 'audio/', '2023-05-18');
 
-INSERT INTO files (id, file_name, type, extension, size, location, upload_date)
-VALUES (107, 'code', 'text', 'java', 204.5, 'code/', '2023-05-18');
+INSERT INTO files (id, file_name, extension, size, location, upload_date)
+VALUES (107, 'code', 'java', 204.5, 'code/', '2023-05-18');
 
-INSERT INTO files (id, file_name, type, extension, size, location, upload_date)
-VALUES (108, 'archive', 'archive', 'zip', 4096.0, 'archives/', '2023-05-18');
+INSERT INTO files (id, file_name, extension, size, location, upload_date)
+VALUES (108, 'archive', 'zip', 4096.0, 'archives/', '2023-05-18');
 
-INSERT INTO files (id, file_name, type, extension, size, location, upload_date)
-VALUES (109, 'document2', 'document', 'pdf', 512.0, 'documents/', '2023-05-18');
+INSERT INTO files (id, file_name, extension, size, location, upload_date)
+VALUES (109, 'document2', 'pdf', 512.0, 'documents/', '2023-05-18');
 
-INSERT INTO files (id, file_name, type, extension, size, location, upload_date)
-VALUES (110, 'image2', 'image', 'jpg', 1024.0, 'images/', '2023-05-18');
+INSERT INTO files (id, file_name, extension, size, location, upload_date)
+VALUES (110, 'image2', 'jpg', 1024.0, 'images/', '2023-05-18');
 
 INSERT INTO events (id, name, start_time, end_time, description, color)
 VALUES (101, 'Event A', '2023-05-22T09:00:00', '2023-05-22T11:00:00', 'First event', 'red');
@@ -58,35 +58,35 @@ VALUES (109, 'Event I', '2023-05-30T12:00:00', '2023-05-30T14:00:00', 'Ninth eve
 INSERT INTO events (id, name, start_time, end_time, description, color)
 VALUES (110, 'Event J', '2023-05-31T11:00:00', '2023-05-31T13:00:00', 'Tenth event', 'cyan');
 
-INSERT INTO tasks (id, name_task, deadline, description, accepted, completed)
-VALUES (101, 'Task A', '2023-06-01', 'Task A description', true, false);
+INSERT INTO tasks (id, name_task, deadline, description, completed)
+VALUES (101, 'Task A', '2023-06-01', 'Task A description', false);
 
-INSERT INTO tasks (id, name_task, deadline, description, accepted, completed)
-VALUES (102, 'Task B', '2023-06-02', 'Task B description', false, true);
+INSERT INTO tasks (id, name_task, deadline, description, completed)
+VALUES (102, 'Task B', '2023-06-02', 'Task B description', true);
 
-INSERT INTO tasks (id, name_task, deadline, description, accepted, completed)
-VALUES (103, 'Task C', '2023-06-03', 'Task C description', true, true);
+INSERT INTO tasks (id, name_task, deadline, description, completed)
+VALUES (103, 'Task C', '2023-06-03', 'Task C description', true);
 
-INSERT INTO tasks (id, name_task, deadline, description, accepted, completed)
-VALUES (104, 'Task D', '2023-06-04', 'Task D description', false, false);
+INSERT INTO tasks (id, name_task, deadline, description, completed)
+VALUES (104, 'Task D', '2023-06-04', 'Task D description', false);
 
-INSERT INTO tasks (id, name_task, deadline, description, accepted, completed)
-VALUES (105, 'Task E', '2023-06-05', 'Task E description', true, false);
+INSERT INTO tasks (id, name_task, deadline, description, completed)
+VALUES (105, 'Task E', '2023-06-05', 'Task E description', false);
 
-INSERT INTO tasks (id, name_task, deadline, description, accepted, completed)
-VALUES (106, 'Task F', '2023-06-06', 'Task F description', false, true);
+INSERT INTO tasks (id, name_task, deadline, description, completed)
+VALUES (106, 'Task F', '2023-06-06', 'Task F description', true);
 
-INSERT INTO tasks (id, name_task, deadline, description, accepted, completed)
-VALUES (107, 'Task G', '2023-06-07', 'Task G description', true, true);
+INSERT INTO tasks (id, name_task, deadline, description, completed)
+VALUES (107, 'Task G', '2023-06-07', 'Task G description', true);
 
-INSERT INTO tasks (id, name_task, deadline, description, accepted, completed)
-VALUES (108, 'Task H', '2023-06-08', 'Task H description', false, false);
+INSERT INTO tasks (id, name_task, deadline, description, completed)
+VALUES (108, 'Task H', '2023-06-08', 'Task H description', false);
 
-INSERT INTO tasks (id, name_task, deadline, description, accepted, completed)
-VALUES (109, 'Task I', '2023-06-09', 'Task I description', true, false);
+INSERT INTO tasks (id, name_task, deadline, description, completed)
+VALUES (109, 'Task I', '2023-06-09', 'Task I description', false);
 
-INSERT INTO tasks (id, name_task, deadline, description, accepted, completed)
-VALUES (110, 'Task J', '2023-06-10', 'Task J description', false, true);
+INSERT INTO tasks (id, name_task, deadline, description, completed)
+VALUES (110, 'Task J', '2023-06-10', 'Task J description', true);
 --password1
 INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter)
 VALUES (true, 'john.doe@example.com', 'John Doe', 'he/him', 25, '1234567890', 'I am a software engineer', '$2a$12$DQsOkCGWcxRxN6uVvI3ztupqDYtXvAHbGYXfj7hoWxfhTj1XvzEwy', true);

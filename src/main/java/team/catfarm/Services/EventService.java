@@ -33,14 +33,14 @@ public class EventService {
         return eventOutputDTO;
     }
 
-    public boolean isEndTimeLaterThanStartTime(Event event) {
-        return event.getEndTime().isAfter(event.getStartTime());
-    }
-
     public Event transferInputDTOToModel(EventInputDTO eventInputDTO) {
         Event event = new Event();
         BeanUtils.copyProperties(eventInputDTO, event, "id");
         return event;
+    }
+
+    public boolean isEndTimeLaterThanStartTime(Event event) {
+        return event.getEndTime().isAfter(event.getStartTime());
     }
 
     public EventOutputDTO createEvent(EventInputDTO eventInputDTO) throws InvalidEventException {

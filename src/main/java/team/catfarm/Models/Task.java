@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,10 @@ public class Task {
     private String nameTask;
     private Date deadline;
     private String description;
-    private boolean accepted;
+    @ElementCollection
+    @CollectionTable(name = "task_todos", joinColumns = @JoinColumn(name = "task_id"))
+    @Column(name = "todo")
+    private List<String> toDos = new ArrayList<>();
     private boolean completed;
 
     @ManyToOne

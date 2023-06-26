@@ -16,7 +16,6 @@ public class FileOutputDTO {
     private Long id;
     @NotBlank
     private String fileName;
-    private String type;
     @NotBlank
     private String extension;
     @Max(value = 5000)

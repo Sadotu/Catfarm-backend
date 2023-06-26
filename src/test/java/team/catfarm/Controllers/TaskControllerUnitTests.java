@@ -1,5 +1,6 @@
 package team.catfarm.Controllers;
 
+import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -7,8 +8,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import team.catfarm.DTO.Input.TaskInputDTO;
 import team.catfarm.DTO.Output.TaskOutputDTO;
@@ -18,16 +32,46 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+//@WebMvcTest(TaskController.class)
+//@ActiveProfiles("test")
 public class TaskControllerUnitTests {
 
+//    @Autowired
     private MockMvc mockMvc;
+//    @MockBean
     private TaskService taskServiceMock;
+
+//    @Test
+//    @WithMockUser(username = "testuser", roles = "USER")
+//    void shouldReturnTaskId() throws Exception {
+//        Long taskId = 1L;
+//        TaskOutputDTO taskOutputDTO = new TaskOutputDTO();
+//
+//        Mockito.when(taskServiceMock.getTaskById(taskId)).thenReturn(taskOutputDTO);
+//
+//        this.mockMvc
+//                .perform(MockMvcRequestBuilders.get("/tasks/{taskId}"))
+//                .andDo(MockMvcResultHandlers.print())
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.taskID").value(1L));
+//    }
 
     @BeforeEach
     public void setUp() {
         taskServiceMock = mock(TaskService.class);
         TaskController taskController = new TaskController(taskServiceMock);
         mockMvc = MockMvcBuilders.standaloneSetup(taskController).build();
+    }
+
+    @Test
+    public void testGetTaskById() throws Exception {
+        Long taskId = 1L;
+        TaskOutputDTO taskOutputDTO = new TaskOutputDTO(); // set properties
+
+        when(taskServiceMock.getTaskById(taskId)).thenReturn(taskOutputDTO);
+
+        mockMvc.perform(get("/tasks/" + taskId))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -43,17 +87,6 @@ public class TaskControllerUnitTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(taskInputDTO)))
                 .andExpect(status().isCreated());
-    }
-
-    @Test
-    public void testGetTaskById() throws Exception {
-        Long taskId = 1L;
-        TaskOutputDTO taskOutputDTO = new TaskOutputDTO(); // set properties
-
-        when(taskServiceMock.getTaskById(taskId)).thenReturn(taskOutputDTO);
-
-        mockMvc.perform(get("/tasks/" + taskId))
-                .andExpect(status().isOk());
     }
 
     @Test
@@ -111,6 +144,30 @@ public class TaskControllerUnitTests {
         Long taskId = 1L;
         doNothing().when(taskServiceMock).deleteTaskById(taskId);
 
+        mockMvc.perform(delete("/tasks/delete/" + taskId))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void testAuthorizedDeleteTaskById() throws Exception {
+        Long taskId = 1L;
+        // Mock de beveiligingscontext om een geautoriseerde gebruiker te simuleren
+        SecurityContextHolder.getContext().setAuthentication(
+                new TestingAuthenticationToken("user", "password", "ROLE_CAT")
+        );
+        doNothing().when(taskServiceMock).deleteTaskById(taskId);
+        mockMvc.perform(delete("/tasks/delete/" + taskId))
+                .andExpect(status().isNoContent());
+    }
+
+    // Test voor ongeautoriseerde verwijdering
+    @Test
+    public void testUnauthorizedDeleteTaskById() throws Exception {
+        Long taskId = 1L;
+        // Mock de beveiligingscontext om een ongeautoriseerde gebruiker te simuleren
+        SecurityContextHolder.getContext().setAuthentication(
+                new TestingAuthenticationToken("user", "password", "ROLE_DOG")
+        );
         mockMvc.perform(delete("/tasks/delete/" + taskId))
                 .andExpect(status().isNoContent());
     }

@@ -20,8 +20,9 @@ public class File {
     @Id
     @GeneratedValue
     private Long id;
+    @Lob
+    private byte[] docFile;
     private String fileName;
-    private String type;
     private String extension;
     private double size;
     private String location;
