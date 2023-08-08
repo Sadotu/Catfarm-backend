@@ -49,7 +49,7 @@ public class FileController {
 //        }
 //    }
 
-    @GetMapping("/downloadFromDb/{id}")
+    @GetMapping("/download/{id}")
     public ResponseEntity<byte[]> downloadSingleFile(@PathVariable Long id) {
         File file = fileService.findFileById(id);
         byte[] docFile = file.getDocFile();
@@ -106,7 +106,7 @@ public class FileController {
     }
 
     @PutMapping("/{file_id}/profile_picture/{user_id}")
-    public ResponseEntity<FileOutputDTO> assignUserToProfilePicture(@PathVariable Long file_id, @PathVariable String user_id) {
+    public ResponseEntity<String> assignUserToProfilePicture(@PathVariable Long file_id, @PathVariable String user_id) {
         return ResponseEntity.ok(fileService.assignUserToProfilePicture(file_id, user_id));
     }
 

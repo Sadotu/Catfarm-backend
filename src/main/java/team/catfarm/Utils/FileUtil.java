@@ -1,5 +1,7 @@
 package team.catfarm.Utils;
 
+import org.springframework.http.MediaType;
+
 public class FileUtil {
 
     /**
@@ -28,33 +30,32 @@ public class FileUtil {
     }
 
     public static String getMimeType(String fileExtension) {
-        return switch (fileExtension.toLowerCase()) {
+        switch (fileExtension.toLowerCase()) {
             // Document formats
-            case "pdf" -> "application/pdf";
-            case "doc" -> "application/msword";
-            case "docx" -> "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-            case "txt" -> "text/plain";
-
+            case "pdf" -> {
+                return MediaType.APPLICATION_PDF_VALUE;
+            }
+            // Txt & Code files (e.g., .java, .c, .cpp, .py, etc.)
+            case "txt", "java", "c", "cpp", "py", "js", "css", "html" -> {
+                return MediaType.TEXT_PLAIN_VALUE;
+            }
+            case "json" -> {
+                return MediaType.APPLICATION_JSON_VALUE;
+            }
             // Image formats
-            case "png" -> "image/png";
-            case "jpg", "jpeg" -> "image/jpeg";
-
-            // Audio formats
-            case "mp3" -> "audio/mpeg";
-            case "wav" -> "audio/wav";
-            case "ogg" -> "audio/ogg";
-            case "m4a" -> "audio/mp4";
-
-            // Video formats
-            case "mp4" -> "video/mp4";
-            case "avi" -> "video/x-msvideo";
-            case "mov" -> "video/quicktime";
-            case "wmv" -> "video/x-ms-wmv";
-            case "flv" -> "video/x-flv";
-            case "mkv" -> "video/x-matroska";
-
-            // Add more mappings if needed
-            default -> "application/octet-stream";
-        };
+            case "png" -> {
+                return MediaType.IMAGE_PNG_VALUE;
+            }
+            case "jpg", "jpeg" -> {
+                return MediaType.IMAGE_JPEG_VALUE;
+            }
+            case "gif" -> {
+                return MediaType.IMAGE_GIF_VALUE;
+            }
+            // Default
+            default -> {
+                return MediaType.APPLICATION_OCTET_STREAM_VALUE;
+            }
+        }
     }
 }

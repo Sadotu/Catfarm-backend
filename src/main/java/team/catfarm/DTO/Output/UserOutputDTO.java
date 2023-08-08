@@ -1,14 +1,12 @@
 package team.catfarm.DTO.Output;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team.catfarm.Models.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -16,7 +14,7 @@ import java.util.Set;
 @Setter
 public class UserOutputDTO {
     public Boolean enabled;
-    public String apikey;
+    private Date creationDate;
     @JsonSerialize
     public Set<Authority> authorities;
     @Email

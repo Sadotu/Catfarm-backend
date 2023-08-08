@@ -8,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,7 +39,10 @@ public class User {
     private String password;
     private boolean newsletter;
     private boolean enabled;
-    private String apiKey;
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "creation_date", updatable = false)
+    private Date creationDate;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -51,8 +56,8 @@ public class User {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "task_user",
-            joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_email")
+            joinColumns = @JoinColumn(name = "user_email"),
+            inverseJoinColumns = @JoinColumn(name = "task_id")
     )
     @JsonIgnore
     private List<Task> tasks;
@@ -71,6 +76,7 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_picture")
+    @JsonIgnore
     private File profilePicture;
 
     @OneToMany(

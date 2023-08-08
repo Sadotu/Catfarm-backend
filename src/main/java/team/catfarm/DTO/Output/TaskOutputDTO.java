@@ -22,7 +22,7 @@ public class TaskOutputDTO {
     private String nameTask;
     @Future
     private Date deadline;
-    @Size(min=0, max=500)
+    @Size(min=0, max=5000)
     private String description;
     private List<String> toDos = new ArrayList<>();
     private boolean completed;

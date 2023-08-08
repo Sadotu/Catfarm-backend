@@ -87,21 +87,29 @@ VALUES (109, 'Task I', '2023-06-09', 'Task I description', false);
 
 INSERT INTO tasks (id, name_task, deadline, description, completed)
 VALUES (110, 'Task J', '2023-06-10', 'Task J description', true);
+
+INSERT INTO tasks (id, name_task, deadline, description, completed)
+VALUES (111, 'Task K', '2023-09-10', 'Task K description', false);
+
 --password1
-INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter)
-VALUES (true, 'john.doe@example.com', 'John Doe', 'he/him', 25, '1234567890', 'I am a software engineer', '$2a$12$DQsOkCGWcxRxN6uVvI3ztupqDYtXvAHbGYXfj7hoWxfhTj1XvzEwy', true);
+INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter, creation_date)
+VALUES (true, 'john.doe@example.com', 'John Doe', 'he/him', 25, '1234567890', 'I am a software engineer', '$2a$12$DQsOkCGWcxRxN6uVvI3ztupqDYtXvAHbGYXfj7hoWxfhTj1XvzEwy', true, '2023-08-08 14:32:18.836');
+
 --password2
-INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter)
-VALUES (true, 'super@user.com', 'Super User', 'she/her', 30, '9876543210', 'I am a Super User', '$2a$12$6TlNu8.162x5EWUny9rdKePV3EsH85FrxBfnpo8NgGZ3FXKPAjPXK', true);
+INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter, creation_date)
+VALUES (true, 'super@user.com', 'Super User', 'she/her', 30, '9876543210', 'I am a Super User', '$2a$12$6TlNu8.162x5EWUny9rdKePV3EsH85FrxBfnpo8NgGZ3FXKPAjPXK', true, '2023-08-08 14:32:18.836');
+
 --password3
-INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter)
-VALUES (true, 'michael.johnson@example.com', 'Michael Johnson', 'he/him', 35, '5555555555', 'I am a teacher', '$2a$12$bCo4rM70ylmXuDk9awMmFexWAf1ntxQ/5THBmJA21rfU7UvANldCK', true);
+INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter, creation_date)
+VALUES (true, 'michael.johnson@example.com', 'Michael Johnson', 'he/him', 35, '5555555555', 'I am a teacher', '$2a$12$bCo4rM70ylmXuDk9awMmFexWAf1ntxQ/5THBmJA21rfU7UvANldCK', true, '2023-08-08 14:32:18.836');
+
 --password4
-INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter)
-    VALUES (true, 'emily.davis@example.com', 'Emily Davis', 'she/her', 28, '1111111111', 'I am a writer', '$2a$12$O7gq/tqhjQf2LPtL.FJCmedh8GWv12D0AerTLDttgBFyCglhV6zk.', true);
+INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter, creation_date)
+VALUES (true, 'emily.davis@example.com', 'Emily Davis', 'she/her', 28, '1111111111', 'I am a writer', '$2a$12$O7gq/tqhjQf2LPtL.FJCmedh8GWv12D0AerTLDttgBFyCglhV6zk.', true, '2023-08-08 14:32:18.836');
+
 --password5
-INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter)
-VALUES (true, 'david.wilson@example.com', 'David Wilson', 'he/him', 32, '9999999999', 'I am an accountant', '$2a$12$i.mCOyyQwYFmNf.8WZ91T.gQ8SntiSrPep3PREXEO/dvoFZvNHe46', true);
+INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter, creation_date)
+VALUES (true, 'david.wilson@example.com', 'David Wilson', 'he/him', 32, '9999999999', 'I am an accountant', '$2a$12$i.mCOyyQwYFmNf.8WZ91T.gQ8SntiSrPep3PREXEO/dvoFZvNHe46', true, '2023-08-08 14:32:18.836');
 
 UPDATE files SET task_id = 101 WHERE id = 101;
 UPDATE files SET task_id = 102 WHERE id = 102;
@@ -120,3 +128,27 @@ INSERT INTO authorities (username, authority) VALUES ('super@user.com', 'ROLE_KI
 INSERT INTO authorities (username, authority) VALUES ('michael.johnson@example.com', 'ROLE_KITTEN');
 INSERT INTO authorities (username, authority) VALUES ('emily.davis@example.com', 'ROLE_CAT');
 INSERT INTO authorities (username, authority) VALUES ('david.wilson@example.com', 'ROLE_LION');
+
+INSERT INTO task_user (task_id, user_email) VALUES (101, 'emily.davis@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (102, 'emily.davis@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (103, 'emily.davis@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (104, 'emily.davis@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (105, 'emily.davis@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (106, 'emily.davis@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (107, 'emily.davis@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (108, 'emily.davis@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (109, 'emily.davis@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (110, 'emily.davis@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (111, 'emily.davis@example.com');
+
+INSERT INTO task_user (task_id, user_email) VALUES (101, 'michael.johnson@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (102, 'michael.johnson@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (103, 'michael.johnson@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (104, 'michael.johnson@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (105, 'michael.johnson@example.com');
+
+INSERT INTO task_user (task_id, user_email) VALUES (106, 'david.wilson@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (107, 'david.wilson@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (108, 'david.wilson@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (109, 'david.wilson@example.com');
+INSERT INTO task_user (task_id, user_email) VALUES (110, 'david.wilson@example.com');

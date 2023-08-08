@@ -9,7 +9,6 @@ import team.catfarm.DTO.Output.FileOutputDTO;
 import team.catfarm.Exceptions.FileStorageException;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.File;
-import team.catfarm.Models.Task;
 import team.catfarm.Models.User;
 import team.catfarm.Repositories.FileRepository;
 import team.catfarm.Repositories.TaskRepository;
@@ -38,11 +37,11 @@ public class FileService {
         return fileOutputDTO;
     }
 
-    public File transferInputDTOToModel(FileInputDTO fileInputDTO) {
-        File file = new File();
-        BeanUtils.copyProperties(fileInputDTO, file, "id");
-        return file;
-    }
+//    public File transferInputDTOToModel(FileInputDTO fileInputDTO) {
+//        File file = new File();
+//        BeanUtils.copyProperties(fileInputDTO, file, "id");
+//        return file;
+//    }
 
     public List<FileOutputDTO> uploadFilesAndMetadata(List<MultipartFile> files) throws FileStorageException {
         List<File> createdFiles = new ArrayList<>();
@@ -74,8 +73,6 @@ public class FileService {
 
             // Set the uploadDate
             fileEntity.setUploadDate(new Date());
-
-            // ... your existing code for saving to the repository ...
 
             fileRepository.save(fileEntity);
             createdFiles.add(fileEntity);
@@ -163,7 +160,7 @@ public class FileService {
         return updatedFilesOutputDTO;
     }
 
-    public FileOutputDTO assignUserToProfilePicture(Long file_id, String user_id) { // TO  DO: implement logic to make sure user can only do this for own account
+    public String assignUserToProfilePicture(Long file_id, String user_id) { // TO  DO: implement logic to make sure user can only do this for own account
         File file = fileRepository.findById(file_id)
                 .orElseThrow(() -> new ResourceNotFoundException("File with id " + file_id + " not found"));
 
@@ -175,7 +172,7 @@ public class FileService {
 
         user.setProfilePicture(file);
         userRepository.save(user);
-        return transferModelToOutputDTO(file);
+        return "Profile picture with id: " + file.getId() + " is assigned to user: " + user.getEmail();
     }
 
     public void deleteFileById(Long id) {

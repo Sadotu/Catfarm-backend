@@ -1,13 +1,12 @@
 package team.catfarm.DTO.Input;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
 import team.catfarm.Models.Task;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -15,7 +14,7 @@ import java.util.List;
 public class UserInputDTO {
 
     public Boolean enabled;
-    public String apiKey;
+    private Date creationDate;
     private String email;
     private String fullName;
     private String pronouns;
