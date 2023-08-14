@@ -37,16 +37,6 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getTasksByUser(user_email));
     }
 
-//    @GetMapping("/{filter}")
-//    public ResponseEntity<List<TaskOutputDTO>> getTasksByFilter(@PathVariable String filter) {
-//        return ResponseEntity.ok(taskService.getTasksByFilter(filter));
-//    }
-
-    // create get for tasks of individual users
-    // create get for tasks of individual labels
-    // create get for completed tasks
-    // the backend only does the first filter, multiple filters are handled by the frontend
-
     @PutMapping("/update/{id}")
     public ResponseEntity<TaskOutputDTO> updateTask(@PathVariable Long id, @Valid @RequestBody TaskInputDTO taskInputDTO) {
         TaskOutputDTO updatedTask = taskService.updateTaskById(id, taskInputDTO);

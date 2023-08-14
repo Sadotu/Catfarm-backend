@@ -83,10 +83,6 @@ public class TaskService {
         return taskOutputDTOS;
     }
 
-//    public List<TaskOutputDTO> getTasksByFilter(String filter) {
-//        return null;
-//    }
-
     public TaskOutputDTO updateTaskById(Long id, TaskInputDTO taskToUpdateInputDTO) {
         Task existingTask = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id " + id));

@@ -20,29 +20,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-//@WebMvcTest(TaskController.class)
-//@ActiveProfiles("test")
 public class TaskControllerUnitTests {
 
-//    @Autowired
     private MockMvc mockMvc;
-//    @MockBean
     private TaskService taskServiceMock;
-
-//    @Test
-//    @WithMockUser(username = "testuser", roles = "USER")
-//    void shouldReturnTaskId() throws Exception {
-//        Long taskId = 1L;
-//        TaskOutputDTO taskOutputDTO = new TaskOutputDTO();
-//
-//        Mockito.when(taskServiceMock.getTaskById(taskId)).thenReturn(taskOutputDTO);
-//
-//        this.mockMvc
-//                .perform(MockMvcRequestBuilders.get("/tasks/{taskId}"))
-//                .andDo(MockMvcResultHandlers.print())
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.taskID").value(1L));
-//    }
 
     @BeforeEach
     public void setUp() {
