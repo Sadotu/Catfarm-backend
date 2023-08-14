@@ -17,44 +17,44 @@ import java.util.Date;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-    @SpringBootTest
-    @AutoConfigureMockMvc(addFilters = false)
-    @ActiveProfiles("test")
-    public class TaskIntegrationTest {
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
+public class TaskIntegrationTest {
 
-        @Autowired
-        private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-        @Autowired
-        private TaskRepository taskRepository;
+    @Autowired
+    private TaskRepository taskRepository;
 
-        private Task testTask;
+    private Task testTask;
 
-        @BeforeEach
-        public void setup() {
-            testTask = new Task();
-            testTask.setNameTask("Test Task");
-            testTask.setDeadline(new Date());
-            testTask.setDescription("This is a test task.");
-            testTask.setCompleted(false);
+    @BeforeEach
+    public void setup() {
+        testTask = new Task();
+        testTask.setNameTask("Test Task");
+        testTask.setDeadline(new Date());
+        testTask.setDescription("This is a test task.");
+        testTask.setCompleted(false);
 
-            taskRepository.save(testTask);
-        }
+        taskRepository.save(testTask);
+    }
 
-        @AfterEach
-        public void tearDown() {
-            if (testTask.getId() != null) {
-                taskRepository.deleteById(testTask.getId());
-            }
-        }
-
-        @Test
-        public void testGetTaskById() throws Exception {
-            mockMvc.perform(get("/tasks/" + testTask.getId())
-                            .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                    .andExpect(jsonPath("$.id").value(testTask.getId()))
-                    .andExpect(jsonPath("$.nameTask").value("Test Task"));
+    @AfterEach
+    public void tearDown() {
+        if (testTask.getId() != null) {
+            taskRepository.deleteById(testTask.getId());
         }
     }
+
+    @Test
+    public void testGetTaskById() throws Exception {
+        mockMvc.perform(get("/tasks/" + testTask.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(testTask.getId()))
+                .andExpect(jsonPath("$.nameTask").value("Test Task"));
+    }
+}
