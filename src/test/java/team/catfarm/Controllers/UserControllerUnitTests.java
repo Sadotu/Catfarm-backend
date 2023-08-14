@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -24,6 +27,8 @@ import team.catfarm.Services.UserService;
 
 import java.util.*;
 
+@SpringBootTest
+@AutoConfigureMockMvc
 public class UserControllerUnitTests {
 
     private MockMvc mockMvc;
@@ -103,13 +108,18 @@ public class UserControllerUnitTests {
     @WithMockUser(username = "authorized@example.com", authorities = {"ROLE_CAT"})
     public void shouldReturnExceptionWhenUnauthorizedUserTriesToUpdate() throws Exception {
         String unauthorizedUserEmail = "unauthorized@example.com"; // Match the username in WithMockUser
-        UserInputDTO userInputDTO = new UserInputDTO(); // set properties
+        UserInputDTO userInputDTO = new UserInputDTO();
+
+        userInputDTO.setEmail("frans@example.com");
+        userInputDTO.setAge(30);
 
         mockMvc.perform(put("/users/update/" + unauthorizedUserEmail)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(userInputDTO)))
+                .andDo(print())
                 .andExpect(status().isForbidden());
     }
+
 
     @Test
     public void testAssignEventToUser() throws Exception {
@@ -121,6 +131,16 @@ public class UserControllerUnitTests {
 
         mockMvc.perform(put("/users/" + email + "/rsvp/" + eventId))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "differentUser@example.com", authorities = {"SOME_AUTHORITY"}) // Different username than the one in the path variable
+    public void testAssignEventToAnotherUser() throws Exception {
+        String email = "test@example.com";
+        Long eventId = 1L;
+
+        mockMvc.perform(put("/users/" + email + "/rsvp/" + eventId))
+                .andExpect(status().isForbidden()); // Expecting a 403 Forbidden response as the user isn't authorized to assign event to another user
     }
 
     @Test
