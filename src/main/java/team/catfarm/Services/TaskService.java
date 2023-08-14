@@ -138,9 +138,10 @@ public class TaskService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
 
-        boolean isCurrentUserAssigned = task.getAssignedTo().contains(currentUsername);
+        boolean isCurrentUserAssigned = task.getAssignedTo().stream()
+                .anyMatch(user -> user.getFullName().equals(currentUsername));
         boolean isCurrentUserLion = authentication.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_lion"));
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_LION"));
 
         if (!isCurrentUserAssigned && !isCurrentUserLion) {
             throw new AccessDeniedException("You are not authorized to delete this task.");

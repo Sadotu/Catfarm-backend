@@ -79,7 +79,6 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/users/remove_authorities/{email}/{authority}").hasRole("LION")
                 //files
                 .requestMatchers(HttpMethod.POST, "/files/upload").hasAnyRole("CAT", "LION")
-                .requestMatchers(HttpMethod.POST, "/files/single/uploadeDb").hasAnyRole("CAT", "LION")
                 .requestMatchers(HttpMethod.GET, "/files/download/{id}").hasAnyRole("CAT", "LION")
                 .requestMatchers(HttpMethod.GET, "/files/{id}").hasAnyRole("CAT", "LION")
                 .requestMatchers(HttpMethod.GET, "/files/path/{location}").hasAnyRole("CAT", "LION")

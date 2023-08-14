@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import team.catfarm.DTO.Input.FileInputDTO;
 import team.catfarm.DTO.Output.FileOutputDTO;
+import team.catfarm.Exceptions.FileStorageException;
 import team.catfarm.Models.File;
 import team.catfarm.Services.FileService;
 

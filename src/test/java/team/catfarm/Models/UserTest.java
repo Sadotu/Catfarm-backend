@@ -127,18 +127,6 @@ public class UserTest {
     }
 
     @Test
-    public void testApiKey() {
-        // Arrange
-        String apiKey = "apikey123";
-
-        // Act
-        user.setApiKey(apiKey);
-
-        // Assert
-        assertEquals(apiKey, user.getApiKey());
-    }
-
-    @Test
     public void testRsvp() {
         // Arrange
         List<Event> rsvp = Arrays.asList(new Event(), new Event());
