@@ -39,7 +39,7 @@ public class EventController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<EventOutputDTO> updateEvent(@PathVariable Long id, @RequestBody EventInputDTO eventToUpdateInputDTO) throws ResourceNotFoundException, InvalidEventException {
+    public ResponseEntity<EventOutputDTO> updateEvent(@Valid @PathVariable Long id, @RequestBody EventInputDTO eventToUpdateInputDTO) throws ResourceNotFoundException, InvalidEventException {
         EventOutputDTO updatedEvent = eventService.updateEvent(id, eventToUpdateInputDTO);
         return ResponseEntity.ok(updatedEvent);
     }
