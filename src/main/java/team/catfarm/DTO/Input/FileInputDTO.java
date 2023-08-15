@@ -12,7 +12,6 @@ import java.util.Date;
 public class FileInputDTO {
     private Long id;
     private String fileName;
-    private String type;
     private String extension;
     private double size;
     private String location;

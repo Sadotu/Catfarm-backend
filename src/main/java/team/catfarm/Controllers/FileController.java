@@ -2,15 +2,22 @@ package team.catfarm.Controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import team.catfarm.DTO.Input.FileInputDTO;
 import team.catfarm.DTO.Output.FileOutputDTO;
+import team.catfarm.Exceptions.FileStorageException;
 import team.catfarm.Models.File;
 import team.catfarm.Services.FileService;
 
 import java.util.List;
+
+import static team.catfarm.Utils.FileUtil.getFileExtension;
+import static team.catfarm.Utils.FileUtil.getMimeType;
 
 @RestController
 @RequestMapping("/files")
@@ -22,8 +29,45 @@ public class FileController {
     public FileController(FileService fileService) { this.fileService = fileService; }
 
     @PostMapping("/upload")
-    public ResponseEntity<List<FileOutputDTO>> uploadFiles(@RequestBody List<FileInputDTO> file) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(fileService.uploadFiles(file));
+    public ResponseEntity<?> uploadFiles(@RequestParam("file") List<MultipartFile> files) {
+        List<FileOutputDTO> uploadedFiles = fileService.uploadFilesAndMetadata(files);
+        return ResponseEntity.status(HttpStatus.CREATED).body(uploadedFiles);
+    }
+
+//    @GetMapping("/downloadFromDb/{id}")
+//    public ResponseEntity<byte[]> downloadSingleFile(@PathVariable Long id) {
+//        File file = fileService.findFileById(id);
+//        if (file != null && file.getDocFile() != null) {
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"");
+//            headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
+//
+//            return ResponseEntity.ok()
+//                    .headers(headers)
+//                    .body(file.getDocFile());
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+
+    @GetMapping("/download/{id}")
+    public ResponseEntity<byte[]> downloadSingleFile(@PathVariable Long id) {
+        File file = fileService.findFileById(id);
+        byte[] docFile = file.getDocFile();
+
+        if (docFile == null) {
+            throw new RuntimeException("There is no file yet.");
+        }
+
+        String fileExtension = getFileExtension(file.getFileName());
+        String mimeType = getMimeType(fileExtension);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(mimeType));
+        headers.setContentDispositionFormData("attachment", "file" + file.getFileName() + "." + fileExtension);
+        headers.setContentLength(docFile.length);
+
+        return new ResponseEntity<>(docFile, headers, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -63,7 +107,7 @@ public class FileController {
     }
 
     @PutMapping("/{file_id}/profile_picture/{user_id}")
-    public ResponseEntity<FileOutputDTO> assignUserToProfilePicture(@PathVariable Long file_id, @PathVariable String user_id) {
+    public ResponseEntity<String> assignUserToProfilePicture(@PathVariable Long file_id, @PathVariable String user_id) {
         return ResponseEntity.ok(fileService.assignUserToProfilePicture(file_id, user_id));
     }
 

@@ -10,10 +10,7 @@ import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
 import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
-import team.catfarm.Models.Authority;
-import team.catfarm.Models.Event;
-import team.catfarm.Models.Task;
-import team.catfarm.Models.User;
+import team.catfarm.Models.*;
 import team.catfarm.Repositories.EventRepository;
 import team.catfarm.Repositories.TaskRepository;
 import team.catfarm.Repositories.UserRepository;
@@ -41,6 +38,7 @@ public class UserService {
     public UserOutputDTO transferModelToOutputDTO(User user) {
         UserOutputDTO userOutputDTO = new UserOutputDTO();
         BeanUtils.copyProperties(user, userOutputDTO);
+
         return userOutputDTO;
     }
 
@@ -125,11 +123,24 @@ public class UserService {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task with id " + taskId + " does not exist"));
 
-        user.getTasks().add(task);
+        // Check if the task is already assigned to the user
+        List<Task> userTasks = user.getTasks();
+        if (userTasks.contains(task)) {
+            throw new IllegalStateException("Task with id " + taskId + " is already assigned to user with email " + email);
+        }
+
+        // Check if the user is already assigned to the task
+        List<User> taskAssignedTo = task.getAssignedTo();
+        if (taskAssignedTo.contains(user)) {
+            throw new IllegalStateException("User with email " + email + " is already assigned to task with id " + taskId);
+        }
+
+        userTasks.add(task);
         userRepository.save(user);
 
-        task.getAssignedTo().add(user);
+        taskAssignedTo.add(user);
         taskRepository.save(task);
+
         return transferModelToOutputDTO(user);
     }
 

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import java.util.Date;
 
@@ -20,8 +21,8 @@ public class File {
     @Id
     @GeneratedValue
     private Long id;
+    private byte[] docFile;
     private String fileName;
-    private String type;
     private String extension;
     private double size;
     private String location;
