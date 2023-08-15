@@ -24,11 +24,10 @@ public class UserInputDTO {
     private String fullName;
     @NotBlank
     private String pronouns;
-    @NotBlank
+    @Min(value = 0)
     @Max(value = 120)
     private int age;
-    @NotBlank
-    @Digits(integer = 14, fraction = 0)
+    @Pattern(regexp = "\\+?[0-9-]+")
     private String phoneNumber;
     @Size(min=0, max=5000)
     private String bio;

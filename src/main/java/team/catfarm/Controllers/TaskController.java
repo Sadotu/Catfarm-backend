@@ -49,8 +49,8 @@ public class TaskController {
     }
 
     @PutMapping("/{id}/files/")
-    public ResponseEntity<TaskOutputDTO> assignFilesToTask(@PathVariable Long id, @RequestBody List<Long> task_id) {
-        return ResponseEntity.ok(taskService.assignFilesToTask(id, task_id));
+    public ResponseEntity<TaskOutputDTO> assignFilesToTask(@PathVariable Long id, @RequestBody List<Long> files_id) {
+        return ResponseEntity.ok(taskService.assignFilesToTask(id, files_id));
     }
 
     @DeleteMapping("/delete/{id}")
