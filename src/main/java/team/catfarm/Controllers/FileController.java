@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import team.catfarm.DTO.Input.FileInputDTO;
 import team.catfarm.DTO.Output.FileOutputDTO;
-import team.catfarm.Exceptions.FileStorageException;
 import team.catfarm.Models.File;
 import team.catfarm.Services.FileService;
 
@@ -33,22 +32,6 @@ public class FileController {
         List<FileOutputDTO> uploadedFiles = fileService.uploadFilesAndMetadata(files);
         return ResponseEntity.status(HttpStatus.CREATED).body(uploadedFiles);
     }
-
-//    @GetMapping("/downloadFromDb/{id}")
-//    public ResponseEntity<byte[]> downloadSingleFile(@PathVariable Long id) {
-//        File file = fileService.findFileById(id);
-//        if (file != null && file.getDocFile() != null) {
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"");
-//            headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
-//
-//            return ResponseEntity.ok()
-//                    .headers(headers)
-//                    .body(file.getDocFile());
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
     @GetMapping("/download/{id}")
     public ResponseEntity<byte[]> downloadSingleFile(@PathVariable Long id) {
@@ -80,29 +63,8 @@ public class FileController {
         return ResponseEntity.ok(fileService.getFilesByLocation(location));
     }
 
-//    @GetMapping("/events/{event_id}")
-//    public ResponseEntity<List<FileOutputDTO>> getFilesByEventId(@PathVariable("event_id") Long eventId) {
-//        return ResponseEntity.ok(fileService.getFilesByEventId(eventId));
-//    }
-//
-//    @GetMapping("/users/{user_email}")
-//    public ResponseEntity<List<FileOutputDTO>> getFilesByUserEmail(@PathVariable String user_email) {
-//        return ResponseEntity.ok(fileService.getFilesByUserEmail(user_email));
-//    }
-//
-//    @GetMapping("/tasks/{task_id}")
-//    public ResponseEntity<List<FileOutputDTO>> getFilesByTaskId(@PathVariable("task_id") Long taskId) {
-//        return ResponseEntity.ok(fileService.getFilesByTaskId(taskId));
-//    }
-
-//    @GetMapping("/search")
-//    public ResponseEntity<List<File>> searchFiles(@RequestParam String term, @RequestParam String currentDirectory) {
-//        List<File> searchResults = fileService.searchFiles(term, currentDirectory);
-//        return ResponseEntity.ok(searchResults);
-//    }
-
     @PutMapping("/update-files")
-    public ResponseEntity<List<FileOutputDTO>> updateFiles(@RequestBody List<FileInputDTO> fileInputDTOList) {
+    public ResponseEntity<List<FileOutputDTO>> updateFiles(@Valid @RequestBody List<FileInputDTO> fileInputDTOList) {
         return ResponseEntity.ok(fileService.updateFilesById(fileInputDTOList));
     }
 

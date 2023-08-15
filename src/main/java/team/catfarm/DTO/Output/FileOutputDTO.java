@@ -14,13 +14,9 @@ import java.util.Date;
 @Getter
 public class FileOutputDTO {
     private Long id;
-    @NotBlank
     private String fileName;
-    @NotBlank
     private String extension;
-    @Max(value = 5000)
     private double size;
-    @NotBlank
     private String location;
     private Date uploadDate;
     private Task task;
