@@ -12,6 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import team.catfarm.Models.Task;
 import team.catfarm.Repositories.TaskRepository;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,8 +35,9 @@ public class TaskIntegrationTest {
     @BeforeEach
     public void setup() {
         testTask = new Task();
+        Date dateIn2028 = Date.from(LocalDate.of(2028, 1, 15).atStartOfDay(ZoneId.systemDefault()).toInstant());
         testTask.setNameTask("Test Task");
-        testTask.setDeadline(new Date());
+        testTask.setDeadline(dateIn2028);
         testTask.setDescription("This is a test task.");
         testTask.setCompleted(false);
 
@@ -51,7 +54,8 @@ public class TaskIntegrationTest {
     @Test
     public void testGetTaskById() throws Exception {
         mockMvc.perform(get("/tasks/" + testTask.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(testTask.getId()))

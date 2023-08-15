@@ -22,7 +22,7 @@ public class TaskController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<TaskOutputDTO> addTask(@RequestBody TaskInputDTO taskInputDTO) throws URISyntaxException {
+    public ResponseEntity<TaskOutputDTO> addTask(@Valid @RequestBody TaskInputDTO taskInputDTO) throws URISyntaxException {
         TaskOutputDTO savedTask = taskService.addTask(taskInputDTO);
         return ResponseEntity.created(new URI("/tasks/" + savedTask.getId())).body(savedTask);
     }
@@ -38,7 +38,7 @@ public class TaskController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<TaskOutputDTO> updateTask(@PathVariable Long id, @Valid @RequestBody TaskInputDTO taskInputDTO) {
+    public ResponseEntity<TaskOutputDTO> updateTask(@Valid @PathVariable Long id, @Valid @RequestBody TaskInputDTO taskInputDTO) {
         TaskOutputDTO updatedTask = taskService.updateTaskById(id, taskInputDTO);
         return ResponseEntity.ok(updatedTask);
     }

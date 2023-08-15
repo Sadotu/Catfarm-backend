@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
@@ -24,7 +23,7 @@ public class UserController {
     public UserController(UserService userService) { this.userService = userService; }
 
     @PostMapping("/create")
-    public ResponseEntity<UserOutputDTO> createUser(@RequestBody UserInputDTO userInputDTO) throws UserAlreadyExistsException {
+    public ResponseEntity<UserOutputDTO> createUser(@Valid @RequestBody UserInputDTO userInputDTO) throws UserAlreadyExistsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userInputDTO));
     }
 
@@ -40,7 +39,7 @@ public class UserController {
 
     @PutMapping("/update/{email}")
     @PreAuthorize("#email == authentication.principal.email")
-    public ResponseEntity<UserOutputDTO> updateUser(@PathVariable String email, @RequestBody UserInputDTO userToUpdateInputDTO) {
+    public ResponseEntity<UserOutputDTO> updateUser(@Valid @PathVariable String email, @RequestBody UserInputDTO userToUpdateInputDTO) {
         return ResponseEntity.ok(userService.updateUser(email, userToUpdateInputDTO));
     }
 
