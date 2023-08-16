@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.TaskInputDTO;
+import team.catfarm.DTO.Input.FileIdsInputDTO;
 import team.catfarm.DTO.Output.TaskOutputDTO;
 import team.catfarm.Services.TaskService;
 
@@ -48,9 +49,9 @@ public class TaskController {
         return ResponseEntity.ok(taskService.assignEventToTask(id, event_id));
     }
 
-    @PutMapping("/{id}/files/")
-    public ResponseEntity<TaskOutputDTO> assignFilesToTask(@PathVariable Long id, @RequestBody List<Long> files_id) {
-        return ResponseEntity.ok(taskService.assignFilesToTask(id, files_id));
+    @PutMapping("/assignfiles/{id}")
+    public ResponseEntity<TaskOutputDTO> assignFilesToTask(@PathVariable Long id, @RequestBody FileIdsInputDTO fileIdsInputDTO) {
+        return ResponseEntity.ok(taskService.assignFilesToTask(id, fileIdsInputDTO.getFile_ids()));
     }
 
     @DeleteMapping("/delete/{id}")

@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class UserInputDTO {
+public class UserAndPasswordInputDTO {
 
     public Boolean enabled;
     private Date creationDate;
@@ -32,6 +32,7 @@ public class UserInputDTO {
     @Size(min=0, max=5000)
     private String bio;
     private boolean newsletter;
+    private String password;
 
     //relations
     private List<Event> rsvp;

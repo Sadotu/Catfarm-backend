@@ -135,7 +135,7 @@ public class TaskService {
         String currentUsername = authentication.getName();
 
         boolean isCurrentUserAssigned = task.getAssignedTo().stream()
-                .anyMatch(user -> user.getFullName().equals(currentUsername));
+                .anyMatch(user -> user.getEmail().equals(currentUsername));
         boolean isCurrentUserLion = authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_LION"));
 

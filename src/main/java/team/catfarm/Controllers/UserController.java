@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import team.catfarm.DTO.Input.PasswordInputDTO;
 import team.catfarm.DTO.Input.UserInputDTO;
+import team.catfarm.DTO.Input.UserAndPasswordInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
 import team.catfarm.Exceptions.BadRequestException;
 import team.catfarm.Exceptions.UserAlreadyExistsException;
@@ -23,8 +25,8 @@ public class UserController {
     public UserController(UserService userService) { this.userService = userService; }
 
     @PostMapping("/create")
-    public ResponseEntity<UserOutputDTO> createUser(@Valid @RequestBody UserInputDTO userInputDTO) throws UserAlreadyExistsException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userInputDTO));
+    public ResponseEntity<UserOutputDTO> createUser(@Valid @RequestBody UserAndPasswordInputDTO userAndPasswordInputDTO) throws UserAlreadyExistsException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userAndPasswordInputDTO));
     }
 
     @GetMapping("/{email}")
@@ -41,6 +43,12 @@ public class UserController {
     @PreAuthorize("#email == authentication.principal.email")
     public ResponseEntity<UserOutputDTO> updateUser(@Valid @PathVariable String email, @RequestBody UserInputDTO userToUpdateInputDTO) {
         return ResponseEntity.ok(userService.updateUser(email, userToUpdateInputDTO));
+    }
+
+    @PutMapping("/update_password/{email}")
+    @PreAuthorize("#email == authentication.principal.email")
+    public ResponseEntity<String> updatePassword(@PathVariable String email, @RequestBody PasswordInputDTO password) {
+        return ResponseEntity.ok(userService.updatePassword(email, password));
     }
 
     @PutMapping("/{email}/rsvp/{event_id}")

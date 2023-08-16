@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import team.catfarm.DTO.Input.PasswordInputDTO;
+import team.catfarm.DTO.Input.UserAndPasswordInputDTO;
 import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
 import team.catfarm.Exceptions.ResourceNotFoundException;
@@ -47,17 +49,22 @@ public class UserService {
         BeanUtils.copyProperties(userInputDTO, user, "id");
         return user;
     }
+    public User transferInputDTOToModelWithPassword(UserAndPasswordInputDTO userAndPasswordInputDTO) {
+        User user = new User();
+        BeanUtils.copyProperties(userAndPasswordInputDTO, user, "id");
+        return user;
+    }
 
-    public UserOutputDTO createUser(UserInputDTO userInputDTO) throws UserAlreadyExistsException {
-        if (userRepository.findByEmail(userInputDTO.getEmail()).isPresent()) {
-            throw new UserAlreadyExistsException("User with email " + userInputDTO.getEmail() + " already exists");
+    public UserOutputDTO createUser(UserAndPasswordInputDTO userAndPasswordInputDTO) throws UserAlreadyExistsException {
+        if (userRepository.findByEmail(userAndPasswordInputDTO.getEmail()).isPresent()) {
+            throw new UserAlreadyExistsException("User with email " + userAndPasswordInputDTO.getEmail() + " already exists");
         }
 
         // Encode the password before saving
-        String encodedPassword = passwordEncoder.encode(userInputDTO.getPassword());
-        userInputDTO.setPassword(encodedPassword);
+        String encodedPassword = passwordEncoder.encode(userAndPasswordInputDTO.getPassword());
+        userAndPasswordInputDTO.setPassword(encodedPassword);
 
-        return transferModelToOutputDTO(userRepository.save(transferInputDTOToModel(userInputDTO)));
+        return transferModelToOutputDTO(userRepository.save(transferInputDTOToModelWithPassword(userAndPasswordInputDTO)));
     }
 
 
@@ -90,13 +97,21 @@ public class UserService {
         User existingUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));
 
-        // Encode the password before saving
-        String encodedPassword = passwordEncoder.encode(userToUpdateInputDTO.getPassword());
-        existingUser.setPassword(encodedPassword);
-
-        BeanUtils.copyProperties(userToUpdateInputDTO, existingUser, "password");
+        BeanUtils.copyProperties(userToUpdateInputDTO, existingUser);
 
         return transferModelToOutputDTO(userRepository.save(existingUser));
+    }
+
+    public String updatePassword(String email, PasswordInputDTO passwordInputDTO) {
+        User existingUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));
+
+        String encodedPassword = passwordEncoder.encode(passwordInputDTO.getPassword());
+        existingUser.setPassword(encodedPassword);
+
+        userRepository.save(existingUser);
+
+        return "Password updated successfully.";
     }
 
     @Transactional
