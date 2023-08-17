@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import team.catfarm.Models.File;
+import team.catfarm.Models.Todo;
 import team.catfarm.Models.User;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class TaskInputDTO {
     private Date deadline;
     @Size(min=0, max=5000)
     private String description;
-    private List<String> toDos = new ArrayList<>();
+    private List<Todo> toDos = new ArrayList<>();
     private boolean completed;
     private Long event_id;
     private List<User> assignedTo;
