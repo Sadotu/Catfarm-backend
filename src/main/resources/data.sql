@@ -154,67 +154,67 @@ INSERT INTO task_user (task_id, user_email) VALUES (109, 'david.wilson@example.c
 INSERT INTO task_user (task_id, user_email) VALUES (110, 'david.wilson@example.com');
 
 -- Entries for task_id: 101
-INSERT INTO todo (id, completed, todo, task_id) VALUES (1, FALSE, 'Get groceries', 101);
-INSERT INTO todo (id, completed, todo, task_id) VALUES (2, FALSE, 'Pet dog', 101);
-INSERT INTO todo (id, completed, todo, task_id) VALUES (3, FALSE, 'Invite Mike to meeting', 101);
-INSERT INTO todo (id, completed, todo, task_id) VALUES (4, FALSE, 'Follow up on Chris', 101);
---
--- -- Entry for task_id: 102
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Add event to calendar', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Write report for the meeting', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Review project milestones', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Send out invitations for the workshop', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Complete budget analysis', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Order new office supplies', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Book conference room for team meeting', FALSE);
---
--- -- For Task 103
--- INSERT INTO todo (task_id, todo, completed) VALUES (103, 'Schedule team catch-up', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (103, 'Draft proposal for client', FALSE);
---
--- -- For Task 104
--- INSERT INTO todo (task_id, todo, completed) VALUES (104, 'Proofread the document', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (104, 'Submit final draft for approval', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (104, 'Follow up with the graphics team', FALSE);
---
--- -- For Task 105
--- INSERT INTO todo (task_id, todo, completed) VALUES (105, 'Organize team outing', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (105, 'Collect feedback on the last project', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Order new office supplies', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Book conference room for team meeting', FALSE);
---
--- -- For Task 106
--- INSERT INTO todo (task_id, todo, completed) VALUES (106, 'Update software to latest version', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Order new office supplies', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Book conference room for team meeting', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Order new office supplies', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Book conference room for team meeting', FALSE);
---
--- -- For Task 107
--- INSERT INTO todo (task_id, todo, completed) VALUES (107, 'Check inventory status', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (107, 'Place order for new stock', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (107, 'Confirm delivery date with the supplier', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Order new office supplies', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Book conference room for team meeting', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Order new office supplies', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Book conference room for team meeting', FALSE);
---
--- -- For Task 108
--- INSERT INTO todo (task_id, todo, completed) VALUES (108, 'Train new interns on protocol', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (108, 'Provide them access to required software', FALSE);
---
--- -- For Task 109
--- INSERT INTO todo (task_id, todo, completed) VALUES (109, 'Update client database', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (109, 'Send thank you notes to recent clients', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (109, 'Prepare presentation for next week', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Order new office supplies', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Book conference room for team meeting', FALSE);
---
--- -- For Task 110
--- INSERT INTO todo (task_id, todo, completed) VALUES (110, 'Clean and organize workspace', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (102, 'Order new office supplies', FALSE);
---
--- -- For Task 111
--- INSERT INTO todo (task_id, todo, completed) VALUES (111, 'Review submitted tasks', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (111, 'Provide feedback to team members', FALSE);
--- INSERT INTO todo (task_id, todo, completed) VALUES (111, 'Set up a feedback session', FALSE);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (101, FALSE, 'Get groceries', 101);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (102, FALSE, 'Pet dog', 101);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (103, FALSE, 'Invite Mike to meeting', 101);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (104, FALSE, 'Follow up on Chris', 101);
+
+-- Entry for task_id: 102
+INSERT INTO todo (id, completed, todo, task_id) VALUES (105, FALSE, 'Add event to calendar', 102);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (106, FALSE, 'Write report for the meeting', 102);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (107, FALSE, 'Review project milestones', 102);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (108, FALSE, 'Send out invitations for the workshop', 102);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (109, FALSE, 'Complete budget analysis', 102);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (110, FALSE, 'Order new office supplies', 102);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (111, FALSE, 'Book conference room for team meeting', 102);
+
+-- For Task 103
+INSERT INTO todo (id, completed, todo, task_id) VALUES (112, FALSE, 'Schedule team catch-up', 103);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (113, FALSE, 'Draft proposal for client', 103);
+
+-- For Task 104
+INSERT INTO todo (id, completed, todo, task_id) VALUES (114, FALSE, 'Proofread the document', 104);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (115, FALSE, 'Submit final draft for approval', 104);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (116, FALSE, 'Follow up with the graphics team', 104);
+
+-- For Task 105
+INSERT INTO todo (id, completed, todo, task_id) VALUES (117, FALSE, 'Organize team outing', 105);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (118, FALSE, 'Collect feedback on the last project', 105);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (119, FALSE, 'Order new office supplies', 105);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (120, FALSE, 'Book conference room for team meeting', 105);
+
+-- For Task 106
+INSERT INTO todo (id, completed, todo, task_id) VALUES (121, FALSE, 'Update software to latest version', 106);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (122, FALSE, 'Order new office supplies', 106);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (123, FALSE, 'Book conference room for team meeting', 106);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (124, FALSE, 'Order new office supplies', 106);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (125, FALSE, 'Book conference room for team meeting', 106);
+
+-- For Task 107
+INSERT INTO todo (id, completed, todo, task_id) VALUES (126, FALSE, 'Check inventory status', 107);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (127, FALSE, 'Place order for new stock', 107);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (128, FALSE, 'Confirm delivery date with the supplier', 107);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (129, FALSE, 'Order new office supplies', 107);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (130, FALSE, 'Book conference room for team meeting', 107);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (131, FALSE, 'Order new office supplies', 107);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (132, FALSE, 'Book conference room for team meeting', 107);
+
+-- For Task 108
+INSERT INTO todo (id, completed, todo, task_id) VALUES (133, FALSE, 'Train new interns on protocol', 108);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (134, FALSE, 'Provide them access to required software', 108);
+
+-- For Task 109
+INSERT INTO todo (id, completed, todo, task_id) VALUES (135, FALSE, 'Update client database', 109);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (136, FALSE, 'Send thank you notes to recent clients', 109);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (137, FALSE, 'Prepare presentation for next week', 109);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (138, FALSE, 'Order new office supplies', 109);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (139, FALSE, 'Book conference room for team meeting', 109);
+
+-- For Task 110
+INSERT INTO todo (id, completed, todo, task_id) VALUES (140, FALSE, 'Clean and organize workspace', 110);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (141, FALSE, 'Order new office supplies', 110);
+
+-- For Task 111
+INSERT INTO todo (id, completed, todo, task_id) VALUES (142, FALSE, 'Review submitted tasks', 111);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (143, FALSE, 'Provide feedback to team members', 111);
+INSERT INTO todo (id, completed, todo, task_id) VALUES (144, FALSE, 'Set up a feedback session', 111);

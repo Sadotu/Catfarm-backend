@@ -28,6 +28,7 @@ public class Task {
     private boolean completed;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Todo> toDos = new ArrayList<>();
 
     @ManyToOne
