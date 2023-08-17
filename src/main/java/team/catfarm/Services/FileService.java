@@ -22,12 +22,10 @@ import java.util.stream.Collectors;
 public class FileService {
 
     private final FileRepository fileRepository;
-    private final TaskRepository taskRepository;
     private final UserRepository userRepository;
 
-    public FileService(FileRepository fileRepository, TaskRepository taskRepository, UserRepository userRepository) {
+    public FileService(FileRepository fileRepository, UserRepository userRepository) {
         this.fileRepository = fileRepository;
-        this.taskRepository = taskRepository;
         this.userRepository = userRepository;
     }
 
@@ -36,12 +34,6 @@ public class FileService {
         BeanUtils.copyProperties(file, fileOutputDTO);
         return fileOutputDTO;
     }
-
-//    public File transferInputDTOToModel(FileInputDTO fileInputDTO) {
-//        File file = new File();
-//        BeanUtils.copyProperties(fileInputDTO, file, "id");
-//        return file;
-//    }
 
     public List<FileOutputDTO> uploadFilesAndMetadata(List<MultipartFile> files) throws FileStorageException {
         List<File> createdFiles = new ArrayList<>();

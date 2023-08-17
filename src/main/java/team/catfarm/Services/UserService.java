@@ -44,11 +44,6 @@ public class UserService {
         return userOutputDTO;
     }
 
-    public User transferInputDTOToModel(UserInputDTO userInputDTO) {
-        User user = new User();
-        BeanUtils.copyProperties(userInputDTO, user, "id");
-        return user;
-    }
     public User transferInputDTOToModelWithPassword(UserAndPasswordInputDTO userAndPasswordInputDTO) {
         User user = new User();
         BeanUtils.copyProperties(userAndPasswordInputDTO, user, "id");
@@ -97,9 +92,30 @@ public class UserService {
         User existingUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));
 
+        userToUpdateInputDTO = checkRelations(existingUser, userToUpdateInputDTO);
         BeanUtils.copyProperties(userToUpdateInputDTO, existingUser);
 
         return transferModelToOutputDTO(userRepository.save(existingUser));
+    }
+
+    public UserInputDTO checkRelations(User existingUser, UserInputDTO userToUpdateInputDTO) {
+        if (userToUpdateInputDTO.getTasks() == null) {
+            userToUpdateInputDTO.setTasks(existingUser.getTasks());
+        }
+        if (userToUpdateInputDTO.getRsvp() == null) {
+            userToUpdateInputDTO.setRsvp(existingUser.getRsvp());
+        }
+        if (userToUpdateInputDTO.getCreatedEvents() == null) {
+            userToUpdateInputDTO.setCreatedEvents(existingUser.getCreatedEvents());
+        }
+        if (userToUpdateInputDTO.getCreatedTasks() == null) {
+            userToUpdateInputDTO.setCreatedTasks(existingUser.getCreatedTasks());
+        }
+        if (userToUpdateInputDTO.getProfilePicture() == null) {
+            userToUpdateInputDTO.setProfilePicture(existingUser.getProfilePicture());
+        }
+
+        return userToUpdateInputDTO;
     }
 
     public String updatePassword(String email, PasswordInputDTO passwordInputDTO) {
