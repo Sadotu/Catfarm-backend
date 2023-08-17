@@ -87,9 +87,32 @@ public class TaskService {
         Task existingTask = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id " + id));
 
+        taskToUpdateInputDTO = checkRelations(existingTask, taskToUpdateInputDTO);
         BeanUtils.copyProperties(taskToUpdateInputDTO, existingTask, "id");
 
         return transferModelToOutputDTO(taskRepository.save(existingTask));
+    }
+
+    public TaskInputDTO checkRelations(Task existingTask, TaskInputDTO taskToUpdateInputDTO) {
+        if (taskToUpdateInputDTO.getEvent_id() == null) {
+            if (existingTask.getEvent() != null) {
+                taskToUpdateInputDTO.setEvent_id(existingTask.getEvent().getId());
+            }
+        }
+        if (taskToUpdateInputDTO.getToDos().isEmpty()) {
+            taskToUpdateInputDTO.setToDos(existingTask.getToDos());
+        }
+        if (taskToUpdateInputDTO.getAssignedTo() == null) {
+            taskToUpdateInputDTO.setAssignedTo(existingTask.getAssignedTo());
+        }
+        if (taskToUpdateInputDTO.getFiles() == null) {
+            taskToUpdateInputDTO.setFiles(existingTask.getFiles());
+        }
+        if (taskToUpdateInputDTO.getCreatedBy() == null) {
+            taskToUpdateInputDTO.setCreatedBy(existingTask.getCreatedBy());
+        }
+
+        return taskToUpdateInputDTO;
     }
 
     public Long assignEventToTask(Long id, Long event_id) throws ResourceNotFoundException {

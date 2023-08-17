@@ -156,6 +156,22 @@ class TaskServiceTest {
         assertNotNull(outputDTO);
     }
 
+    @Test
+    void testUpdateEventIdFromExistingTask() {
+        // Given
+        TaskInputDTO taskToUpdateInputDTO = new TaskInputDTO(); // Event_id is null by default
+
+        Task existingTask = new Task();
+        Event mockEvent = new Event();
+        mockEvent.setId(5L); // Giving an arbitrary ID to the mock event
+        existingTask.setEvent(mockEvent);
+
+        // Call the method
+        TaskInputDTO updatedInputDTO = taskService.checkRelations(existingTask, taskToUpdateInputDTO);
+
+        // Assert that the event_id of updatedInputDTO is now set to the event's ID from the existingTask
+        assertEquals(5L, updatedInputDTO.getEvent_id());
+    }
 
     @Test
     void assignEventToTask() {

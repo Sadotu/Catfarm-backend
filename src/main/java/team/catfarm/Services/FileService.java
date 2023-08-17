@@ -11,7 +11,6 @@ import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.File;
 import team.catfarm.Models.User;
 import team.catfarm.Repositories.FileRepository;
-import team.catfarm.Repositories.TaskRepository;
 import team.catfarm.Repositories.UserRepository;
 
 import java.io.IOException;
@@ -105,30 +104,6 @@ public class FileService {
 
         return fileOutputDTOList;
     }
-
-//    public List<FileOutputDTO> getFilesByUserEmail(String email) {
-//        List<File> fileList = fileRepository.findByEmail(email);
-//        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
-//
-//        for (File f : fileList) {
-//            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
-//            fileOutputDTOList.add(fileOutputDTO);
-//        }
-//
-//        return fileOutputDTOList;
-//    }
-//
-//    public List<FileOutputDTO> getFilesByTaskId(Long taskId) {
-//        List<File> fileList = fileRepository.findByTaskId(taskId);
-//        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
-//
-//        for (File f : fileList) {
-//            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
-//            fileOutputDTOList.add(fileOutputDTO);
-//        }
-//
-//        return fileOutputDTOList;
-//    }
 
     public List<FileOutputDTO> updateFilesById(List<FileInputDTO> fileInputDTOList) {
         List<File> updatedFiles = new ArrayList<>();

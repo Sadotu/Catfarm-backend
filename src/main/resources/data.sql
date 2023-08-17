@@ -152,3 +152,18 @@ INSERT INTO task_user (task_id, user_email) VALUES (107, 'david.wilson@example.c
 INSERT INTO task_user (task_id, user_email) VALUES (108, 'david.wilson@example.com');
 INSERT INTO task_user (task_id, user_email) VALUES (109, 'david.wilson@example.com');
 INSERT INTO task_user (task_id, user_email) VALUES (110, 'david.wilson@example.com');
+
+-- Entries for task_id: 101
+INSERT INTO task_todos (task_id, todo) VALUES (101, 'Get groceries');
+INSERT INTO task_todos (task_id, todo) VALUES (101, 'Pet dog');
+INSERT INTO task_todos (task_id, todo) VALUES (101, 'Invite Mike to meeting');
+INSERT INTO task_todos (task_id, todo) VALUES (101, 'Follow up on Chris');
+
+-- Entry for task_id: 102
+INSERT INTO task_todos (task_id, todo) VALUES (102, 'Add event to calendar');
+INSERT INTO task_todos (task_id, todo) VALUES (102, 'Write report for the meeting');
+INSERT INTO task_todos (task_id, todo) VALUES (102, 'Review project milestones');
+INSERT INTO task_todos (task_id, todo) VALUES (102, 'Send out invitations for the workshop');
+INSERT INTO task_todos (task_id, todo) VALUES (102, 'Complete budget analysis');
+INSERT INTO task_todos (task_id, todo) VALUES (102, 'Order new office supplies');
+INSERT INTO task_todos (task_id, todo) VALUES (102, 'Book conference room for team meeting');
