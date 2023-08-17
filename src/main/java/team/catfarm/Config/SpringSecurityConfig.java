@@ -104,6 +104,8 @@ public class SpringSecurityConfig {
                 //Todos
                 .requestMatchers(HttpMethod.POST, "/task/todos/{task_id}/create").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.GET, "/task/todos/{task_id}/get").hasAnyRole("KITTEN", "CAT", "LION")
+                .requestMatchers(HttpMethod.PUT, "/task/todos/{task_id}/update").hasAnyRole("KITTEN", "CAT", "LION")
+                .requestMatchers(HttpMethod.DELETE, "/task/todos/{task_id}/delete").hasAnyRole("KITTEN", "CAT", "LION")
                 // Je mag meerdere paths tegelijk definieren
                 .requestMatchers("/users", "/events", "/tasks", "/files").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers("/authenticated").authenticated()
