@@ -158,7 +158,6 @@ public class TaskService {
         }
 
         Task task = optionalTask.get();
-        unassignUsersFromTask(id);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
@@ -172,6 +171,7 @@ public class TaskService {
             throw new AccessDeniedException("You are not authorized to delete this task.");
         }
 
+        unassignUsersFromTask(id);
         taskRepository.deleteById(id);
     }
 
