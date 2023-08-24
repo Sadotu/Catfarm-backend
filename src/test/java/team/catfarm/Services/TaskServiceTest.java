@@ -4,9 +4,7 @@ package team.catfarm.Services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,28 +21,36 @@ import team.catfarm.Models.User;
 import team.catfarm.Repositories.EventRepository;
 import team.catfarm.Repositories.FileRepository;
 import team.catfarm.Repositories.TaskRepository;
+import team.catfarm.Repositories.UserRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class TaskServiceTest {
 
-    @InjectMocks
-    private TaskService taskService;
+    @Captor
+    private ArgumentCaptor<Task> captor;
+
 
     @Mock
     private TaskRepository taskRepository;
+    @InjectMocks
+    private TaskService taskService;
 
     @Mock
     private EventRepository eventRepository;
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private UserRepository userRepository;
 
     @Mock
     private FileRepository fileRepository;
@@ -277,5 +283,49 @@ class TaskServiceTest {
         when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> taskService.deleteTaskById(taskId));
+    }
+
+    @Test
+    public void testUnassignUsersFromTask() {
+        Long taskId = 1L;
+        Task task = new Task();
+        task.setId(taskId);
+        task.setNameTask("task 1");
+
+        User user = new User();
+        user.setEmail("otherUser@catfarm.com");
+        user.setFullName("otherUser@catfarm.com");
+        ArrayList<Task> taskList = new ArrayList<>();
+        taskList.add(task);
+        user.setTasks(taskList);
+
+        ArrayList<User> list = new ArrayList<>();
+        list.add(user);
+        task.setAssignedTo(list);
+        task.setCreatedBy(user);
+
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(task));
+        when(userRepository.save(user)).thenReturn(user);
+
+        taskService.unassignUsersFromTask(taskId);
+        verify(taskRepository).save(captor.capture());
+
+        assertTrue(captor.getValue().getAssignedTo().isEmpty());
+    }
+
+    @Test
+    public void testUnassignUsersFromTaskExceptionCaught() {
+        Long taskId = 1L;
+
+        when(taskRepository.findById(taskId)).thenThrow(new RuntimeException("Simulated exception"));
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        taskService.unassignUsersFromTask(taskId);
+
+        assertEquals("Something went horribly wrong\n", outContent.toString());
+
+        System.setOut(System.out);
     }
 }
