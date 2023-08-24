@@ -1,5 +1,6 @@
 package team.catfarm.Services;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +16,7 @@ import team.catfarm.Models.User;
 import team.catfarm.Repositories.EventRepository;
 import team.catfarm.Repositories.FileRepository;
 import team.catfarm.Repositories.TaskRepository;
+import team.catfarm.Repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +27,14 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final EventRepository eventRepository;
+    private final UserRepository userRepository;
     private final UserService userService;
     private final FileRepository fileRepository;
 
-    public TaskService(TaskRepository taskRepository, EventRepository eventRepository, UserService userService, FileRepository fileRepository) {
+    public TaskService(TaskRepository taskRepository, EventRepository eventRepository, UserRepository userRepository, UserService userService, FileRepository fileRepository) {
         this.taskRepository = taskRepository;
         this.eventRepository = eventRepository;
+        this.userRepository = userRepository;
         this.userService = userService;
         this.fileRepository = fileRepository;
     }
@@ -154,6 +158,8 @@ public class TaskService {
         }
 
         Task task = optionalTask.get();
+        unassignUsersFromTask(id);
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
 
@@ -167,5 +173,34 @@ public class TaskService {
         }
 
         taskRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void unassignUsersFromTask(Long taskId) {
+        try {
+            Task task = taskRepository.findById(taskId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Task with id " + taskId + " does not exist"));
+
+            List<User> assignedToUsers = new ArrayList<>(task.getAssignedTo());
+
+            for (User user : assignedToUsers) {
+                user.getTasks().remove(task);
+                userRepository.save(user);
+            }
+
+            task.getAssignedTo().clear();
+
+            User createdBy = task.getCreatedBy();
+            if (createdBy != null) {
+                createdBy.getTasks().remove(task);
+                userRepository.save(createdBy);
+                task.setCreatedBy(null);
+            }
+
+            taskRepository.save(task);
+
+        } catch (Exception e) {
+            System.out.println("Something went horribly wrong");
+        }
     }
 }

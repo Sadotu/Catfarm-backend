@@ -36,7 +36,7 @@ public class Task {
     @JsonIgnore
     private Event event;
 
-    @ManyToMany(mappedBy = "tasks", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "tasks", cascade = CascadeType.PERSIST)
     private List<User> assignedTo;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
