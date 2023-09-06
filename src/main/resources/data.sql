@@ -1,32 +1,32 @@
-INSERT INTO files (id, file_name, extension, size, location, upload_date)
-VALUES (101, 'document', 'docx', 1024.5, 'documents/', '2023-05-18');
-
-INSERT INTO files (id, file_name, extension, size, location, upload_date)
-VALUES (102, 'image', 'png', 2048.0, 'images/', '2023-05-18');
-
-INSERT INTO files (id, file_name, extension, size, location, upload_date)
-VALUES (103, 'presentation', 'pptx', 5120.75, 'presentations/', '2023-05-18');
-
-INSERT INTO files (id, file_name, extension, size, location, upload_date)
-VALUES (104, 'video', 'mp4', 8192.0, 'videos/', '2023-05-18');
-
-INSERT INTO files (id, file_name, extension, size, location, upload_date)
-VALUES (105, 'spreadsheet', 'xlsx', 3072.25, 'spreadsheets/', '2023-05-18');
-
-INSERT INTO files (id, file_name, extension, size, location, upload_date)
-VALUES (106, 'audio', 'mp3', 512.75, 'audio/', '2023-05-18');
-
-INSERT INTO files (id, file_name, extension, size, location, upload_date)
-VALUES (107, 'code', 'java', 204.5, 'code/', '2023-05-18');
-
-INSERT INTO files (id, file_name, extension, size, location, upload_date)
-VALUES (108, 'archive', 'zip', 4096.0, 'archives/', '2023-05-18');
-
-INSERT INTO files (id, file_name, extension, size, location, upload_date)
-VALUES (109, 'document2', 'pdf', 512.0, 'documents/', '2023-05-18');
-
-INSERT INTO files (id, file_name, extension, size, location, upload_date)
-VALUES (110, 'image2', 'jpg', 1024.0, 'images/', '2023-05-18');
+-- INSERT INTO files (id, file_name, extension, size, location, upload_date)
+-- VALUES (101, 'document', 'docx', 1024.5, 'documents/', '2023-05-18');
+--
+-- INSERT INTO files (id, file_name, extension, size, location, upload_date)
+-- VALUES (102, 'image', 'png', 2048.0, 'images/', '2023-05-18');
+--
+-- INSERT INTO files (id, file_name, extension, size, location, upload_date)
+-- VALUES (103, 'presentation', 'pptx', 5120.75, 'presentations/', '2023-05-18');
+--
+-- INSERT INTO files (id, file_name, extension, size, location, upload_date)
+-- VALUES (104, 'video', 'mp4', 8192.0, 'videos/', '2023-05-18');
+--
+-- INSERT INTO files (id, file_name, extension, size, location, upload_date)
+-- VALUES (105, 'spreadsheet', 'xlsx', 3072.25, 'spreadsheets/', '2023-05-18');
+--
+-- INSERT INTO files (id, file_name, extension, size, location, upload_date)
+-- VALUES (106, 'audio', 'mp3', 512.75, 'audio/', '2023-05-18');
+--
+-- INSERT INTO files (id, file_name, extension, size, location, upload_date)
+-- VALUES (107, 'code', 'java', 204.5, 'code/', '2023-05-18');
+--
+-- INSERT INTO files (id, file_name, extension, size, location, upload_date)
+-- VALUES (108, 'archive', 'zip', 4096.0, 'archives/', '2023-05-18');
+--
+-- INSERT INTO files (id, file_name, extension, size, location, upload_date)
+-- VALUES (109, 'document2', 'pdf', 512.0, 'documents/', '2023-05-18');
+--
+-- INSERT INTO files (id, file_name, extension, size, location, upload_date)
+-- VALUES (110, 'image2', 'jpg', 1024.0, 'images/', '2023-05-18');
 
 INSERT INTO events (id, name, start_time, end_time, description, color)
 VALUES (101, 'Event A', '2023-05-22T09:00:00', '2023-05-22T11:00:00', 'First event', 'red');
@@ -111,20 +111,20 @@ VALUES (true, 'emily.davis@example.com', 'Emily Davis', 'she/her', 28, '11111111
 INSERT INTO users (enabled, email, full_name, pronouns, age, phone_number, bio, password, newsletter, creation_date)
 VALUES (true, 'david.wilson@example.com', 'David Wilson', 'he/him', 32, '9999999999', 'I am an accountant', '$2a$12$i.mCOyyQwYFmNf.8WZ91T.gQ8SntiSrPep3PREXEO/dvoFZvNHe46', true, '2023-08-08 14:32:18.836');
 
-UPDATE files SET task_id = 101 WHERE id = 101;
-UPDATE files SET task_id = 102 WHERE id = 102;
-UPDATE files SET task_id = 103 WHERE id = 103;
-UPDATE files SET task_id = 104 WHERE id = 104;
-UPDATE files SET task_id = 105 WHERE id = 105;
-UPDATE files SET task_id = 106 WHERE id = 106;
-UPDATE files SET task_id = 107 WHERE id = 107;
-UPDATE files SET task_id = 108 WHERE id = 108;
-UPDATE files SET task_id = 109 WHERE id = 109;
-UPDATE files SET task_id = 110 WHERE id = 110;
+-- UPDATE files SET task_id = 101 WHERE id = 101;
+-- UPDATE files SET task_id = 102 WHERE id = 102;
+-- UPDATE files SET task_id = 103 WHERE id = 103;
+-- UPDATE files SET task_id = 104 WHERE id = 104;
+-- UPDATE files SET task_id = 105 WHERE id = 105;
+-- UPDATE files SET task_id = 106 WHERE id = 106;
+-- UPDATE files SET task_id = 107 WHERE id = 107;
+-- UPDATE files SET task_id = 108 WHERE id = 108;
+-- UPDATE files SET task_id = 109 WHERE id = 109;
+-- UPDATE files SET task_id = 110 WHERE id = 110;
 
 INSERT INTO authorities (username, authority) VALUES ('super@user.com', 'ROLE_LION');
-INSERT INTO authorities (username, authority) VALUES ('super@user.com', 'ROLE_CAT');
-INSERT INTO authorities (username, authority) VALUES ('super@user.com', 'ROLE_KITTEN');
+-- INSERT INTO authorities (username, authority) VALUES ('super@user.com', 'ROLE_CAT');
+-- INSERT INTO authorities (username, authority) VALUES ('super@user.com', 'ROLE_KITTEN');
 INSERT INTO authorities (username, authority) VALUES ('michael.johnson@example.com', 'ROLE_KITTEN');
 INSERT INTO authorities (username, authority) VALUES ('emily.davis@example.com', 'ROLE_CAT');
 INSERT INTO authorities (username, authority) VALUES ('david.wilson@example.com', 'ROLE_LION');

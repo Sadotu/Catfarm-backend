@@ -22,7 +22,7 @@ public class File {
     @GeneratedValue
     private Long id;
     private byte[] docFile;
-    private String fileName;
+    private String name;
     private String extension;
     private double size;
     private String location;

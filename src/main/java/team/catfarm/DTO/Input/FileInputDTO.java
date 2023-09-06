@@ -14,7 +14,7 @@ import java.util.Date;
 public class FileInputDTO {
     private Long id;
     @NotBlank
-    private String fileName;
+    private String name;
     @NotBlank
     private String extension;
     @Max(value = 5000)

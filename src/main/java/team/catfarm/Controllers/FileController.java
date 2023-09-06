@@ -42,12 +42,12 @@ public class FileController {
             throw new RuntimeException("There is no file yet.");
         }
 
-        String fileExtension = getFileExtension(file.getFileName());
+        String fileExtension = getFileExtension(file.getName());
         String mimeType = getMimeType(fileExtension);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(mimeType));
-        headers.setContentDispositionFormData("attachment", "file" + file.getFileName() + "." + fileExtension);
+        headers.setContentDispositionFormData("attachment", "file" + file.getName() + "." + fileExtension);
         headers.setContentLength(docFile.length);
 
         return new ResponseEntity<>(docFile, headers, HttpStatus.OK);

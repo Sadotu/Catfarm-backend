@@ -32,6 +32,9 @@ public class UserAndPasswordInputDTO {
     @Size(min=0, max=5000)
     private String bio;
     private boolean newsletter;
+    @NotBlank(message = "Password is mandatory")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$",
+            message = "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character (such as !@#$%^&*)")
     private String password;
 
     //relations

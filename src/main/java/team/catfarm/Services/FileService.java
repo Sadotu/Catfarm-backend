@@ -51,7 +51,7 @@ public class FileService {
 
             // Set the fileName
             String originalFileName = multipartFile.getOriginalFilename();
-            fileEntity.setFileName(originalFileName);
+            fileEntity.setName(originalFileName);
 
             // Set the extension
             String extension = originalFileName != null && originalFileName.lastIndexOf(".") > 0

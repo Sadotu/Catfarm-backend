@@ -14,7 +14,7 @@ import java.util.Date;
 @Getter
 public class FileOutputDTO {
     private Long id;
-    private String fileName;
+    private String name;
     private String extension;
     private double size;
     private String location;
