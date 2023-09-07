@@ -82,7 +82,7 @@ public class User {
     @OneToMany(
             targetEntity = Authority.class,
             mappedBy = "username",
-            cascade = CascadeType.PERSIST,
+            cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();

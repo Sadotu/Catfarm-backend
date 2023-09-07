@@ -176,6 +176,35 @@ public class UserService {
     }
 
     @Transactional
+    public UserOutputDTO removeAssignment(String email, Long taskId) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " does not exist"));
+
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + taskId + " does not exist"));
+
+        // Check if the task is already assigned to the user
+        List<Task> userTasks = user.getTasks();
+        if (!userTasks.contains(task)) {
+            throw new IllegalStateException("Task with id " + taskId + " is not assigned to user with email " + email);
+        }
+
+        // Check if the user is already assigned to the task
+        List<User> taskAssignedTo = task.getAssignedTo();
+        if (!taskAssignedTo.contains(user)) {
+            throw new IllegalStateException("User with email " + email + " is not assigned to task with id " + taskId);
+        }
+
+        userTasks.remove(task);
+        userRepository.save(user);
+
+        taskAssignedTo.remove(user);
+        taskRepository.save(task);
+
+        return transferModelToOutputDTO(user);
+    }
+
+    @Transactional
     public UserOutputDTO userCreatesEvent(String email, Long event_id) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " does not exist"));

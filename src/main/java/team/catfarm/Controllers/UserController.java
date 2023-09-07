@@ -63,6 +63,12 @@ public class UserController {
         return ResponseEntity.ok(userService.assignTaskToUser(email, task_id));
     }
 
+    @PutMapping("/{email}/remove/task/{task_id}")
+    @PreAuthorize("#email == authentication.principal.email or hasAnyRole('CAT', 'LION')")
+    public ResponseEntity<UserOutputDTO> removeAssignment(@PathVariable String email, @PathVariable Long task_id) {
+        return ResponseEntity.ok(userService.removeAssignment(email, task_id));
+    }
+
     @PutMapping("/{email}/usercreatesevent/{event_id}")
     public ResponseEntity<UserOutputDTO> userCreatesEvent(@PathVariable String email, @PathVariable Long event_id) {
         return ResponseEntity.ok(userService.userCreatesEvent(email, event_id));
