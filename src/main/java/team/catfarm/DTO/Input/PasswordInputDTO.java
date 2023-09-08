@@ -3,8 +3,10 @@ package team.catfarm.DTO.Input;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class PasswordInputDTO {
     @NotBlank(message = "Password is mandatory")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$",
