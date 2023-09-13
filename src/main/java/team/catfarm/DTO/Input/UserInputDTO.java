@@ -23,6 +23,7 @@ public class UserInputDTO {
     @Size(min=2, max=75)
     private String fullName;
     @NotBlank
+    @Size(min=2, max=10)
     private String pronouns;
     @Min(value = 0)
     @Max(value = 120)

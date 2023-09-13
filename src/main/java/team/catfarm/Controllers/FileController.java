@@ -58,16 +58,6 @@ public class FileController {
         return ResponseEntity.ok(fileService.getFileById(id));
     }
 
-    @GetMapping("/path/{location}")
-    public ResponseEntity<List<FileOutputDTO>> getFilesByLocation(@PathVariable String location) {
-        return ResponseEntity.ok(fileService.getFilesByLocation(location));
-    }
-
-    @PutMapping("/update-files")
-    public ResponseEntity<List<FileOutputDTO>> updateFiles(@Valid @RequestBody List<FileInputDTO> fileInputDTOList) {
-        return ResponseEntity.ok(fileService.updateFilesById(fileInputDTOList));
-    }
-
     @PutMapping("/{file_id}/profile_picture/{user_id}")
     public ResponseEntity<String> assignUserToProfilePicture(@PathVariable Long file_id, @PathVariable String user_id) {
         return ResponseEntity.ok(fileService.assignUserToProfilePicture(file_id, user_id));

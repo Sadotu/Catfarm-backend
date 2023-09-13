@@ -17,7 +17,6 @@ public class FileOutputDTO {
     private String name;
     private String extension;
     private double size;
-    private String location;
     private Date uploadDate;
     private Task task;
     private User user;

@@ -19,8 +19,6 @@ public class FileInputDTO {
     private String extension;
     @Max(value = 5000)
     private double size;
-    @NotBlank
-    private String location;
     private Date uploadDate;
     private Task task;
     private User user;

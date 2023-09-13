@@ -91,20 +91,6 @@ public class FileService {
         return transferModelToOutputDTO(file);
     }
 
-    public List<FileOutputDTO> getFilesByLocation(String location) {
-        List<File> fileList = fileRepository.findAll().stream()
-                .filter(file -> file.getLocation().equalsIgnoreCase(location))
-                .collect(Collectors.toList());
-        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
-
-        for (File f : fileList) {
-            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
-            fileOutputDTOList.add(fileOutputDTO);
-        }
-
-        return fileOutputDTOList;
-    }
-
     public List<FileOutputDTO> updateFilesById(List<FileInputDTO> fileInputDTOList) {
         List<File> updatedFiles = new ArrayList<>();
 
