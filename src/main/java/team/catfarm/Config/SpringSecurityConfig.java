@@ -80,11 +80,9 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/users/add_authorities/{email}").hasAnyRole("LION")
                 .requestMatchers(HttpMethod.DELETE, "/users/remove_authorities/{email}/{authority}").hasRole("LION")
                 //files
-                .requestMatchers(HttpMethod.POST, "/files/upload").hasAnyRole("KITTEN", "CAT", "LION")
-                .requestMatchers(HttpMethod.GET, "/files/download/{id}").hasAnyRole("CAT", "LION")
-                .requestMatchers(HttpMethod.GET, "/files/{id}").hasAnyRole("CAT", "LION")
-                .requestMatchers(HttpMethod.GET, "/files/path/{location}").hasAnyRole("CAT", "LION")
-                .requestMatchers(HttpMethod.PUT, "/files/update-files").hasAnyRole("CAT", "LION")
+                .requestMatchers(HttpMethod.POST, "/files/upload").hasAnyRole("CAT", "LION")
+                .requestMatchers(HttpMethod.GET, "/files/download/{id}").hasAnyRole("KITTEN", "CAT", "LION")
+                .requestMatchers(HttpMethod.GET, "/files/{id}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/files/{file_id}/profile_picture/{user_id}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.DELETE, "/files/delete/{id}").hasAnyRole("CAT", "LION")
                 //events

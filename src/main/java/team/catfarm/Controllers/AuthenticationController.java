@@ -9,10 +9,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import team.catfarm.DTO.Input.AuthenticationRequest;
 import team.catfarm.DTO.Output.AuthenticationResponse;
+import team.catfarm.Exceptions.AccessDeniedException;
+import team.catfarm.Exceptions.ResourceNotFoundException;
+import team.catfarm.Models.User;
+import team.catfarm.Repositories.UserRepository;
 import team.catfarm.Services.CustomUserDetailsService;
 import team.catfarm.Utils.JwtUtil;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -21,11 +26,13 @@ public class AuthenticationController {
     /*inject authentionManager, userDetailService en jwtUtil*/
     private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService userDetailsService;
+    private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService, JwtUtil jwtUtil) {
+    public AuthenticationController(AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService, UserRepository userRepository, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
+        this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
     }
 
@@ -45,6 +52,13 @@ public class AuthenticationController {
 
         String username = authenticationRequest.getUsername();
         String password = authenticationRequest.getPassword();
+
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + username));
+
+        if (user == null || user.getAuthorities() == null || user.getAuthorities().isEmpty()) {
+            throw new AccessDeniedException("Access denied: User has no assigned roles");
+        }
 
         try {
             authenticationManager.authenticate(
