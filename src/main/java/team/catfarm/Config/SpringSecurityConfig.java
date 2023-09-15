@@ -69,8 +69,10 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/users/{email}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.GET, "/users/enabled").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/users/update/{email}").hasAnyRole("KITTEN", "CAT", "LION")
+                .requestMatchers(HttpMethod.PUT, "/users/update_password/{email}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/users/{email}/rsvp/{event_id}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/users/{email}/task/{task_id}").hasAnyRole("KITTEN", "CAT", "LION")
+                .requestMatchers(HttpMethod.PUT, "/users/{email}/remove/task/{task_id}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/users/{email}/usercreatesevent/{event_id}").hasAnyRole("CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/users/{email}/usercreatestask/{task_id}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.DELETE, "/users/delete/{email}").hasAnyRole("KITTEN", "CAT", "LION")
@@ -79,10 +81,8 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/users/remove_authorities/{email}/{authority}").hasRole("LION")
                 //files
                 .requestMatchers(HttpMethod.POST, "/files/upload").hasAnyRole("CAT", "LION")
-                .requestMatchers(HttpMethod.GET, "/files/download/{id}").hasAnyRole("CAT", "LION")
-                .requestMatchers(HttpMethod.GET, "/files/{id}").hasAnyRole("CAT", "LION")
-                .requestMatchers(HttpMethod.GET, "/files/path/{location}").hasAnyRole("CAT", "LION")
-                .requestMatchers(HttpMethod.PUT, "/files/update-files").hasAnyRole("CAT", "LION")
+                .requestMatchers(HttpMethod.GET, "/files/download/{id}").hasAnyRole("KITTEN", "CAT", "LION")
+                .requestMatchers(HttpMethod.GET, "/files/{id}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/files/{file_id}/profile_picture/{user_id}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.DELETE, "/files/delete/{id}").hasAnyRole("CAT", "LION")
                 //events
@@ -98,8 +98,13 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/tasks/user_tasks/{user_email}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/tasks/update/{id}").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers(HttpMethod.PUT, "/tasks/{id}/event/{event_id}").hasAnyRole("CAT", "LION")
-                .requestMatchers(HttpMethod.PUT, "/tasks/{id}/files/").hasAnyRole("CAT", "LION")
+                .requestMatchers(HttpMethod.PUT, "/tasks/assignfiles/{id}").hasAnyRole("CAT", "LION")
                 .requestMatchers(HttpMethod.DELETE, "/tasks/delete/{id}").hasAnyRole("CAT", "LION")
+                //Todos
+                .requestMatchers(HttpMethod.POST, "/task/todos/{task_id}/create").hasAnyRole("KITTEN", "CAT", "LION")
+                .requestMatchers(HttpMethod.GET, "/task/todos/{task_id}/get").hasAnyRole("KITTEN", "CAT", "LION")
+                .requestMatchers(HttpMethod.PUT, "/task/todos/{task_id}/update").hasAnyRole("KITTEN", "CAT", "LION")
+                .requestMatchers(HttpMethod.DELETE, "/task/todos/{task_id}/delete").hasAnyRole("KITTEN", "CAT", "LION")
                 // Je mag meerdere paths tegelijk definieren
                 .requestMatchers("/users", "/events", "/tasks", "/files").hasAnyRole("KITTEN", "CAT", "LION")
                 .requestMatchers("/authenticated").authenticated()

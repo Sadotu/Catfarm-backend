@@ -34,10 +34,10 @@ public class Event {
 //    private Date repetitionEndDate;
 //    private int repetitionEndOccurrences;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.PERSIST)
     private List<Task> tasks;
 
-    @ManyToMany(mappedBy = "rsvp", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "rsvp", cascade = CascadeType.PERSIST)
     private List<User> rsvp;
 
     @ManyToOne

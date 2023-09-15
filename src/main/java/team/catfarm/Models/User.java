@@ -44,7 +44,7 @@ public class User {
     @Column(name = "creation_date", updatable = false)
     private Date creationDate;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "event_user",
             joinColumns = @JoinColumn(name = "event_id"),
@@ -53,7 +53,7 @@ public class User {
     @JsonIgnore
     private List<Event> rsvp;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "task_user",
             joinColumns = @JoinColumn(name = "user_email"),
@@ -62,11 +62,11 @@ public class User {
     @JsonIgnore
     private List<Task> tasks;
 
-    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.PERSIST)
     @JsonIgnore
     private List<Event> createdEvents;
 
-    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.PERSIST)
     @JsonIgnore
     private List<Task> createdTasks;
 
@@ -74,7 +74,7 @@ public class User {
     @JsonIgnore
     private List<File> uploadedFiles;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "profile_picture")
     @JsonIgnore
     private File profilePicture;

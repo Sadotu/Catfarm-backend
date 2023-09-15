@@ -42,12 +42,12 @@ public class FileController {
             throw new RuntimeException("There is no file yet.");
         }
 
-        String fileExtension = getFileExtension(file.getFileName());
+        String fileExtension = getFileExtension(file.getName());
         String mimeType = getMimeType(fileExtension);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(mimeType));
-        headers.setContentDispositionFormData("attachment", "file" + file.getFileName() + "." + fileExtension);
+        headers.setContentDispositionFormData("attachment", "file" + file.getName() + "." + fileExtension);
         headers.setContentLength(docFile.length);
 
         return new ResponseEntity<>(docFile, headers, HttpStatus.OK);
@@ -56,16 +56,6 @@ public class FileController {
     @GetMapping("/{id}")
     public ResponseEntity<FileOutputDTO> getFileById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(fileService.getFileById(id));
-    }
-
-    @GetMapping("/path/{location}")
-    public ResponseEntity<List<FileOutputDTO>> getFilesByLocation(@PathVariable String location) {
-        return ResponseEntity.ok(fileService.getFilesByLocation(location));
-    }
-
-    @PutMapping("/update-files")
-    public ResponseEntity<List<FileOutputDTO>> updateFiles(@Valid @RequestBody List<FileInputDTO> fileInputDTOList) {
-        return ResponseEntity.ok(fileService.updateFilesById(fileInputDTOList));
     }
 
     @PutMapping("/{file_id}/profile_picture/{user_id}")

@@ -11,7 +11,6 @@ import team.catfarm.Exceptions.ResourceNotFoundException;
 import team.catfarm.Models.File;
 import team.catfarm.Models.User;
 import team.catfarm.Repositories.FileRepository;
-import team.catfarm.Repositories.TaskRepository;
 import team.catfarm.Repositories.UserRepository;
 
 import java.io.IOException;
@@ -22,12 +21,10 @@ import java.util.stream.Collectors;
 public class FileService {
 
     private final FileRepository fileRepository;
-    private final TaskRepository taskRepository;
     private final UserRepository userRepository;
 
-    public FileService(FileRepository fileRepository, TaskRepository taskRepository, UserRepository userRepository) {
+    public FileService(FileRepository fileRepository, UserRepository userRepository) {
         this.fileRepository = fileRepository;
-        this.taskRepository = taskRepository;
         this.userRepository = userRepository;
     }
 
@@ -36,12 +33,6 @@ public class FileService {
         BeanUtils.copyProperties(file, fileOutputDTO);
         return fileOutputDTO;
     }
-
-//    public File transferInputDTOToModel(FileInputDTO fileInputDTO) {
-//        File file = new File();
-//        BeanUtils.copyProperties(fileInputDTO, file, "id");
-//        return file;
-//    }
 
     public List<FileOutputDTO> uploadFilesAndMetadata(List<MultipartFile> files) throws FileStorageException {
         List<File> createdFiles = new ArrayList<>();
@@ -60,7 +51,7 @@ public class FileService {
 
             // Set the fileName
             String originalFileName = multipartFile.getOriginalFilename();
-            fileEntity.setFileName(originalFileName);
+            fileEntity.setName(originalFileName);
 
             // Set the extension
             String extension = originalFileName != null && originalFileName.lastIndexOf(".") > 0
@@ -99,44 +90,6 @@ public class FileService {
 
         return transferModelToOutputDTO(file);
     }
-
-    public List<FileOutputDTO> getFilesByLocation(String location) {
-        List<File> fileList = fileRepository.findAll().stream()
-                .filter(file -> file.getLocation().equalsIgnoreCase(location))
-                .collect(Collectors.toList());
-        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
-
-        for (File f : fileList) {
-            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
-            fileOutputDTOList.add(fileOutputDTO);
-        }
-
-        return fileOutputDTOList;
-    }
-
-//    public List<FileOutputDTO> getFilesByUserEmail(String email) {
-//        List<File> fileList = fileRepository.findByEmail(email);
-//        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
-//
-//        for (File f : fileList) {
-//            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
-//            fileOutputDTOList.add(fileOutputDTO);
-//        }
-//
-//        return fileOutputDTOList;
-//    }
-//
-//    public List<FileOutputDTO> getFilesByTaskId(Long taskId) {
-//        List<File> fileList = fileRepository.findByTaskId(taskId);
-//        List<FileOutputDTO> fileOutputDTOList = new ArrayList<>();
-//
-//        for (File f : fileList) {
-//            FileOutputDTO fileOutputDTO = transferModelToOutputDTO(f);
-//            fileOutputDTOList.add(fileOutputDTO);
-//        }
-//
-//        return fileOutputDTOList;
-//    }
 
     public List<FileOutputDTO> updateFilesById(List<FileInputDTO> fileInputDTOList) {
         List<File> updatedFiles = new ArrayList<>();

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import team.catfarm.Models.Event;
 import team.catfarm.Models.File;
+import team.catfarm.Models.Todo;
 import team.catfarm.Models.User;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class TaskOutputDTO {
     private String nameTask;
     private Date deadline;
     private String description;
-    private List<String> toDos = new ArrayList<>();
+    private List<Todo> toDos = new ArrayList<>();
     private boolean completed;
     @JsonIgnore
     private Event event;

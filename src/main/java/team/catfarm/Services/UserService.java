@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import team.catfarm.DTO.Input.PasswordInputDTO;
+import team.catfarm.DTO.Input.UserAndPasswordInputDTO;
 import team.catfarm.DTO.Input.UserInputDTO;
 import team.catfarm.DTO.Output.UserOutputDTO;
 import team.catfarm.Exceptions.ResourceNotFoundException;
@@ -42,22 +44,22 @@ public class UserService {
         return userOutputDTO;
     }
 
-    public User transferInputDTOToModel(UserInputDTO userInputDTO) {
+    public User transferInputDTOToModelWithPassword(UserAndPasswordInputDTO userAndPasswordInputDTO) {
         User user = new User();
-        BeanUtils.copyProperties(userInputDTO, user, "id");
+        BeanUtils.copyProperties(userAndPasswordInputDTO, user, "id");
         return user;
     }
 
-    public UserOutputDTO createUser(UserInputDTO userInputDTO) throws UserAlreadyExistsException {
-        if (userRepository.findByEmail(userInputDTO.getEmail()).isPresent()) {
-            throw new UserAlreadyExistsException("User with email " + userInputDTO.getEmail() + " already exists");
+    public UserOutputDTO createUser(UserAndPasswordInputDTO userAndPasswordInputDTO) throws UserAlreadyExistsException {
+        if (userRepository.findByEmail(userAndPasswordInputDTO.getEmail()).isPresent()) {
+            throw new UserAlreadyExistsException("User with email " + userAndPasswordInputDTO.getEmail() + " already exists");
         }
 
         // Encode the password before saving
-        String encodedPassword = passwordEncoder.encode(userInputDTO.getPassword());
-        userInputDTO.setPassword(encodedPassword);
+        String encodedPassword = passwordEncoder.encode(userAndPasswordInputDTO.getPassword());
+        userAndPasswordInputDTO.setPassword(encodedPassword);
 
-        return transferModelToOutputDTO(userRepository.save(transferInputDTOToModel(userInputDTO)));
+        return transferModelToOutputDTO(userRepository.save(transferInputDTOToModelWithPassword(userAndPasswordInputDTO)));
     }
 
 
@@ -90,13 +92,42 @@ public class UserService {
         User existingUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));
 
-        // Encode the password before saving
-        String encodedPassword = passwordEncoder.encode(userToUpdateInputDTO.getPassword());
-        existingUser.setPassword(encodedPassword);
-
-        BeanUtils.copyProperties(userToUpdateInputDTO, existingUser, "password");
+        userToUpdateInputDTO = checkRelations(existingUser, userToUpdateInputDTO);
+        BeanUtils.copyProperties(userToUpdateInputDTO, existingUser);
 
         return transferModelToOutputDTO(userRepository.save(existingUser));
+    }
+
+    public UserInputDTO checkRelations(User existingUser, UserInputDTO userToUpdateInputDTO) {
+        if (userToUpdateInputDTO.getTasks() == null) {
+            userToUpdateInputDTO.setTasks(existingUser.getTasks());
+        }
+        if (userToUpdateInputDTO.getRsvp() == null) {
+            userToUpdateInputDTO.setRsvp(existingUser.getRsvp());
+        }
+        if (userToUpdateInputDTO.getCreatedEvents() == null) {
+            userToUpdateInputDTO.setCreatedEvents(existingUser.getCreatedEvents());
+        }
+        if (userToUpdateInputDTO.getCreatedTasks() == null) {
+            userToUpdateInputDTO.setCreatedTasks(existingUser.getCreatedTasks());
+        }
+        if (userToUpdateInputDTO.getProfilePicture() == null) {
+            userToUpdateInputDTO.setProfilePicture(existingUser.getProfilePicture());
+        }
+
+        return userToUpdateInputDTO;
+    }
+
+    public String updatePassword(String email, PasswordInputDTO passwordInputDTO) {
+        User existingUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));
+
+        String encodedPassword = passwordEncoder.encode(passwordInputDTO.getPassword());
+        existingUser.setPassword(encodedPassword);
+
+        userRepository.save(existingUser);
+
+        return "Password updated successfully.";
     }
 
     @Transactional
@@ -139,6 +170,33 @@ public class UserService {
         userRepository.save(user);
 
         taskAssignedTo.add(user);
+        taskRepository.save(task);
+
+        return transferModelToOutputDTO(user);
+    }
+
+    @Transactional
+    public UserOutputDTO removeAssignment(String email, Long taskId) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " does not exist"));
+
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + taskId + " does not exist"));
+
+        List<Task> userTasks = user.getTasks();
+        if (!userTasks.contains(task)) {
+            throw new IllegalStateException("Task with id " + taskId + " is not assigned to user with email " + email);
+        }
+
+        List<User> taskAssignedTo = task.getAssignedTo();
+        if (!taskAssignedTo.contains(user)) {
+            throw new IllegalStateException("User with email " + email + " is not assigned to task with id " + taskId);
+        }
+
+        userTasks.remove(task);
+        userRepository.save(user);
+
+        taskAssignedTo.remove(user);
         taskRepository.save(task);
 
         return transferModelToOutputDTO(user);

@@ -25,18 +25,18 @@ public class Task {
     private String nameTask;
     private Date deadline;
     private String description;
-    @ElementCollection
-    @CollectionTable(name = "task_todos", joinColumns = @JoinColumn(name = "task_id"))
-    @Column(name = "todo")
-    private List<String> toDos = new ArrayList<>();
     private boolean completed;
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Todo> toDos = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "event_id")
     @JsonIgnore
     private Event event;
 
-    @ManyToMany(mappedBy = "tasks", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "tasks", cascade = CascadeType.PERSIST)
     private List<User> assignedTo;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
